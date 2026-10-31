@@ -5,6 +5,7 @@ import {
   linkSync,
   mkdirSync,
   mkdtempSync,
+  readFileSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -157,9 +158,15 @@ test("maintenance refuses missing/malformed/older/newer/incomplete schema withou
     missing = join(dir, "missing", "state.sqlite");
   expect(() => maintainMedia(missing)).toThrow();
   expect(existsSync(dirname(missing))).toBe(false);
-  const invalid = join(dir, "not-sqlite");
-  writeFileSync(invalid, "Synthetic invalid file");
-  expect(() => maintainMedia(invalid, { apply: true })).toThrow();
+  for (const [name, data] of [
+    ["not-sqlite", "Synthetic invalid file"],
+    ["empty", ""],
+  ] as const) {
+    const invalid = join(dir, name);
+    writeFileSync(invalid, data);
+    expect(() => maintainMedia(invalid, { apply: true })).toThrow();
+    expect(readFileSync(invalid, "utf8")).toBe(data);
+  }
   for (const version of [7, 12, 11]) {
     const path = join(dir, `v${version}.sqlite`),
       db = inspect(path);
