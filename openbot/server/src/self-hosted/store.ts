@@ -3,6 +3,7 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { chmodSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { DemoAppointments, migrateAppointments } from "./appointments";
+import { ownDatabase } from "./database-ownership";
 import { LocalError } from "./errors";
 import { migrateMediaConsent } from "./media-consent";
 import { type MediaLimits, migrateMedia, OwnedMedia } from "./media-store";
@@ -42,22 +43,6 @@ type Run = {
 };
 type Memory = { id: string; content: string; created: number };
 const hash = (text: string) => createHash("sha256").update(text).digest("hex");
-
-/** SQLite's OS lock releases on process death; no stale PID file or lock-stealing race. */
-function ownDatabase(path: string) {
-  const lock = new Database(`${path}.lock.sqlite`, { create: true });
-  try {
-    chmodSync(`${path}.lock.sqlite`, 0o600);
-    lock.exec("PRAGMA busy_timeout=0; BEGIN EXCLUSIVE");
-  } catch {
-    lock.close();
-    throw new LocalError(
-      "This local database already has a server or cannot be locked.",
-      503,
-    );
-  }
-  return () => lock.close();
-}
 
 export class SelfHostedStore {
   readonly appointments: DemoAppointments;
