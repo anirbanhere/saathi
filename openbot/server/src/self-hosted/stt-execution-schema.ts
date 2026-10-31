@@ -1,5 +1,15 @@
 import type { Database } from "bun:sqlite";
 
+export const mediaInvalidationTriggerSql = `CREATE TRIGGER IF NOT EXISTS media_invalidates_stt AFTER UPDATE OF consent_revision,state ON owned_media
+    WHEN NEW.consent_revision!=OLD.consent_revision OR NEW.state!=OLD.state BEGIN
+      UPDATE stt_admissions SET
+        state=CASE WHEN state='cancelled' THEN state WHEN state IN('reserved','claimed') OR pending=1 THEN CASE WHEN NEW.state='expired' THEN 'expired' ELSE 'revoked' END ELSE state END,
+        pending=CASE WHEN pending=1 AND claimed_at IS NOT NULL THEN 1 ELSE 0 END,
+        claim_hash=CASE WHEN pending=1 AND claimed_at IS NOT NULL THEN claim_hash ELSE NULL END,
+        outcome=NULL,updated=COALESCE(NEW.consent_changed_at,NEW.removed,NEW.created)
+      WHERE media=NEW.id;
+    END;`;
+
 export function migrateSttExecution(db: Database) {
   db.exec("DROP TRIGGER IF EXISTS media_invalidates_stt");
   const columns = db
@@ -24,13 +34,5 @@ export function migrateSttExecution(db: Database) {
       DROP TABLE stt_admissions_v10;`);
   }
   db.exec(`CREATE UNIQUE INDEX IF NOT EXISTS stt_pending_owner ON stt_admissions(owner) WHERE pending=1;
-    CREATE TRIGGER IF NOT EXISTS media_invalidates_stt AFTER UPDATE OF consent_revision,state ON owned_media
-    WHEN NEW.consent_revision!=OLD.consent_revision OR NEW.state!=OLD.state BEGIN
-      UPDATE stt_admissions SET
-        state=CASE WHEN state='cancelled' THEN state WHEN state IN('reserved','claimed') OR pending=1 THEN CASE WHEN NEW.state='expired' THEN 'expired' ELSE 'revoked' END ELSE state END,
-        pending=CASE WHEN pending=1 AND claimed_at IS NOT NULL THEN 1 ELSE 0 END,
-        claim_hash=CASE WHEN pending=1 AND claimed_at IS NOT NULL THEN claim_hash ELSE NULL END,
-        outcome=NULL,updated=COALESCE(NEW.consent_changed_at,NEW.removed,NEW.created)
-      WHERE media=NEW.id;
-    END;`);
+    ${mediaInvalidationTriggerSql}`);
 }
