@@ -1,6 +1,6 @@
 # Next slice: explicit operator media expiry maintenance
 
-Implemented on codex/operator-media-maintenance; verification/feature-PR checkpoint in progress. See docs/saathi/media-maintenance.md and current HANDOFF for exact evidence. Preserve the current public/private profiles; no maintenance has been executed on existing user/production data as part of development. The acceptance contract below remains authoritative.
+Implemented on codex/operator-media-maintenance in draft PR32. Exact source11a726a passes scoped Linux self-hosted/tenant gates, including205 tests/1777 assertions and the file-symlink regression; see current HANDOFF and docs/saathi/media-maintenance.md. Preserve current public/private profiles; no maintenance has been executed on existing user/production data as part of development. The acceptance contract below remains authoritative.
 
 Build a narrowly scoped operator command with a required explicit database path, no dotenv/private-profile defaults, no public/model/anonymous dispatch and no provider call. Default to a count-only dry run; require an explicit apply argument for expired active BLOB/linked-result clearing. Output aggregate counts only. Nonexistent targets, malformed/newer/older schemas and currently-owned databases must fail without creating/migrating a target or changing its data. Schema11 is the current required format; version labels alone must not authorize an incomplete/malformed store.
 
