@@ -4,12 +4,14 @@ import { LocalError } from "./errors";
 import { speechLanguages } from "./roles";
 import { inspectPcmWav } from "./wav";
 
+export const maxMediaBytes = 2_000_000;
+
 const upload = z
   .object({
     request_id: z.string().regex(/^[A-Za-z0-9_-]{1,80}$/),
     audio: z
       .instanceof(Uint8Array)
-      .refine((bytes) => bytes.length >= 44 && bytes.length <= 2_000_000),
+      .refine((bytes) => bytes.length >= 44 && bytes.length <= maxMediaBytes),
     mimeType: z.literal("audio/wav"),
     consentToStore: z.literal(true),
     consentToProcess: z.boolean().optional().default(false),

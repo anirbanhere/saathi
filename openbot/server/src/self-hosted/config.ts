@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import { maxMediaBytes } from "./media-contract";
 import { configureRoles } from "./roles";
 import { LocalError } from "./store";
 
@@ -20,6 +21,7 @@ export function selfHostedConfig(
   const metaEnabled = flag("SAATHI_ENABLE_META");
   const metaWebSearch = flag("SAATHI_META_WEB_SEARCH");
   const localMediaControls = flag("SAATHI_LOCAL_MEDIA_CONTROLS");
+  const localMediaUploads = flag("SAATHI_LOCAL_MEDIA_UPLOADS");
   const price = (name: string, fallback: number) => {
     const value = Number(env[name] ?? fallback);
     if (!Number.isFinite(value) || value < 0 || value > 100)
@@ -99,6 +101,8 @@ export function selfHostedConfig(
   }
   if (publicOrigin && localMediaControls)
     throw new LocalError("Public mode cannot enable local media controls.");
+  if (publicOrigin && localMediaUploads)
+    throw new LocalError("Public mode cannot enable local media uploads.");
   const count = (name: string, fallback: number, maximum: number) => {
     const value = Number(env[name] ?? fallback);
     if (!Number.isInteger(value) || value < 1 || value > maximum)
@@ -126,6 +130,8 @@ export function selfHostedConfig(
     model,
     publicOrigin,
     localMediaControls,
+    localMediaUploads,
+    maxRequestBodySize: localMediaUploads ? maxMediaBytes : 60_000,
     dailyLimits,
     tenantPath: resolve(
       env.SAATHI_TENANT_PATH ||

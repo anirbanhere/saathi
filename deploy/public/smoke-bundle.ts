@@ -80,6 +80,7 @@ const child = Bun.spawn([process.execPath, join(build, "app.js")], {
     SAATHI_ENABLE_META: "false",
     SAATHI_ALLOW_PAID_MODELS: "false",
     SAATHI_LOCAL_MEDIA_CONTROLS: "false",
+    SAATHI_LOCAL_MEDIA_UPLOADS: "false",
     BOT_MODEL: "openrouter/free",
     SAATHI_PUBLIC_ORIGIN: origin,
     SAATHI_DATABASE_PATH: join(folder, "state.sqlite"),
@@ -117,6 +118,7 @@ try {
   const health = await (await request("/health")).json();
   assert.equal(health.public_demo, true);
   assert.equal(health.local_media_controls, false);
+  assert.equal(health.local_media_uploads, false);
   assert.equal(health.speech, false);
   assert.equal(
     (
@@ -130,6 +132,16 @@ try {
     Cookie: `saathi_self_hosted=${seedSession.token}`,
     "X-Saathi-CSRF": seedSession.csrf,
   };
+  assert.equal(
+    (
+      await request("/api/media/upload", {
+        method: "POST",
+        headers: readAuth,
+        body: "{}",
+      })
+    ).status,
+    404,
+  );
   const readPath = `/api/task-plans/${seedTask.id}/run-readonly`;
   const mediaPath = "/api/media/00000000-0000-4000-8000-000000000000";
   assert.equal((await request(mediaPath, { headers: readAuth })).status, 404);

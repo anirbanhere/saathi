@@ -1,6 +1,6 @@
 # Next slice: bounded local audio upload and initial consent
 
-Proposed next increment after operator maintenance; not implemented or a public-rollout authorization. Reuse the tested media/WAV/consent/quota store and privacy UI. Work only on fresh synthetic databases/tones; preserve current private/public profiles and the contributor's separate WhatsApp branch.
+HTTP admission is implemented on codex/local-media-upload in draft PR33. Exact source19a7fed passes scoped Linux self-hosted/tenant gates, including217 tests/1875 assertions; see docs/saathi/local-media-upload.md and HANDOFF. The separate upload/consent UI is specified in tasks/local-media-upload-ui.md. This is not public-rollout authorization. Reuse the tested media/WAV/consent/quota store and privacy UI. Work only on fresh synthetic databases/tones; preserve current private/public profiles and the contributor's separate WhatsApp branch. The acceptance contract below remains applicable.
 
 First implement the local HTTP admission boundary, then a separate reviewed upload/consent UI. Do not couple upload to transcription, model submission, a task/action or live speech activation. Public mode and default configuration must have no upload route. Keep the existing privacy-controls opt-in distinct: enabling viewing/deletion must not silently enable uploads. Use a separately validated explicit local upload flag and independent app-level public denial.
 

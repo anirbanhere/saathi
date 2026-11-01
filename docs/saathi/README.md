@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Local WAV upload](local-media-upload.md) adds a separate off-by-default/public-refused owned consent/byte boundary. It accepts bounded raw WAV with strict consent headers and existing quotas; it supplies no upload UI, speech processing, playback or model call.
+
 [Operator media maintenance](media-maintenance.md) adds an explicit absolute-database/count-only dry run and explicit apply for supported schema11 expiry clearing. It refuses active ownership and performs no migration/startup recovery. No existing user/public profile or live speech is enabled by this command.
 
 [Local owned-media controls](local-media-controls.md) add an off-by-default, public-disabled bounded metadata list/revoke/delete boundary and conditional Saved audio privacy console. They reuse owner/CSRF/strict-body protections; no uploads, playback, transcript or live speech route is enabled.
