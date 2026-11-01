@@ -1,9 +1,10 @@
 import { timingSafeEqual } from "node:crypto";
-import { Hono } from "hono";
+import { type Context, Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { z } from "zod";
 import { attachLocalMediaControls } from "./media-routes";
+import { attachLocalMediaUpload, localMediaUploadPath } from "./media-upload";
 import type { ModelCatalog, ModelChoice } from "./models";
 import { attachPlanRoutes, type Planner } from "./planner";
 import {
@@ -49,6 +50,7 @@ export function createSelfHostedApp(options: {
   roles?: ProviderRoles;
   planner?: Planner;
   localMediaControls?: boolean;
+  localMediaUploads?: boolean;
 }) {
   const { store, answer, model } = options;
   const getModels =
@@ -73,6 +75,18 @@ export function createSelfHostedApp(options: {
       issues: [],
     }));
   const app = new Hono<{ Variables: AppVariables }>();
+  const localMediaUploads =
+    options.localMediaUploads === true && !options.publicOrigin;
+  const authenticate = (c: Context<{ Variables: AppVariables }>) => {
+    const session = store.session(getCookie(c, "saathi_self_hosted") ?? "");
+    if (!session) throw new LocalError("Start a private local workspace.", 401);
+    if (
+      c.req.method !== "GET" &&
+      !equal(c.req.header("x-saathi-csrf") ?? "", session.csrf)
+    )
+      throw new LocalError("Invalid action token.", 403);
+    c.set("session", session);
+  };
   const writes: number[] = [];
   app.onError((error, c) =>
     c.json(
@@ -102,58 +116,65 @@ export function createSelfHostedApp(options: {
       throw new LocalError("This Saathi mode is loopback-only.", 403);
     if (!["GET", "POST", "DELETE"].includes(c.req.method))
       throw new LocalError("Unsupported method.", 405);
+    const uploadRequest =
+      localMediaUploads &&
+      c.req.method === "POST" &&
+      url.pathname === localMediaUploadPath;
     if (c.req.method !== "GET") {
       if (
         c.req.header("origin") !== expectedOrigin ||
-        c.req.header("content-type")?.split(";")[0] !== "application/json"
+        (uploadRequest
+          ? c.req.header("content-type") !== "audio/wav"
+          : c.req.header("content-type")?.split(";")[0] !== "application/json")
       )
-        throw new LocalError("Use same-origin JSON.", 403);
+        throw new LocalError(
+          uploadRequest
+            ? "Use same-origin WAV upload."
+            : "Use same-origin JSON.",
+          403,
+        );
       const now = Date.now();
       while (writes.length && (writes[0] ?? now) < now - 60_000) writes.shift();
       if (writes.length >= 100)
         throw new LocalError("Local request budget reached.", 429);
       writes.push(now);
-      const declared = c.req.header("content-length");
-      if (declared && (!/^\d+$/.test(declared) || Number(declared) > 60_000))
-        throw new LocalError("Request exceeds60KB.", 413);
-      const reader = c.req.raw.body?.getReader();
-      const chunks: Uint8Array[] = [];
-      let size = 0;
-      if (reader) {
-        try {
-          for (;;) {
-            const { value, done } = await reader.read();
-            if (done) break;
-            size += value.length;
-            if (size > 60_000) {
-              await reader.cancel();
-              throw new LocalError("Request exceeds60KB.", 413);
+      if (uploadRequest) authenticate(c);
+      else {
+        const declared = c.req.header("content-length");
+        if (declared && (!/^\d+$/.test(declared) || Number(declared) > 60_000))
+          throw new LocalError("Request exceeds60KB.", 413);
+        const reader = c.req.raw.body?.getReader();
+        const chunks: Uint8Array[] = [];
+        let size = 0;
+        if (reader) {
+          try {
+            for (;;) {
+              const { value, done } = await reader.read();
+              if (done) break;
+              size += value.length;
+              if (size > 60_000) {
+                await reader.cancel();
+                throw new LocalError("Request exceeds60KB.", 413);
+              }
+              chunks.push(value);
             }
-            chunks.push(value);
+          } finally {
+            reader.releaseLock();
           }
-        } finally {
-          reader.releaseLock();
         }
-      }
-      try {
-        c.set("body", JSON.parse(Buffer.concat(chunks).toString("utf8")));
-      } catch {
-        throw new LocalError("Invalid JSON.", 400);
+        try {
+          c.set("body", JSON.parse(Buffer.concat(chunks).toString("utf8")));
+        } catch {
+          throw new LocalError("Invalid JSON.", 400);
+        }
       }
     }
     if (
+      !uploadRequest &&
       url.pathname.startsWith("/api/") &&
       !(url.pathname === "/api/session" && c.req.method === "POST")
     ) {
-      const session = store.session(getCookie(c, "saathi_self_hosted") ?? "");
-      if (!session)
-        throw new LocalError("Start a private local workspace.", 401);
-      if (
-        c.req.method !== "GET" &&
-        !equal(c.req.header("x-saathi-csrf") ?? "", session.csrf)
-      )
-        throw new LocalError("Invalid action token.", 403);
-      c.set("session", session);
+      authenticate(c);
     }
     await next();
     // Raw file Responses do not inherit the Context's prepared response headers.
@@ -174,12 +195,19 @@ export function createSelfHostedApp(options: {
     enabled: options.localMediaControls,
     publicOrigin: options.publicOrigin,
   });
+  attachLocalMediaUpload(app, {
+    media: store.media,
+    enabled: options.localMediaUploads,
+    publicOrigin: options.publicOrigin,
+    authenticate,
+  });
   app.get("/health", (c) =>
     c.json({
       storage: "self-hosted-sqlite",
       actions: false,
       speech: false,
       local_media_controls: localMediaControls,
+      local_media_uploads: localMediaUploads,
       demo_appointments: true,
       task_planning: Boolean(options.roles && options.planner),
       general_task_execution: false,

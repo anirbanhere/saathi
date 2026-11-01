@@ -22,13 +22,14 @@ const app = attachSelfHostedWeb(
     roles: config.roles,
     planner,
     localMediaControls: config.localMediaControls,
+    localMediaUploads: config.localMediaUploads,
   }),
   config.webPath,
 );
 const server = Bun.serve({
   hostname: config.host,
   port: config.port,
-  maxRequestBodySize: 60_000,
+  maxRequestBodySize: config.maxRequestBodySize,
   idleTimeout: 120,
   fetch: app.fetch,
 });
