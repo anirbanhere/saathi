@@ -1,6 +1,6 @@
 # Next slice: local WAV upload and consent UI
 
-Proposed next increment after the local HTTP upload boundary; not implemented or public-rollout authorization. Read HANDOFF, docs/saathi/local-media-upload.md, saathi-web/media.js and the existing busy/focus/error helpers before editing. Preserve the developer's separate WhatsApp work and existing private/public profiles. Use fresh synthetic state/generated WAV files only.
+Implemented on codex/local-media-upload-ui; verification/feature-PR checkpoint in progress. See docs/saathi/local-media-upload-ui.md and HANDOFF for exact browser and gate evidence, including the native file-picker limitation. This is not public-rollout authorization. Read docs/saathi/local-media-upload.md, saathi-web/media.js and the existing busy/focus/error helpers before editing. Preserve the developer's separate WhatsApp work and existing private/public profiles. Use fresh synthetic state/generated WAV files only. The acceptance contract below remains applicable.
 
 Add a small separate upload module/fixed asset to the local console. Show it only after explicit health capability discovery; require both local uploads and privacy controls and public_demo=false so the owner can inspect/revoke/delete saved files. Default/public mode must render no upload action and make no media request. Do not modify flags or connect providers automatically.
 

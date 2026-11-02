@@ -21,6 +21,7 @@ export function attachSelfHostedWeb(
         "appointments.js",
         "plans.js",
         "media.js",
+        "upload.js",
         "style.css",
       ].includes(name)
     )

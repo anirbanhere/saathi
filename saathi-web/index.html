@@ -21,11 +21,22 @@
     <aside class="panel memory" aria-labelledby="memory-heading"><p class="eyebrow">PREFERENCES YOU REVIEW</p><h2 id="memory-heading">What Saathi remembers</h2><p class="muted">Saved explicitly by you. These preferences are included in this workspace's model context. No automatic extraction or cross-workspace memory. Deleting a memory removes its record; earlier messages may still mention it.</p><form id="memory-form"><label for="memory-text">A preference to remember</label><textarea id="memory-text" rows="3" maxlength="2000" required placeholder="For example: reply in Tamil."></textarea><label class="check"><input id="reviewed" type="checkbox" required> I reviewed this preference and want to save it.</label><button type="submit" class="secondary">Save reviewed memory</button></form><div id="memories"></div></aside>
     <section id="saved-media" class="panel appointments" aria-labelledby="media-heading" hidden>
       <p class="eyebrow">SAVED ON THIS SERVER</p><h2 id="media-heading">Saved audio privacy</h2>
-      <p class="notice">Review clip details and withdraw consent or delete active storage. Expiry blocks access before stored bytes are cleared. Revoking consent cannot recall copies already returned; clip details and backups may remain. Audio upload, playback and speech processing are not connected here.</p>
+      <p class="notice">Review clip details and withdraw consent or delete active storage. Expiry blocks access before stored bytes are cleared. Revoking consent cannot recall copies already returned; clip details and backups may remain. Playback and speech processing are not connected here.</p>
       <fieldset id="media-controls"><legend class="visually-hidden">Saved audio controls</legend>
         <p id="media-status" role="status" aria-live="polite"></p><button id="media-refresh" class="secondary" type="button">Refresh saved media</button>
         <ul id="media-records" class="media-list" aria-label="Saved clip records"></ul>
       </fieldset>
+    </section>
+    <section id="audio-upload" class="panel appointments" aria-labelledby="upload-heading" hidden>
+      <p class="eyebrow">CHOOSE AND REVIEW</p><h2 id="upload-heading">Save an audio clip</h2>
+      <p id="upload-help" class="notice">One PCM16 WAV file, up to 2 MB and 60 seconds. Access lasts up to 15 minutes or until this workspace expires. Expiry does not delete the file; use Saved audio privacy to delete it. Clip details and backups may remain. Upload does not transcribe, send to a model or carry out a task. No microphone recording is connected.</p>
+      <form id="upload-form"><fieldset id="upload-fields"><legend class="visually-hidden">Audio file and consent</legend>
+        <div class="appointment-form"><div><label for="upload-file">WAV audio file</label><input id="upload-file" type="file" accept=".wav,audio/wav" aria-describedby="upload-help" required></div>
+        <div><label for="upload-language">Language hint (optional)</label><select id="upload-language"><option value="">Not specified</option><option value="en-IN">English</option><option value="hi-IN">हिन्दी</option><option value="ta-IN">தமிழ்</option><option value="ml-IN">മലയാളം</option><option value="kn-IN">ಕನ್ನಡ</option></select></div></div>
+        <label class="check"><input id="upload-storage" type="checkbox" required> I agree to store this clip on this server.</label>
+        <label class="check"><input id="upload-processing" type="checkbox"> I also allow processing of this clip. This choice does not start processing.</label>
+      </fieldset><div class="appointment-actions"><button id="upload-send" type="submit" disabled>Save audio clip</button><button id="upload-cancel" type="button" class="secondary" hidden>Stop upload</button><button id="upload-clear" type="button" class="secondary" hidden>Check saved audio and clear selection</button></div></form>
+      <p id="upload-status" role="status" aria-live="polite" aria-atomic="true">Nothing is sent until you choose Save audio clip.</p>
     </section>
     <section id="task-planning" class="panel appointments" aria-labelledby="plans-heading">
       <p class="eyebrow">DRAFT AND REVIEW</p><h2 id="plans-heading">Plan an everyday task</h2>

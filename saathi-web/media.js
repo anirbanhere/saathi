@@ -6,6 +6,7 @@ export function createMediaConsole({ api, run, el, button }) {
     status = $("#media-status"),
     refreshButton = $("#media-refresh");
   let enabled = false,
+    uploadAvailable = false,
     loading = false,
     busy = false;
   const controls = () => {
@@ -147,7 +148,9 @@ export function createMediaConsole({ api, run, el, button }) {
       list.replaceChildren(...records.map(row));
       status.textContent = records.length
         ? `${records.length} saved clip records. Recorded consent is not a new processing permission.`
-        : "No saved clips in this workspace. Audio upload is not connected.";
+        : uploadAvailable
+          ? "No saved clips in this workspace. Save an audio clip below to get started."
+          : "No saved clips in this workspace. Audio upload is not connected.";
     } catch (error) {
       list.replaceChildren();
       status.textContent =
@@ -176,6 +179,7 @@ export function createMediaConsole({ api, run, el, button }) {
         const health = await api("/health");
         enabled =
           health.local_media_controls === true && health.public_demo === false;
+        uploadAvailable = enabled && health.local_media_uploads === true;
         panel.hidden = !enabled;
         controls();
         if (enabled) await refresh();
