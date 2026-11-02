@@ -26,6 +26,14 @@ const roleSchema = z
     timeoutMs: z.number().int().min(1000).max(60000),
   })
   .strict();
+/** Shared startup guard; admission/claim still validate their own authoritative boundaries. */
+export function assertFixtureSttRole(role: unknown) {
+  if (!roleSchema.safeParse(role).success)
+    throw new LocalError(
+      "Only reviewed synthetic fixture STT roles are supported; live speech remains disabled.",
+      503,
+    );
+}
 export type SttAdmissionLimits = {
   ownerAttempts: number;
   globalAttempts: number;

@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Local fixture speech runtime](local-fixture-speech-runtime.md) connects owned fixture admission/settlement to an explicitly opted-in local HTTP operation and safe stop/drain lifecycle. Synthetic tone lookup is labelled, public/default mode stays off, and real speech/providers remain gated.
+
 [Local WAV upload](local-media-upload.md) adds a separate off-by-default/public-refused owned consent/byte boundary. The [conditional upload/consent console](local-media-upload-ui.md) uses it with explicit choices and duplicate-safe same-tab retry. No microphone, speech processing, playback or model call is enabled.
 
 [Operator media maintenance](media-maintenance.md) adds an explicit absolute-database/count-only dry run and explicit apply for supported schema11 expiry clearing. It refuses active ownership and performs no migration/startup recovery. No existing user/public profile or live speech is enabled by this command.
