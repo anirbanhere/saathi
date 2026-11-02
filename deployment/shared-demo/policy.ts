@@ -69,3 +69,31 @@ export function isModelRun(method: string, path: string): boolean {
       path.startsWith("/api/openduet/tasks"))
   );
 }
+
+/** Extra routes for a Sites-authenticated visitor, still enforced by the API's owner checks. */
+export function visitorPathAllowed(method: string, target: string): boolean {
+  if (demoPathAllowed(method, target)) return true;
+  const path = target.split("?")[0] ?? "";
+  if (
+    !path.startsWith("/") ||
+    /[%\\\0]/.test(path) ||
+    path.split("/").some((p) => p === "." || p === "..")
+  )
+    return false;
+  if (method === "GET")
+    return ["/api/saathi/food", "/api/plugins/oauth/callback"].includes(path);
+  if (method === "POST")
+    return (
+      [
+        "/api/saathi/food/start",
+        "/api/saathi/food/enable",
+        "/api/plugins/servers/swiggy-food/connect",
+      ].includes(path) ||
+      /^\/api\/approvals\/[a-f0-9-]+\/decision$/.test(path) ||
+      /^\/api\/approvals\/questions\/[a-f0-9-]+\/respond$/.test(path)
+    );
+  return (
+    method === "DELETE" &&
+    path === "/api/plugins/servers/swiggy-food/connection"
+  );
+}

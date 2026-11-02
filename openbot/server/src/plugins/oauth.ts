@@ -60,6 +60,7 @@ const CALLBACK_PATH = "/api/plugins/oauth/callback";
  * somebody else's server sent the browser on. Nothing on it is believable by itself.
  */
 export type ConnectOrigin =
+  | "food"
   | "settings"
   | "admin"
   /** Onboarding's setup checklist, its last step. */
@@ -70,6 +71,7 @@ export type ConnectOrigin =
   | "settings-setup";
 
 const ORIGINS: ReadonlySet<string> = new Set<ConnectOrigin>([
+  "food",
   "admin",
   "onboarding",
   "onboarding-apps",
@@ -146,6 +148,8 @@ export function connectedAccountsUrlFor(
   returnTo: ConnectOrigin = "settings",
 ): string {
   const origin = appUrl?.replace(/\/+$/, "") ?? "";
+  if (returnTo === "food")
+    return `${origin}/food${"failed" in where ? "?connected=failed" : ""}`;
 
   /*
    * Onboarding offers Connect twice: on its Connect your apps step, and on the setup checklist at

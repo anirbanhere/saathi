@@ -47,6 +47,24 @@ function memoryStore(): ModelKeyStore {
 }
 
 const encryptionKey = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+test("explicit demo runtime mapping shares only the model account, not key management", async () => {
+  const visitor = `saathi-site-${"a".repeat(64)}`;
+  const models = createSaathiModels(memoryStore(), encryptionKey, (owner) =>
+    owner === visitor ? "demo-owner" : owner,
+  );
+  await models.save("demo-owner", {
+    provider: "meta",
+    model: "muse-spark-1.3",
+    apiKey: "test-demo-key",
+  });
+  const selected = await models.resolve(visitor);
+  expect(selected.apiKey).toBe("test-demo-key");
+  expect(await models.isActive(visitor, selected)).toBe(true);
+  expect(await models.status(visitor)).toEqual([]);
+  await expect(models.resolve("unknown")).rejects.toThrow("Add your own");
+  await models.revoke("demo-owner", "meta");
+  expect(await models.isActive(visitor, selected)).toBe(false);
+});
 describe("Saathi owner model configuration", () => {
   test("Meta credentials remain distinct from OpenAI and preserve owner revocation", async () => {
     const models = createSaathiModels(memoryStore(), encryptionKey);

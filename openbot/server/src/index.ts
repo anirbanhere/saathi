@@ -1,6 +1,7 @@
 // First, before anything that imports the CopilotKit runtime: see telemetry.ts.
 import "./telemetry";
 import { createSaathiService } from "./saathi/service";
+import { createVisitorFood } from "./saathi/food";
 import { createSaathiWorkers } from "./saathi/workers";
 import {
   assertSaathiProviderOrigins,
@@ -155,6 +156,7 @@ import {
   channels,
   intelligenceChannelMappings,
   users,
+  userRoles,
 } from "./db/schema";
 import { createDeliveryRouter, DELIVERY_WORK_KINDS } from "./delivery/router";
 import {
@@ -564,19 +566,40 @@ const identityProviderStore = createIdentityProviderStore(database);
  */
 const signInAuditStore = createAuditStore(database);
 const auth: AuthService | undefined = config.demoGateway
-  ? createDemoGatewayAuth(config.demoGateway, async (id) => {
-      const [user] = await database
-        .select({ id: users.id, email: users.email })
-        .from(users)
-        .where(eq(users.id, id));
-      if (
-        !user ||
-        !(await roleRepository.rolesForUser(id)).includes("user") ||
-        (await peopleStore.isRevoked(user.email))
-      )
-        return null;
-      return user;
-    })
+  ? createDemoGatewayAuth(
+      config.demoGateway,
+      async (id) => {
+        const [user] = await database
+          .select({ id: users.id, email: users.email })
+          .from(users)
+          .where(eq(users.id, id));
+        if (
+          !user ||
+          !(await roleRepository.rolesForUser(id)).includes("user") ||
+          (await peopleStore.isRevoked(user.email))
+        )
+          return null;
+        return user;
+      },
+      async (id) => {
+        const email = `${id}@sites.saathi.invalid`;
+        if (await peopleStore.isRevoked(email)) return null;
+        await database
+          .insert(users)
+          .values({
+            id,
+            email,
+            name: "Saathi visitor",
+            onboardingCompletedAt: new Date(),
+          })
+          .onConflictDoNothing();
+        await database
+          .insert(userRoles)
+          .values({ userId: id, role: "user" })
+          .onConflictDoNothing();
+        return { id, email };
+      },
+    )
   : config.organizationAuthUrl
     ? createOrganizationAuth({
         authorityUrl: config.organizationAuthUrl,
@@ -742,6 +765,7 @@ const saathi =
         profiles: agentProfileStore,
         channels: channelStore,
         enableApprovals: (owner) => storedApprovals.setEnabled(owner, true),
+        demoModelOwner: config.demoGateway?.userId,
         callSimulation:
           process.env.SAATHI_CALLS_SIMULATOR === "true" && !config.demoGateway,
       })
@@ -1061,6 +1085,9 @@ const pluginStore = createPluginStore({
  * store and the approval policy at once: making an app Shared ends people's accounts, approves each
  * Bot that holds it and adds an ask-before-write rule for its writes.
  */
+if (config.demoGateway && !(await pluginStore.serverAddress("swiggy-food"))) {
+  await pluginStore.addServer({ key: "swiggy-food", by: "deployment" });
+}
 const accountModes = createAccountModeSwitch({
   store: pluginStore,
   sharedUse: sharedUseStore,
@@ -2844,6 +2871,17 @@ const app = createApp(
             ...saathi,
             speechConfigured: Boolean(config.transcription),
             publicDemo: Boolean(config.demoGateway),
+            ...(config.demoGateway
+              ? {
+                  visitorFood: createVisitorFood({
+                    profiles: agentProfileStore,
+                    channels: channelStore,
+                    plugins: pluginStore,
+                    enableApprovals: (owner) =>
+                      storedApprovals.setEnabled(owner, true),
+                  }),
+                }
+              : {}),
           },
         }
       : {}),

@@ -26,10 +26,15 @@ export function createSaathiService(deps: {
   channels: ChannelStore;
   enableApprovals(owner: string): Promise<void>;
   callSimulation?: boolean;
+  demoModelOwner?: string;
 }) {
   const models = createSaathiModels(
     createModelKeyStore(deps.database),
     deps.encryptionKey,
+    (owner) =>
+      deps.demoModelOwner && /^saathi-site-[a-f0-9]{64}$/.test(owner)
+        ? deps.demoModelOwner
+        : owner,
   );
   const connections = createConnectionStore(deps.database);
   return {

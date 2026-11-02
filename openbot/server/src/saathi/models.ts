@@ -52,6 +52,7 @@ export class SaathiConfigurationError extends Error {}
 export function createSaathiModels(
   store: ModelKeyStore,
   encryptionKey: string,
+  runtimeOwner: (owner: string) => string = (owner) => owner,
 ) {
   return {
     async save(owner: string, input: unknown) {
@@ -75,7 +76,7 @@ export function createSaathiModels(
       }
     },
     async resolve(owner: string): Promise<OwnerModel> {
-      const value = await store.read(owner);
+      const value = await store.read(runtimeOwner(owner));
       if (!value)
         throw new SaathiConfigurationError(
           "Add your own API key and select a model in Settings > Saathi.",
@@ -90,7 +91,10 @@ export function createSaathiModels(
       };
     },
     async isActive(owner: string, selection: OwnerModel) {
-      const value = await store.read(owner, selection.credentialProvider);
+      const value = await store.read(
+        runtimeOwner(owner),
+        selection.credentialProvider,
+      );
       return Boolean(
         value &&
           (await decryptSecret(encryptionKey, value.encryptedKey)) ===

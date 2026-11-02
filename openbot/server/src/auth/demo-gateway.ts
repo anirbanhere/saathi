@@ -1,7 +1,12 @@
-import { timingSafeEqual } from "node:crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 import type { AuthService } from "./guards";
 
 export type DemoGatewayConfig = { token: string; userId: string };
+
+export function siteVisitorId(externalId: string): string | null {
+  if (!/^[A-Za-z0-9:_-]{1,200}$/.test(externalId)) return null;
+  return `saathi-site-${createHash("sha256").update(externalId).digest("hex")}`;
+}
 
 /** Dedicated public-demo identity, authenticated by the server-side Sites bridge. */
 export function demoGatewayConfig(
@@ -29,6 +34,7 @@ export function demoGatewayConfig(
 export function createDemoGatewayAuth(
   config: DemoGatewayConfig,
   loadUser: (id: string) => Promise<{ id: string; email: string } | null>,
+  loadVisitor?: (id: string) => Promise<{ id: string; email: string } | null>,
 ): AuthService {
   return {
     handler: () =>
@@ -46,8 +52,14 @@ export function createDemoGatewayAuth(
           !timingSafeEqual(receivedBytes, expectedBytes)
         )
           return null;
-        const user = await loadUser(config.userId);
-        if (!user || user.id !== config.userId) return null;
+        const externalId = headers.get("x-saathi-site-user-id");
+        const visitorId = externalId ? siteVisitorId(externalId) : null;
+        if (externalId && (!visitorId || !loadVisitor)) return null;
+        const expectedId = visitorId ?? config.userId;
+        const user = visitorId
+          ? await loadVisitor!(visitorId)
+          : await loadUser(config.userId);
+        if (!user || user.id !== expectedId) return null;
         // Never inherit an administrator role from forwarded headers or the local developer actor.
         return {
           user: {

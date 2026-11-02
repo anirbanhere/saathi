@@ -12,6 +12,7 @@ import {
 import type { ConnectionStore } from "./connection-store";
 import type { CallService } from "./calls";
 import { createCallRoutes } from "./call-routes";
+import type { VisitorFood } from "./food";
 
 export type SaathiRoutes = {
   models: SaathiModels;
@@ -24,6 +25,7 @@ export type SaathiRoutes = {
   speechConfigured: boolean;
   calls?: CallService;
   publicDemo?: boolean;
+  visitorFood?: VisitorFood;
 };
 export function createSaathiRoutes(
   deps: SaathiRoutes,
@@ -52,6 +54,17 @@ export function createSaathiRoutes(
   );
   if (deps.calls)
     app.route("/calls", createCallRoutes(deps.calls, deps.publicDemo ?? false));
+  if (deps.visitorFood) {
+    app.get("/food", async (c) =>
+      c.json(await deps.visitorFood!.status(c.var.actor)),
+    );
+    app.post("/food/start", async (c) =>
+      c.json(await deps.visitorFood!.start(c.var.actor)),
+    );
+    app.post("/food/enable", async (c) =>
+      c.json(await deps.visitorFood!.enable(c.var.actor)),
+    );
+  }
   app.get("/status", async (context) => {
     const owner = context.var.actor.id;
     const [models, connection] = await Promise.all([

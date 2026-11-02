@@ -1,5 +1,28 @@
 import { expect, test } from "bun:test";
-import { demoPathAllowed, isModelRun } from "./policy";
+import { demoPathAllowed, visitorPathAllowed, isModelRun } from "./policy";
+
+test("visitor Food routes open only the personal connector, never admin or model secrets", () => {
+  for (const [method, path] of [
+    ["GET", "/api/saathi/food"],
+    ["POST", "/api/saathi/food/enable"],
+    ["POST", "/api/plugins/servers/swiggy-food/connect?returnTo=food"],
+    ["GET", "/api/plugins/oauth/callback?code=test"],
+    ["DELETE", "/api/plugins/servers/swiggy-food/connection"],
+  ]) {
+    expect(visitorPathAllowed(method!, path!)).toBe(true);
+    expect(demoPathAllowed(method!, path!)).toBe(false);
+  }
+  for (const path of [
+    "/api/saathi/model-key",
+    "/api/plugins/grants",
+    "/api/plugins/servers",
+    "/api/plugins/servers/notion/connect",
+    "/api/admin/credentials",
+    "/api/saathi/../model-key",
+    "/api/saathi/%66ood/enable",
+  ])
+    expect(visitorPathAllowed("POST", path)).toBe(false);
+});
 test("shared demo exposes conversations, streaming, and generated pages", () => {
   expect(demoPathAllowed("POST", "/api/computers/demo/navigate")).toBe(true);
   expect(demoPathAllowed("POST", "/api/computers/demo/snapshot")).toBe(true);

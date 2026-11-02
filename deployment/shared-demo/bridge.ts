@@ -1,5 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
-import { demoPathAllowed, isModelRun } from "./policy";
+import { demoPathAllowed, visitorPathAllowed, isModelRun } from "./policy";
 
 const token = process.env.SAATHI_DEMO_GATEWAY_TOKEN ?? "";
 const origin = process.env.OPENBOT_PUBLIC_URL ?? "";
@@ -96,10 +96,20 @@ Bun.serve<State>({
         if (typeof payload !== "string" || payload.length > MAX_BODY * 1.5)
           return error(ws, 413, "Demo request is too large.");
         const input = JSON.parse(payload);
+        const visitor =
+          typeof input.visitorId === "string" &&
+          /^[A-Za-z0-9:_-]{1,200}$/.test(input.visitorId)
+            ? input.visitorId
+            : null;
+        if (input.visitorId !== undefined && !visitor)
+          return error(ws, 401, "Invalid visitor identity.");
         if (
           typeof input.path !== "string" ||
           typeof input.method !== "string" ||
-          !demoPathAllowed(input.method, input.path)
+          !(visitor ? visitorPathAllowed : demoPathAllowed)(
+            input.method,
+            input.path,
+          )
         )
           return error(
             ws,
@@ -114,6 +124,7 @@ Bun.serve<State>({
           origin,
           "accept-encoding": "identity",
         });
+        if (visitor) headers.set("x-saathi-site-user-id", visitor);
         for (const key of ["content-type", "accept"])
           if (typeof input.headers?.[key] === "string")
             headers.set(key, input.headers[key]);
@@ -181,6 +192,15 @@ Bun.serve<State>({
           const value = response.headers.get(key);
           if (value) responseHeaders[key] = value;
         }
+        const location = response.headers.get("location");
+        // OAuth may return only to this Site's food page, never an arbitrary upstream location.
+        if (
+          visitor &&
+          location &&
+          (location === `${origin}/food` ||
+            location === `${origin}/food?connected=failed`)
+        )
+          responseHeaders.location = location;
         // No Set-Cookie, service credential, redirect target, or upstream identity is forwarded.
         ws.send(
           JSON.stringify({
