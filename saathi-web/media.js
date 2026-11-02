@@ -1,4 +1,10 @@
-export function createMediaConsole({ api, run, el, button }) {
+export function createMediaConsole({
+  api,
+  run,
+  el,
+  button,
+  onPrivacyChange = () => {},
+}) {
   const $ = (selector) => document.querySelector(selector);
   const panel = $("#saved-media"),
     fields = $("#media-controls"),
@@ -22,6 +28,7 @@ export function createMediaConsole({ api, run, el, button }) {
     "kn-IN": "ಕನ್ನಡ",
   };
   async function change(record, suffix, method, message) {
+    onPrivacyChange();
     try {
       await api(
         `/api/media/${encodeURIComponent(record.id)}${suffix}`,
