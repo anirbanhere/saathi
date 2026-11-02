@@ -742,6 +742,8 @@ const saathi =
         profiles: agentProfileStore,
         channels: channelStore,
         enableApprovals: (owner) => storedApprovals.setEnabled(owner, true),
+        callSimulation:
+          process.env.SAATHI_CALLS_SIMULATOR === "true" && !config.demoGateway,
       })
     : undefined;
 if (saathi) assertSaathiProviderOrigins(process.env);
@@ -2841,6 +2843,7 @@ const app = createApp(
           saathi: {
             ...saathi,
             speechConfigured: Boolean(config.transcription),
+            publicDemo: Boolean(config.demoGateway),
           },
         }
       : {}),

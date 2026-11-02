@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PageSection } from "@/components/layout/page-shell";
 import { client } from "@/lib/client";
+import { SaathiCalls } from "./saathi-calls";
 
 type Provider = "openai" | "anthropic" | "meta";
 type Status = {
@@ -109,6 +110,7 @@ export function SaathiSettings() {
   const hasKey = data.models.some((value) => value.provider === provider);
   return (
     <div className="space-y-10 pb-10">
+      <SaathiCalls />
       {error ? (
         <p role="alert" className="text-sm text-destructive">
           {error}

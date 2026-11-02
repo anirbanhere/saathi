@@ -10,6 +10,8 @@ import {
   modelProvider,
 } from "./models";
 import type { ConnectionStore } from "./connection-store";
+import type { CallService } from "./calls";
+import { createCallRoutes } from "./call-routes";
 
 export type SaathiRoutes = {
   models: SaathiModels;
@@ -20,6 +22,8 @@ export type SaathiRoutes = {
   ): Promise<{ pairingCode: string }>;
   validateModel(owner: string, input: unknown): Promise<void>;
   speechConfigured: boolean;
+  calls?: CallService;
+  publicDemo?: boolean;
 };
 export function createSaathiRoutes(
   deps: SaathiRoutes,
@@ -46,6 +50,8 @@ export function createSaathiRoutes(
         : 503,
     ),
   );
+  if (deps.calls)
+    app.route("/calls", createCallRoutes(deps.calls, deps.publicDemo ?? false));
   app.get("/status", async (context) => {
     const owner = context.var.actor.id;
     const [models, connection] = await Promise.all([

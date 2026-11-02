@@ -12,6 +12,25 @@ import {
 import { sql } from "drizzle-orm";
 import { users } from "./core";
 import { jsonb } from "./json";
+import type { CallRecord } from "../../saathi/calls";
+
+export const saathiCallSessions = pgTable(
+  "saathi_call_sessions",
+  {
+    id: text("id").primaryKey(),
+    ownerUserId: text("owner_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    version: integer("version").notNull().default(0),
+    payload: jsonb("payload").$type<CallRecord>().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("saathi_calls_owner_created").on(table.ownerUserId, table.createdAt),
+  ],
+);
 
 export const saathiModelKeys = pgTable(
   "saathi_model_keys",
