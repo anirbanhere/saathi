@@ -1,6 +1,6 @@
 # Next slice: owned fixture status recovery, then result review
 
-Proposed follow-up to the local fixture HTTP/runtime slice, not implemented or a live/public speech grant. Reuse existing admission/settlement/privacy and UI helpers. Preserve current profiles, provider/spend gates, approvals, self-hosted state and contributor work. Use only fresh synthetic stores and generated fixture tones; no recording/provider/model call.
+Read boundary implemented on codex/fixture-status-reads; full verification/feature PR checkpoint in progress. See docs/saathi/fixture-status-reads.md and HANDOFF. The separate review UI remains next; this is not a live/public speech grant. Reuse existing admission/settlement/privacy and UI helpers. Preserve current profiles, provider/spend gates, approvals, self-hosted state and contributor work. Use only fresh synthetic stores and generated fixture tones; no recording/provider/model call. The acceptance contract below remains applicable.
 
 First add the smallest useful read boundary for owned saved fixture attempts: a bounded metadata-only recent list and an exact owned admission-ID status/result GET. Gate both with the same explicit fixture-local capability, default/public absence and parent owner/session/security middleware. Accept no owner/query/role/worker override. Read access must not claim/replay/charge/cancel work or grant processing. Review existing OwnedMedia.list as a pattern; do not fetch audio/private hashes/tokens or all retained transcripts merely to build the metadata list.
 

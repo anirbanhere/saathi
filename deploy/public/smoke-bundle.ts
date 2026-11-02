@@ -147,6 +147,18 @@ try {
   const readPath = `/api/task-plans/${seedTask.id}/run-readonly`;
   const mediaPath = "/api/media/00000000-0000-4000-8000-000000000000";
   assert.equal(
+    (await request("/api/fixture-stt", { headers: readAuth })).status,
+    404,
+  );
+  assert.equal(
+    (
+      await request("/api/fixture-stt/00000000-0000-4000-8000-000000000000", {
+        headers: readAuth,
+      })
+    ).status,
+    404,
+  );
+  assert.equal(
     (
       await request(`${mediaPath}/fixture-stt`, {
         method: "POST",

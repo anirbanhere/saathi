@@ -1,5 +1,13 @@
 # Saathi on OpenDuet handoff
 
+## Fixture status reads — tested increment, draft PR next
+
+Branch codex/fixture-status-reads starts at clean158f37e/PR35. Added bounded owned metadata-only recent reads and exact result GET under the existing fixture-local opt-in/public denial. Runtime projection/consent privacy reused; no new work/claims/charges/cancel/recovery on reads. Six regressions were red before implementation and now pass54 assertions, including foreign/expired-session denial, query/UUID guards, SQL private-column nonprojection, cap20/tightened cap2/order, unchanged state/ledger/provider counts, consent/expiry/delete suppression, real reopen and killed-worker interrupted/no-replay/no-refund recovery. No UI, schema, provider/paid/recording/deployment or existing-profile access.
+
+Full Windows scoped232 tests/2002 assertions pass, with two explicit platform skips (file symlink and POSIX entry/SIGTERM). Server types/changed-file Biome pass; frozen tests retain only eight known Windows gallery path-text mismatches, baseline unchanged. Dirty audited bundle4c4cbf72ddedb1c7b3352b50dbc646cfe9c7ce0668e7f37afafa7d118c27cbc1 and packed public smoke pass, including both fixture-read routes absent; four shipped packages/zero observed shipped advisory matches,29 wider upstream packages; runtimeIntegrity=null, not a release runtime. No UI/browser change this slice.
+
+Next: source commit/stacked draft PR against codex/local-fixture-speech-runtime, exact Linux checks and clean validation artifact; then the separately labelled fixture-review UI in tasks/fixture-result-review.md. Preserve existing profiles/contributor changes. Ordinary allowance allowed27% primary/47% weekly at start; no resets/credits used. Full goal incomplete/public27de098/schema7 unchanged; private schema uninspected; one-Meta approval consumed. No key/provider/paid/recording/message/deployment or existing-data access.
+
 ## Local fixture speech runtime — PR35 scoped Linux gates passed
 
 Exact source80e2e268f965ef2f147f3741258b448137aa8e8f is in draft [PR35](https://github.com/anirbanhere/saathi/pull/35), stacked on PR34 and attached to this chat. [Self-hosted41433022970](https://github.com/anirbanhere/saathi/actions/runs/41433022970) and [tenant41433023188](https://github.com/anirbanhere/saathi/actions/runs/41433023188) passed:228 tests/1965 assertions, server types, unchanged frozen Linux baseline (239 known errors), audit/packed and tenant/app checks. The actual credential-free entry/fixture HTTP/SIGTERM/reopen test passed on Linux. WiderCI41433023225 was in progress; no whole-platform-green claim.

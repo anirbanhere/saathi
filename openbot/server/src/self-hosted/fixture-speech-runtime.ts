@@ -48,6 +48,9 @@ export class LocalFixtureSpeechRuntime {
       );
     }
   }
+  recent(owner: string) {
+    return this.store.sttAdmissions.list(owner);
+  }
   view(owner: string, id: string) {
     const row = this.store.sttAdmissions.get(owner, id);
     return {
