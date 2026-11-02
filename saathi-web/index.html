@@ -38,6 +38,15 @@
       </fieldset><div class="appointment-actions"><button id="upload-send" type="submit" disabled>Save audio clip</button><button id="upload-cancel" type="button" class="secondary" hidden>Stop upload</button><button id="upload-clear" type="button" class="secondary" hidden>Check saved audio and clear selection</button></div></form>
       <p id="upload-status" role="status" aria-live="polite" aria-atomic="true">Nothing is sent until you choose Save audio clip.</p>
     </section>
+    <section id="fixture-speech" class="panel appointments" aria-labelledby="fixture-heading" hidden>
+      <p class="eyebrow">SYNTHETIC EXAMPLES ONLY</p><h2 id="fixture-heading">Review a fixture speech test</h2>
+      <p class="notice">This matches known synthetic test tones, not recordings of speech. No model reply, task or real action is started. Only saved, unexpired short clips with recorded processing consent appear; the server checks permission again. A new run uses another fixture allowance. Viewing and refreshing do not.</p>
+      <button id="fixture-refresh" type="button" class="secondary">Refresh clips and tests</button>
+      <form id="fixture-form"><fieldset id="fixture-fields"><legend class="visually-hidden">Synthetic fixture selection</legend><label for="fixture-clip">Saved synthetic clip</label><select id="fixture-clip" required><option value="">Refresh to load available clips</option></select></fieldset>
+      <div class="appointment-actions"><button id="fixture-run" type="submit" disabled>Run a new fixture test</button><button id="fixture-check" type="button" class="secondary" hidden>Check saved status</button><button id="fixture-clear" type="button" class="secondary" hidden>Refresh and clear selection</button><button id="fixture-stop" type="button" class="secondary" hidden>Stop fixture request</button></div></form>
+      <p id="fixture-pending" class="muted" role="status" aria-live="polite"></p><p id="fixture-status" role="status" aria-live="polite"></p>
+      <div id="fixture-result" tabindex="-1" aria-live="polite" aria-label="Selected synthetic result"></div><ul id="fixture-history" class="media-list" aria-label="Recent fixture attempts"></ul>
+    </section>
     <section id="task-planning" class="panel appointments" aria-labelledby="plans-heading">
       <p class="eyebrow">DRAFT AND REVIEW</p><h2 id="plans-heading">Plan an everyday task</h2>
       <p class="notice">Send a goal to the reasoning model to draft a saved proposal. You can then run its read-only demo-clinic checks or view manual guidance. This does not book, pay or send messages. Draft text is unverified model output. For a simulated booking, use the appointment panel below.</p>

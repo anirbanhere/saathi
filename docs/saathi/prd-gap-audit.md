@@ -55,7 +55,7 @@ This table distinguishes partial coverage from completion. The appointment imple
 ## Implementation order
 
 1. **Current slice:** durable controlled clinic demo, exact approval, mock receipt, cancellation/status/reload recovery, with the same public chat/research app retained. No provider key needed.
-2. **Voice and role interchangeability:** independently typed STT/TTS/reasoning/reply roles; explicit upload consent and bounded media lifecycle; evaluate consented en/hi/ta samples. Add provider credentials only through private configuration when a concrete adapter is ready. Model access alone does not supply speech.
+2. **Voice and role interchangeability:** independently typed STT/TTS/reasoning/reply roles, upload consent/bounded media and local synthetic fixture result review now have development increments (see fixture-review-ui.md and HANDOFF). Genuine speech remains pending: live-provider admission/spend/lifecycle, consented en/hi/ta evaluation, TTS output storage and recording/transcoding/playback. Add provider credentials only through private configuration when a concrete adapter is ready. Model access alone does not supply speech.
 3. **General task tools and supported live clinic:** native/MCP manifests, owner grants, role-pinned plans, durable external operation/reconciliation ledger, real clinic/calendar access after explicit setup. Keep mocks in CI.
 4. **Notifications:** SQL schedule/outbox, cancellable one-off/recurring reminders, quiet hours, delivery attempt/status semantics and an opted-in channel. A timestamp in a database is not a delivered reminder.
 5. **Identity and lifecycle:** account recovery/linking, export/delete, retention/backup operations, operational observability before private household data or live account actions.

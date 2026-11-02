@@ -180,6 +180,10 @@ textarea {
 .media-confirm button {
   margin: 4px 8px 4px 0;
 }
+.fixture-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .appointment-task details {
   font-size: 12px;
   margin: 12px 0;

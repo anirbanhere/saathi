@@ -1,4 +1,5 @@
 import { createAppointmentConsole } from "./appointments.js";
+import { createFixtureConsole } from "./fixture.js";
 import { createMediaConsole } from "./media.js";
 import { createPlanConsole } from "./plans.js";
 import { createAudioUpload } from "./upload.js";
@@ -16,7 +17,14 @@ let csrf = "",
   lastModel = null;
 const demoAppointments = createAppointmentConsole({ api, run, el, button });
 const taskPlans = createPlanConsole({ api, run, el, button });
-const savedMedia = createMediaConsole({ api, run, el, button });
+const savedMedia = createMediaConsole({
+  api,
+  run,
+  el,
+  button,
+  onPrivacyChange: () => fixtureSpeech.privacyChanged(),
+});
+const fixtureSpeech = createFixtureConsole({ api, run, el, button });
 const audioUpload = createAudioUpload({
   api,
   run,
@@ -44,13 +52,14 @@ async function uploadAudio(attempt, signal) {
   }
   return response.json();
 }
-async function api(path, body, method = "POST") {
+async function api(path, body, method = "POST", signal) {
   const response = await fetch(
     path,
     body === undefined
-      ? {}
+      ? { signal }
       : {
           method,
+          signal,
           headers: {
             "Content-Type": "application/json",
             "X-Saathi-CSRF": csrf,
@@ -76,6 +85,7 @@ async function run(action, focusAfter = null) {
   taskPlans.setBusy(true);
   savedMedia.setBusy(true);
   audioUpload.setBusy(true);
+  fixtureSpeech.setBusy(true);
   $("#model-select").disabled = true;
   $("#message").readOnly = true;
   document.querySelectorAll("button").forEach((button) => {
@@ -104,6 +114,7 @@ async function run(action, focusAfter = null) {
     taskPlans.setBusy(false);
     savedMedia.setBusy(false);
     audioUpload.setBusy(false);
+    fixtureSpeech.setBusy(false);
     if (succeeded) focusAfter?.focus();
   }
 }
@@ -280,6 +291,7 @@ async function enter(session) {
   await memories();
   await savedMedia.initialize();
   await audioUpload.initialize();
+  await fixtureSpeech.initialize();
   const records = await api("/api/threads");
   if (records.length) {
     await show(records[0].id);

@@ -41,6 +41,11 @@ test("the console serves only its fixed assets with local security headers", asy
     const upload = await app.request("http://localhost:8790/assets/upload.js");
     expect(upload.status).toBe(200);
     expect(await upload.text()).toContain("createAudioUpload");
+    const fixture = await app.request(
+      "http://localhost:8790/assets/fixture.js",
+    );
+    expect(fixture.status).toBe(200);
+    expect(await fixture.text()).toContain("createFixtureConsole");
     expect(
       (await app.request("http://localhost:8790/assets/.env")).status,
     ).toBe(404);
