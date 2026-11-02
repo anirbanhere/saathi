@@ -3,6 +3,8 @@ import { type Context, Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { z } from "zod";
+import { attachFixtureSpeech } from "./fixture-speech-routes";
+import type { LocalFixtureSpeechRuntime } from "./fixture-speech-runtime";
 import { attachLocalMediaControls } from "./media-routes";
 import { attachLocalMediaUpload, localMediaUploadPath } from "./media-upload";
 import type { ModelCatalog, ModelChoice } from "./models";
@@ -51,6 +53,8 @@ export function createSelfHostedApp(options: {
   planner?: Planner;
   localMediaControls?: boolean;
   localMediaUploads?: boolean;
+  localFixtureSpeech?: boolean;
+  fixtureSpeech?: LocalFixtureSpeechRuntime;
 }) {
   const { store, answer, model } = options;
   const getModels =
@@ -201,11 +205,18 @@ export function createSelfHostedApp(options: {
     publicOrigin: options.publicOrigin,
     authenticate,
   });
+  const fixtureSpeech = attachFixtureSpeech(app, {
+    enabled: options.localFixtureSpeech,
+    publicOrigin: options.publicOrigin,
+    runtime: options.fixtureSpeech,
+    authenticate,
+  });
   app.get("/health", (c) =>
     c.json({
       storage: "self-hosted-sqlite",
       actions: false,
       speech: false,
+      fixture_speech: fixtureSpeech,
       local_media_controls: localMediaControls,
       local_media_uploads: localMediaUploads,
       demo_appointments: true,

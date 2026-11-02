@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 import { maxMediaBytes } from "./media-contract";
 import { configureRoles } from "./roles";
 import { LocalError } from "./store";
+import { assertFixtureSttRole } from "./stt-admission";
 
 export function selfHostedConfig(
   env: Readonly<Record<string, string | undefined>>,
@@ -22,6 +23,7 @@ export function selfHostedConfig(
   const metaWebSearch = flag("SAATHI_META_WEB_SEARCH");
   const localMediaControls = flag("SAATHI_LOCAL_MEDIA_CONTROLS");
   const localMediaUploads = flag("SAATHI_LOCAL_MEDIA_UPLOADS");
+  const localFixtureSpeech = flag("SAATHI_LOCAL_FIXTURE_SPEECH");
   const price = (name: string, fallback: number) => {
     const value = Number(env[name] ?? fallback);
     if (!Number.isFinite(value) || value < 0 || value > 100)
@@ -103,6 +105,8 @@ export function selfHostedConfig(
     throw new LocalError("Public mode cannot enable local media controls.");
   if (publicOrigin && localMediaUploads)
     throw new LocalError("Public mode cannot enable local media uploads.");
+  if (publicOrigin && localFixtureSpeech)
+    throw new LocalError("Public mode cannot enable local fixture speech.");
   const count = (name: string, fallback: number, maximum: number) => {
     const value = Number(env[name] ?? fallback);
     if (!Number.isInteger(value) || value < 1 || value > maximum)
@@ -119,8 +123,16 @@ export function selfHostedConfig(
     throw new LocalError(
       "Workspace allowance cannot exceed the server allowance.",
     );
+  const roles = configureRoles(env, {
+    model,
+    allowPaid,
+    metaEnabled,
+    metaModels,
+  });
+  if (localFixtureSpeech) assertFixtureSttRole(roles.stt);
   return {
-    roles: configureRoles(env, { model, allowPaid, metaEnabled, metaModels }),
+    roles,
+    localFixtureSpeech,
     host: "127.0.0.1" as const,
     port,
     path: resolve(

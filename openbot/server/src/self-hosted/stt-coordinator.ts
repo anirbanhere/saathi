@@ -51,7 +51,8 @@ export class FixtureSttCoordinator {
     this.active.get(this.key(owner, id))?.controller.abort();
     return admission;
   }
-  private ensureAccepting() {
+  /** Trusted admission guard; also surfaces late acknowledgement failure before reservation. */
+  assertAccepting() {
     if (this.acknowledgementFailed)
       throw new LocalError(
         "Fixture acknowledgement failed; exclusive recovery is required.",
@@ -64,11 +65,11 @@ export class FixtureSttCoordinator {
       );
   }
   async run(owner: string, id: string, parent?: AbortSignal) {
-    this.ensureAccepting();
+    this.assertAccepting();
     if (parent?.aborted) return this.cancel(owner, id);
     const role = this.currentRoles().stt;
     // A dynamic server-role getter may itself initiate shutdown.
-    this.ensureAccepting();
+    this.assertAccepting();
     const claim = this.admissions.claim(owner, id, role);
     if (!claim.fresh) return claim.admission;
     const key = this.key(owner, id),
