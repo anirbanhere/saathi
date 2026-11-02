@@ -7,6 +7,16 @@ import {
   test,
 } from "bun:test";
 import { randomUUID } from "node:crypto";
+import {
+  FIRST_DAY_REQUEST,
+  FIRST_DAY_REQUEST_WITHOUT_MAIL,
+  firstDayGreeting,
+  frameFirstDay,
+} from "@openbot/shared/first-day";
+import {
+  frameMorningBrief,
+  morningBriefMessage,
+} from "@openbot/shared/morning-brief";
 import { and, eq } from "drizzle-orm";
 import type { MiddlewareHandler } from "hono";
 import { Hono } from "hono";
@@ -29,16 +39,6 @@ import {
   parseChannelInput,
 } from "../src/channels/routes";
 import { createThreadIdentity } from "../src/channels/thread-identity";
-import {
-  FIRST_DAY_REQUEST,
-  FIRST_DAY_REQUEST_WITHOUT_MAIL,
-  firstDayGreeting,
-  frameFirstDay,
-} from "@openbot/shared/first-day";
-import {
-  frameMorningBrief,
-  morningBriefMessage,
-} from "@openbot/shared/morning-brief";
 import { loadConfig } from "../src/config";
 import { createDatabase } from "../src/db/client";
 import {
@@ -715,6 +715,7 @@ describe("the first day's date", () => {
   }
 
   test("goes to the first day's claim, which takes that day's brief", async () => {
+    const date = new Date().toISOString().slice(0, 10);
     const calls: unknown[][] = [];
     const store = fakeStore({
       async firstDay(...args) {
@@ -724,10 +725,10 @@ describe("the first day's date", () => {
     });
     const response = await post(store, {
       agentId: "agent-1",
-      date: "2026-10-26",
+      date,
     });
     expect(response.status).toBe(200);
-    expect(calls).toEqual([[actor, "agent-1", undefined, "2026-10-26"]]);
+    expect(calls).toEqual([[actor, "agent-1", undefined, date]]);
   });
 
   /*

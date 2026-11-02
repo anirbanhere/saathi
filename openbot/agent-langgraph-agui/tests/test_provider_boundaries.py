@@ -336,9 +336,19 @@ async def test_anthropic_selection_reaches_anthropic_boundary_without_openai_key
 
     assert result["messages"][0].content == "anthropic proof"
     assert "OPENAI_API_KEY" not in os.environ
+    assert len(captured) == 1
     assert captured[0]["url"] == "http://127.0.0.1:4311/v1/messages"
-    assert captured[0]["headers"]["x-api-key"] == "sk-ant-openbot-ci"
-    assert captured[0]["headers"]["anthropic-version"] == "2023-06-01"
+    # SDK2 uses bearer API keys and the 2026 API; older supported SDKs use x-api-key.
+    # Keep the exact credential/version pairing, not merely the presence of any auth header.
+    headers = captured[0]["headers"]
+    assert (
+        headers.get("x-api-key"),
+        headers.get("authorization"),
+        headers.get("anthropic-version"),
+    ) in {
+        ("sk-ant-openbot-ci", None, "2023-06-01"),
+        (None, "Bearer sk-ant-openbot-ci", "2026-10-21"),
+    }
     assert captured[0]["body"]["model"] == request_model
     assert captured[0]["body"]["messages"] == [
         {"role": "user", "content": "Say hello."}

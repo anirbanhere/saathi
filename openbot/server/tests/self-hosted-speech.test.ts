@@ -1,7 +1,10 @@
 import { expect, test } from "bun:test";
 import { resolve } from "node:path";
 import { selfHostedConfig } from "../src/self-hosted/config";
-import type { SpeechToTextProvider, Transcript } from "../src/self-hosted/speech";
+import type {
+  SpeechToTextProvider,
+  Transcript,
+} from "../src/self-hosted/speech";
 import {
   createSpeech,
   syntheticSpeechFixture,
