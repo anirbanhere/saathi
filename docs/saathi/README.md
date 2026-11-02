@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Offline speech tariff arithmetic](stt-cost.md) adds an isolated pure estimate/ceiling foundation; it does not connect live speech, reserve money or authorize execution.
+
 [Local fixture review console](fixture-review-ui.md) separates explicit new synthetic runs from owned read-only history/result recovery, with pinned retry identity, privacy invalidation and no automatic transcript submission. Actual speech and public media remain disabled.
 
 [Owned fixture status reads](fixture-status-reads.md) add bounded metadata and privacy-checked result recovery without new execution or ledger charges, under the same default-off/public-refused local fixture capability.
