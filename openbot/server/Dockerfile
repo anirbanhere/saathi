@@ -59,6 +59,9 @@ COPY shared shared
 COPY toolkit toolkit
 COPY examples examples
 
+# The server imports the shared network-policy matcher from this module at boot.
+COPY agent-computer/src/egress.ts agent-computer/src/egress.ts
+
 # The built app, served by the process below. `APP_DIST_DIR` is what turns that on, so an image
 # without this layer is still a working API.
 COPY --from=app-build /app/app/dist app/dist

@@ -88,6 +88,27 @@ test("the tabs are about the tenant's own Bot, or the default Bot without one", 
   expect(primaryBot(undefined)).toBeUndefined();
 });
 
+test("Chat prefers the signed-in person's private assistant to the shared welcome Bot", () => {
+  const welcome = bot(appConfig.brand.tenantId);
+  const personal = {
+    ...bot("private-assistant"),
+    personalAssistant: true,
+    mine: true,
+    visibility: "private" as const,
+    hidden: false,
+  };
+  expect(primaryBot([welcome, personal])?.id).toBe(personal.id);
+  expect(primaryBot([welcome, { ...personal, mine: false }])?.id).toBe(
+    welcome.id,
+  );
+  expect(primaryBot([welcome, { ...personal, visibility: "public" }])?.id).toBe(
+    welcome.id,
+  );
+  expect(primaryBot([welcome, { ...personal, hidden: true }])?.id).toBe(
+    welcome.id,
+  );
+});
+
 test("one of the person's channels is never Chat's, however recently it was used", () => {
   const found = ongoingChannel(
     [

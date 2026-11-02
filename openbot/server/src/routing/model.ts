@@ -11,6 +11,8 @@ import type { RuntimeModel } from "../copilot";
 export function createModelCompleter(deps: {
   model: RuntimeModel;
   resolveApiKey: () => Promise<string | null>;
+  /** A request-scoped provider destination; deployment callers retain their environment default. */
+  environment?: Record<string, string | undefined>;
 }): (prompt: string, signal?: AbortSignal) => Promise<string> {
   return async (prompt: string, signal?: AbortSignal) => {
     signal?.throwIfAborted();
@@ -20,10 +22,11 @@ export function createModelCompleter(deps: {
     const anthropic = deps.model.provider === "anthropic";
     const response = await fetch(
       anthropic
-        ? anthropicMessagesUrl(process.env)
-        : chatCompletionsUrl(process.env),
+        ? anthropicMessagesUrl(deps.environment ?? process.env)
+        : chatCompletionsUrl(deps.environment ?? process.env),
       {
         method: "POST",
+        redirect: deps.environment ? "error" : "follow",
         headers: {
           "content-type": "application/json",
           ...(anthropic

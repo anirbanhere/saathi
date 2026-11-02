@@ -54,6 +54,7 @@ export function startHttpServer(deps: {
     request: Request,
   ) => Promise<{ id: string; name: string; role: OpenBotRole }>;
   agentProfileStore: AgentProfileStore;
+  ownerOnlyComputers?: boolean;
   computerGateway: ComputerGateway | undefined;
   demonstrationStore: DemonstrationStore;
   demonstrationRecorder: DemonstrationRecorder;
@@ -139,10 +140,10 @@ export function startHttpServer(deps: {
         // so signing in is not enough: without this, anybody signed in watches anybody's Bot work. And
         // seeing a Team Bot is not enough either: its screen is its owner's signed-in browser.
         if (
-          !(await computerAccessCheck(agentProfileStore)(
-            { id: actor.id, role: actor.role },
-            streamBotId,
-          ))
+          !(await computerAccessCheck(
+            agentProfileStore,
+            deps.ownerOnlyComputers,
+          )({ id: actor.id, role: actor.role }, streamBotId))
         ) {
           return new Response("There is no such Bot.", { status: 404 });
         }

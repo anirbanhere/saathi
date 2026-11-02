@@ -1,12 +1,14 @@
 {
-  "name": "openduet",
-  "version": "0.1.0",
-  "license": "MIT",
-  "private": true,
-  "description": "The open-source proactive agent, built on OpenBot. The platform lives in openbot/.",
-  "scripts": {
-    "postinstall": "bun install --cwd openbot",
-    "start": "bash scripts/start.sh",
-    "stop": "bash scripts/stop.sh"
-  }
+	"name": "openduet",
+	"version": "0.1.0",
+	"license": "MIT",
+	"private": true,
+	"description": "The open-source proactive agent, built on OpenBot. The platform lives in openbot/.",
+	"scripts": {
+		"postinstall": "bun install --cwd openbot",
+		"start": "bash scripts/start.sh",
+		"stop": "bash scripts/stop.sh",
+		"dev:saathi": "bun --env-file=openbot/.env run --cwd openbot dev",
+		"test:saathi": "bun test --cwd openbot server/tests/saathi-models.test.ts server/tests/saathi-meta.test.ts server/tests/saathi-whatsapp.test.ts server/tests/saathi-routes.test.ts server/tests/saathi-computer-access.test.ts server/tests/saathi-commands.test.ts"
+	}
 }

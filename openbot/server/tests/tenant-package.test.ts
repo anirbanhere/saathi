@@ -1593,7 +1593,9 @@ test("blank package endpoint disables only its owned agent and restores it when 
   try {
     process.env.MANAGED_AGENT_AG_UI_URL = "http://127.0.0.1:4201/ag-ui";
     process.env.PICKED_HARNESS_URL = "http://127.0.0.1:4206/ag-ui";
-    const source = new URL("../../examples/fintech", import.meta.url).pathname;
+    const source = fileURLToPath(
+      new URL("../../examples/fintech", import.meta.url),
+    );
     const configured = await loadTenantPackage(source);
     const rename = (id: string) => `${id}-${suffix}`;
     const isolate = (loaded: LoadedTenantPackage): LoadedTenantPackage => ({

@@ -13,8 +13,10 @@ import type { AgentActor } from "./profile-types";
 export function canUseComputer(
   profile: { visibility: string; ownerUserId: string | null } | null,
   actor: Pick<AgentActor, "id" | "role">,
+  ownerOnly = false,
 ): boolean {
   if (!profile) return false;
+  if (ownerOnly) return profile.ownerUserId === actor.id;
   return (
     actor.role === "admin" ||
     profile.visibility === "public" ||
@@ -23,7 +25,14 @@ export function canUseComputer(
 }
 
 /** The access check the computer routes and the live screen use, read from the profile store. */
-export function computerAccessCheck(store: Pick<AgentProfileStore, "get">) {
+export function computerAccessCheck(
+  store: Pick<AgentProfileStore, "get">,
+  ownerOnly = false,
+) {
   return async (actor: AgentActor, botId: string) =>
-    canUseComputer(await store.get(actor, botId).catch(() => null), actor);
+    canUseComputer(
+      await store.get(actor, botId).catch(() => null),
+      actor,
+      ownerOnly,
+    );
 }

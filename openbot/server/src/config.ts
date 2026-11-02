@@ -15,6 +15,7 @@ import {
 import { listenPort } from "@openbot/shared/listen-port";
 import { networkInterfaces } from "node:os";
 import { singleUserEnabled } from "./auth/dev-actor";
+import { demoGatewayConfig, type DemoGatewayConfig } from "./auth/demo-gateway";
 import { normalizeDomain } from "./auth/email-domain";
 import { organizationAuthority } from "./auth/organization";
 import type { ActionPolicy } from "./computer/policy";
@@ -343,6 +344,7 @@ export type DeploymentConfig = {
    * reaching somewhere other people can get to.
    */
   singleUser: boolean;
+  demoGateway?: DemoGatewayConfig;
   /** Names OpenDuet on the analytics the runtime already sends. Off with OPENBOT_ACCESSIBILITY_DISABLED. */
   accessibility: boolean;
   /**
@@ -1360,6 +1362,15 @@ export function loadConfig(
 ): DeploymentConfig {
   const google = oauthClient(environment, "GOOGLE");
   const auth = authConfig(environment, google);
+  const demoGateway = demoGatewayConfig(environment);
+  if (
+    demoGateway &&
+    (auth || optional(environment, "OPENBOT_ORGANIZATION_AUTH_URL"))
+  ) {
+    throw new Error(
+      "Use a dedicated demo instance; demo gateway access cannot replace an existing sign-in authority.",
+    );
+  }
   const organizationAuthValue = optional(
     environment,
     "OPENBOT_ORGANIZATION_AUTH_URL",
@@ -1421,6 +1432,7 @@ export function loadConfig(
     auditRetentionDays: auditRetentionDays(environment),
     oauth: { google },
     auth,
+    ...(demoGateway ? { demoGateway } : {}),
     ...(organizationAuthUrl ? { organizationAuthUrl } : {}),
     /*
      * The authority short-circuits this, and that ordering is load-bearing: a white-label
@@ -1429,7 +1441,10 @@ export function loadConfig(
      */
     singleUser:
       !organizationAuthUrl &&
-      singleUserAllowed(environment, configuredAuthProviders(auth).length > 0),
+      singleUserAllowed(
+        environment,
+        configuredAuthProviders(auth).length > 0 || Boolean(demoGateway),
+      ),
     accessibility: accessibilityEnabled(environment),
     generativeUi: generativeUiEnabled(environment),
     selfHostBanner: selfHostBannerEnabled(environment),

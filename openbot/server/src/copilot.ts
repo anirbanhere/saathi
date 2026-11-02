@@ -195,6 +195,8 @@ export type RuntimeModel = {
   provider: "openai" | "anthropic";
   defaultModel: string;
   plan?: PlanModelConfig;
+  /** Owner-scoped model transport, including live credential revocation checks. */
+  client?: import("./agents/plan-model").PlanLanguageModel;
 };
 
 /** Optional desktop environment values may be present but blank; SDKs treat them as URLs. */
@@ -433,10 +435,14 @@ export function builtInAgentConfiguration(
     model:
       allTools.length > 0
         ? endingTurns(
-            planModel ?? `${model.provider}/${model.defaultModel}`,
+            planModel ??
+              model.client ??
+              `${model.provider}/${model.defaultModel}`,
             apiKey ?? undefined,
           )
-        : (planModel ?? `${model.provider}/${model.defaultModel}`),
+        : (planModel ??
+          model.client ??
+          `${model.provider}/${model.defaultModel}`),
     /*
      * The package's role, then the person's own standing instructions, then what this Bot actually
      * holds, then the computer.

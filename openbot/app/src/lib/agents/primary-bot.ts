@@ -19,7 +19,8 @@ export function isTenantBot(
 /**
  * The Bot the Chat, Tasks and Activity tabs are about.
  *
- * The tenant's own Bot (see `isTenantBot`). A fork that renames its tenant without such a Bot falls
+ * The person's explicitly owner-bound private assistant, when available, then the tenant's own Bot.
+ * A fork that renames its tenant without such a Bot falls
  * back to the deployment's default Bot, so the tabs never point at a Bot this deployment does not
  * have.
  */
@@ -27,6 +28,13 @@ export function primaryBot(
   agents: readonly AgentProfile[] | undefined,
 ): AgentProfile | undefined {
   return (
+    agents?.find(
+      (agent) =>
+        agent.personalAssistant === true &&
+        agent.mine &&
+        agent.visibility === "private" &&
+        !agent.hidden,
+    ) ??
     agents?.find((agent) => isTenantBot(agent.id)) ??
     defaultAgentProfile(agents)
   );

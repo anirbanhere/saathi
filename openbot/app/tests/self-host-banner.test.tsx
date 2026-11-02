@@ -8,13 +8,20 @@ import {
 } from "bun:test";
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  waitFor,
+} from "@testing-library/react";
 import {
   SELF_HOST_URL,
   SelfHostBanner,
 } from "@/components/layout/self-host-banner";
 import { authKeys } from "@/lib/auth/queries";
 import { deploymentKeys } from "@/lib/deployment/queries";
+import { appConfig } from "@/lib/generated/application-config";
 import { userPreferencesQueryOptions } from "@/lib/settings/message-list";
 import type { UserPreferences } from "@openbot/shared/user-preferences";
 
@@ -44,15 +51,17 @@ beforeEach(() => {
     { preconnect: originalFetch.preconnect },
   );
 });
-afterEach(() => {
-  cleanup();
-  for (const client of clients) client.clear();
+afterEach(async () => {
+  await act(async () => {
+    cleanup();
+    for (const client of clients) client.clear();
+  });
   clients.length = 0;
   globalThis.fetch = originalFetch;
 });
 afterAll(() => GlobalRegistrator.unregister());
 
-const banner = { name: "Self-host OpenDuet" } as const;
+const banner = { name: `Self-host ${appConfig.brand.productName}` } as const;
 
 function setup({
   enabled = true,
@@ -96,7 +105,9 @@ function setup({
 test("offers self-hosting with a link CopilotKit can tell came from the app", () => {
   const { view } = setup();
   expect(
-    view.getByText("Self-host OpenDuet for your organization."),
+    view.getByText(
+      `Self-host ${appConfig.brand.productName} for your organization.`,
+    ),
   ).toBeTruthy();
   const link = view.getByRole("link", { name: "Talk to an engineer" });
   expect(link.getAttribute("href")).toBe(SELF_HOST_URL);
@@ -137,13 +148,16 @@ test("closing it hides it at once and saves the choice to this person's preferen
       )?.selfHostBannerDismissed,
     ).toBe(true),
   );
+  await waitFor(() => expect(client.isMutating()).toBe(0));
 });
 
 test("comes back if the save fails, so the click is not silently lost", async () => {
   response = async () =>
     Response.json({ error: "Could not save" }, { status: 500 });
-  const { view } = setup();
+  const { client, view } = setup();
   fireEvent.click(view.getByRole("button", { name: "Dismiss" }));
+  await waitFor(() => expect(requests.length).toBe(1));
+  await waitFor(() => expect(client.isMutating()).toBe(0));
   await waitFor(() =>
     expect(view.getByRole("complementary", banner)).toBeTruthy(),
   );

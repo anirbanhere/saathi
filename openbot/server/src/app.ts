@@ -151,6 +151,7 @@ import {
 } from "./user-instructions";
 import type { UserPreferencesStore } from "./user-preferences";
 import { userPreferencesRoutes } from "./user-preferences-routes";
+import { createSaathiRoutes, type SaathiRoutes } from "./saathi/routes";
 import { createVoiceProvider } from "./voice/provider";
 import { createVoiceRoutes } from "./voice/routes";
 import type { VoiceSessionServices } from "./voice/session-routes";
@@ -412,6 +413,7 @@ export function createApp(
       recorder: DemonstrationRecorder;
     };
     approvals?: ApprovalService;
+    saathi?: SaathiRoutes;
     /**
      * Shared apps: who may use an app's one team account, and the switch that makes an app Shared.
      *
@@ -668,6 +670,8 @@ export function createApp(
   // govern, the admin screen's API, and the SCIM verbs the GET/POST auth handler above does not take.
   app.use("/api/*", createEnterpriseGate(requireUser));
   app.route("/api/admin/enterprise", createEnterpriseAdminRoutes(requireUser));
+  if (coworker?.saathi)
+    app.route("/api/saathi", createSaathiRoutes(coworker.saathi, requireUser));
   app.on(["PUT", "PATCH", "DELETE"], "/api/auth/scim/*", (context) =>
     auth
       ? auth.handler(context.req.raw)
@@ -1430,7 +1434,9 @@ export function createApp(
         computerPolicy,
         requireUser,
         // Not `canUseBot`: a Team Bot's teammates use the Bot, not its owner's signed-in computer.
-        agentProfileStore ? computerAccessCheck(agentProfileStore) : canUseBot,
+        agentProfileStore
+          ? computerAccessCheck(agentProfileStore, Boolean(coworker?.saathi))
+          : canUseBot,
         pageFrames,
         auditReader,
       ),
@@ -1682,7 +1688,9 @@ export function createApp(
         coworker.passwords,
         requireUser,
         // A sign-in is typed into the Bot's computer, so it answers to the same rule.
-        agentProfileStore ? computerAccessCheck(agentProfileStore) : canUseBot,
+        agentProfileStore
+          ? computerAccessCheck(agentProfileStore, Boolean(coworker?.saathi))
+          : canUseBot,
       ),
     );
     app.route(

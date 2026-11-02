@@ -2,3 +2,12 @@
 node_modules/
 .DS_Store
 .copilotkit/
+research/
+.tools/
+.env.*.local
+openbot/.env
+.env.saathi
+openbot/app/saathi-preview.html
+openbot/app/src/saathi-preview.tsx
+# Sites projects have their own source repositories and publishing lifecycle.
+/sites/

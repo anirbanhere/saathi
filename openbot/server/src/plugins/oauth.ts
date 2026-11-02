@@ -2,6 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { seal, unseal } from "../auth/signed-value";
 import { OAUTH_REQUEST_TIMEOUT_MS } from "../timeouts";
 import type { CatalogueAuth } from "./catalogue";
+import { tokenRequest } from "./oauth-http";
 
 /**
  * The connect flow: sending a person to a vendor to consent, and believing what comes back.
@@ -59,6 +60,7 @@ const CALLBACK_PATH = "/api/plugins/oauth/callback";
  * somebody else's server sent the browser on. Nothing on it is believable by itself.
  */
 export type ConnectOrigin =
+  | "food"
   | "settings"
   | "admin"
   /** Onboarding's setup checklist, its last step. */
@@ -69,6 +71,7 @@ export type ConnectOrigin =
   | "settings-setup";
 
 const ORIGINS: ReadonlySet<string> = new Set<ConnectOrigin>([
+  "food",
   "admin",
   "onboarding",
   "onboarding-apps",
@@ -145,6 +148,8 @@ export function connectedAccountsUrlFor(
   returnTo: ConnectOrigin = "settings",
 ): string {
   const origin = appUrl?.replace(/\/+$/, "") ?? "";
+  if (returnTo === "food")
+    return `${origin}/food${"failed" in where ? "?connected=failed" : ""}`;
 
   /*
    * Onboarding offers Connect twice: on its Connect your apps step, and on the setup checklist at
@@ -411,8 +416,7 @@ export async function redeemAuthorizationCode(input: {
   try {
     response = await fetch(input.tokenUrl, {
       method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: params,
+      ...tokenRequest(input.tokenUrl, params),
       /*
        * A redirect is a refusal, not a detour to be followed.
        *

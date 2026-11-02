@@ -1,3 +1,13 @@
+## Saathi implementation preview
+
+This fork adds a WhatsApp personal agent and owner-scoped model keys to OpenDuet.
+Start with the [Saathi setup and implementation guide](docs/Saathi-Implementation.md)
+and [.env.saathi.example](.env.saathi.example). The preview requires access to
+WhatsApp's limited-rollout Agent Platform and CopilotKit Intelligence. Live
+acceptance tests and dependency security triage remain before production use.
+
+The upstream OpenDuet documentation follows.
+
 <div align="center">
 
 # OpenDuet

@@ -1,0 +1,11 @@
+{
+  "extends": "../../openbot/tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["bun"],
+    "lib": ["ESNext"],
+    "typeRoots": ["../../openbot/node_modules/@types"],
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["*.ts"]
+}

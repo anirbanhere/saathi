@@ -68,6 +68,8 @@ export type AgentProfileStore = {
        * different act with different consequences, and this is the creation path.
        */
       systemPrompt?: string;
+      /** Server-only creation option for an owner-specific built-in Saathi Bot. */
+      runLocally?: boolean;
     },
   ): Promise<AgentProfile>;
   update(
@@ -128,6 +130,7 @@ export class ManagedAgentUnavailableError extends Error {
 
 const joinedProjection = {
   id: agents.id,
+  type: agents.type,
   name: agents.name,
   title: agentProfiles.title,
   roleDescription: agentProfiles.roleDescription,
@@ -178,6 +181,12 @@ function mapProfile(
     ReturnType<ReturnType<typeof joinedProfiles>["execute"]>
   >[number],
 ): AgentProfile {
+  const personalOwner =
+    row.configuration &&
+    typeof row.configuration === "object" &&
+    "saathiOwnerId" in row.configuration
+      ? row.configuration.saathiOwnerId
+      : null;
   return {
     id: row.id,
     name: row.name,
@@ -191,6 +200,12 @@ function mapProfile(
     hidden: row.hiddenAt !== null,
     pinned: row.pinnedAt !== null,
     assignedToMe: Boolean(row.assignedToMe),
+    ...(row.type === "built_in" &&
+    row.visibility === "private" &&
+    row.ownerUserId !== null &&
+    personalOwner === row.ownerUserId
+      ? { personalAssistant: true }
+      : {}),
     deletedAt: row.deletedAt,
     endpoint: endpointOf(row.configuration),
     // Whether a key is set, never which. The form needs to show "a key is set" so a person does not
@@ -438,9 +453,11 @@ export function createAgentProfileStore(
     create(actor, input) {
       return database.transaction(async (transaction) => {
         const id = newAgentId();
-        const endpoint = input.endpoint
-          ? { endpoint: input.endpoint }
-          : managedConfiguration;
+        const endpoint = input.runLocally
+          ? undefined
+          : input.endpoint
+            ? { endpoint: input.endpoint }
+            : managedConfiguration;
         const systemPrompt = input.systemPrompt?.trim();
         if (endpoint) {
           await transaction.insert(agents).values({
@@ -483,7 +500,10 @@ export function createAgentProfileStore(
             id,
             name: input.name,
             type: "built_in",
-            configuration: { systemPrompt },
+            configuration: {
+              systemPrompt,
+              ...(input.runLocally ? { saathiOwnerId: actor.id } : {}),
+            },
           });
         } else {
           /*
@@ -535,6 +555,16 @@ export function createAgentProfileStore(
             string,
             unknown
           >;
+          if (previous.saathiOwnerId && input.visibility !== "private") {
+            throw new Error(
+              "A Saathi assistant has a private browser workspace and must remain private.",
+            );
+          }
+          if (previous.saathiOwnerId && (input.endpoint || input.auth)) {
+            throw new Error(
+              "A Saathi assistant must use its owner's local model configuration.",
+            );
+          }
           /**
            * A coworker that runs here runs on its role description, so editing one has to move both.
            *

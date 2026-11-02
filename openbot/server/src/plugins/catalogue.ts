@@ -79,6 +79,8 @@ export type CatalogueAuth =
       clientRegistration?: "dynamic";
       /** The RFC 7591 endpoint. Pinned https, required when `clientRegistration` is `dynamic`. */
       registrationUrl?: string;
+      tokenEncoding?: "json";
+      revocationMode?: "bearer-session";
       /**
        * Vendor-specific consent-URL parameters. Google's offline/consent pair lives HERE rather
        * than in `authorizationUrlFor`, so one vendor's requirements are never sent to another —
@@ -421,6 +423,51 @@ const REVIEWED: readonly CatalogueEntry[] = Object.freeze([
     ]),
     writeTools: Object.freeze(["gmail_send_reply"]),
     docsUrl: "https://developers.google.com/workspace/gmail/api/guides",
+  },
+  {
+    key: "swiggy-food",
+    title: "Swiggy Food",
+    vendor: "Swiggy",
+    summary:
+      "Find food, build your private cart and track orders. Checkout stays with you.",
+    host: "https://mcp.swiggy.com",
+    path: "/food",
+    auth: {
+      kind: "user-oauth",
+      authorizationUrl: "https://mcp.swiggy.com/auth/authorize",
+      tokenUrl: "https://mcp.swiggy.com/auth/token",
+      revokeUrl: "https://mcp.swiggy.com/auth/logout",
+      scopes: Object.freeze(["mcp:tools"]),
+      clientRegistration: "dynamic",
+      registrationUrl: "https://mcp.swiggy.com/auth/register",
+      tokenEncoding: "json",
+      revocationMode: "bearer-session",
+    },
+    readTools: Object.freeze([
+      "get_addresses",
+      "recommend_address",
+      "search_restaurants",
+      "get_restaurant_menu",
+      "search_menu",
+      "fetch_food_coupons",
+      "get_food_cart",
+      "get_food_orders",
+      "get_food_order_details",
+      "track_food_order",
+      "get_food_delivery_status",
+      "get_payment_options",
+      "check_payment_status",
+    ]),
+    writeTools: Object.freeze([
+      "update_food_cart",
+      "flush_food_cart",
+      "apply_food_coupon",
+      "create_address",
+      "delete_address",
+      "place_food_order",
+      "confirm_order",
+    ]),
+    docsUrl: "https://mcp.swiggy.com/builders/docs/reference/food/",
   },
   {
     key: "notion",

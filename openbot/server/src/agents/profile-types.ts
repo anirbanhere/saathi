@@ -18,6 +18,8 @@ export type AgentProfile = {
   pinned: boolean;
   /** An administrator assigned this Team Bot to this person; it stays in their sidebar. */
   assignedToMe?: boolean;
+  /** A private built-in assistant explicitly bound to its owner's runtime. */
+  personalAssistant?: boolean;
   deletedAt: Date | null;
   /** Where this coworker runs. Null for the Bot in the box. */
   endpoint: string | null;

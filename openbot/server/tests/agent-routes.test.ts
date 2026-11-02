@@ -45,6 +45,9 @@ function profile(overrides: Partial<AgentProfile> = {}): AgentProfile {
     hidden: false,
     pinned: false,
     deletedAt: null,
+    endpoint: null,
+    hasAuth: false,
+    hasCallbackToken: false,
     ...overrides,
   };
 }
@@ -114,6 +117,44 @@ function appFor(
 async function json(response: Response) {
   return response.json();
 }
+
+test("personal-assistant discovery never selects another owner's Bot for an administrator", async () => {
+  const store = fakeStore({
+    async list() {
+      return [
+        profile({ id: "mine", personalAssistant: true }),
+        profile({
+          id: "other",
+          ownerUserId: "someone-else",
+          personalAssistant: true,
+        }),
+        profile({
+          id: "shared",
+          visibility: "public",
+          personalAssistant: true,
+        }),
+      ];
+    },
+  });
+  const admin: MiddlewareHandler<{ Variables: AppVariables }> = async (
+    context,
+    next,
+  ) => {
+    context.set("actor", { ...actor, role: "admin" });
+    await next();
+  };
+  const response = await appFor(store, admin).request("http://openbot.test/");
+  const { agents: rows } = (await response.json()) as {
+    agents: { id: string; personalAssistant?: boolean }[];
+  };
+  expect(rows.find((row) => row.id === "mine")?.personalAssistant).toBe(true);
+  expect(rows.find((row) => row.id === "other")?.personalAssistant).not.toBe(
+    true,
+  );
+  expect(rows.find((row) => row.id === "shared")?.personalAssistant).not.toBe(
+    true,
+  );
+});
 
 describe("agent input parser", () => {
   test.each([[null], [[]], ["input"], [42], [true]])(
@@ -375,6 +416,9 @@ describe("agent lifecycle routes", () => {
           canManage: true,
           mine: true,
           builtIn: false,
+          endpoint: null,
+          hasAuth: false,
+          hasCallbackToken: false,
         },
         {
           id: "agent-2",
@@ -390,6 +434,9 @@ describe("agent lifecycle routes", () => {
           canManage: false,
           mine: false,
           builtIn: false,
+          endpoint: null,
+          hasAuth: false,
+          hasCallbackToken: false,
         },
         {
           id: "system-agent",
@@ -405,6 +452,9 @@ describe("agent lifecycle routes", () => {
           canManage: false,
           mine: false,
           builtIn: false,
+          endpoint: null,
+          hasAuth: false,
+          hasCallbackToken: false,
         },
       ],
     });

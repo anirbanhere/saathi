@@ -39,6 +39,10 @@ export type ActorAgentResolverDependencies = {
   loadAgents: LoadAgentsForActor;
   model: RuntimeModel;
   resolveModelApiKey: () => Promise<string | null>;
+  /** Request-scoped model credentials. Never mutate the deployment environment for an owner. */
+  resolveModelForActor?: (
+    actor: AgentActor,
+  ) => Promise<{ model: RuntimeModel; apiKey: string }>;
   stallGuard?: StallGuard;
   loadToolsForActor?: (
     actorId: string,
@@ -80,7 +84,7 @@ export type ActorAgentResolverDependencies = {
 export function createActorAgentResolver(
   deps: ActorAgentResolverDependencies,
 ): ActorAgentResolver {
-  const resolveRegisteredAgents = (
+  const resolveRegisteredAgents = async (
     actor: AgentActor,
     registered: Awaited<ReturnType<LoadAgentsForActor>>,
     /**
@@ -92,11 +96,14 @@ export function createActorAgentResolver(
      */
     onlyAgentId?: string,
     context?: AgentResolutionContext,
-  ) =>
-    resolveRuntimeAgents(
+  ) => {
+    const selected = deps.resolveModelForActor
+      ? await deps.resolveModelForActor(actor)
+      : undefined;
+    return resolveRuntimeAgents(
       () => Promise.resolve(registered),
-      deps.model,
-      deps.resolveModelApiKey,
+      selected?.model ?? deps.model,
+      selected ? async () => selected.apiKey : deps.resolveModelApiKey,
       deps.stallGuard,
       deps.loadToolsForActor?.(actor.id, context?.initiator),
       deps.signRunForActor?.(actor.id, context?.initiator, context?.depth),
@@ -113,6 +120,7 @@ export function createActorAgentResolver(
       deps.acquireLearnedSkills,
       deps.loadPersonalMemoryForActor?.(actor.id),
     );
+  };
 
   const resolveAgentsForActor = async (actor: AgentActor) =>
     resolveRegisteredAgents(actor, await deps.loadAgents(actor));

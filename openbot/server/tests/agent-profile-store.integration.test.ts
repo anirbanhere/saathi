@@ -134,6 +134,58 @@ async function profileById(actor: AgentActor, agentId: string) {
   return profile;
 }
 
+test("only an owner-tagged private built-in assistant is identified as personal", async () => {
+  const owner = await createUser();
+  const personal = await store.create(owner, {
+    name: "Private assistant",
+    title: "Assistant",
+    roleDescription: "Demo",
+    visibility: "private",
+    systemPrompt: "Help the owner",
+    runLocally: true,
+  });
+  createdAgentIds.push(personal.id);
+  expect(personal.personalAssistant).toBe(true);
+  expect((await profileById(owner, personal.id)).personalAssistant).toBe(true);
+  const [listed] = (await store.list(owner)).filter(
+    (profile) => profile.id === personal.id,
+  );
+  expect(listed?.personalAssistant).toBe(true);
+  await database
+    .update(agentProfiles)
+    .set({ visibility: "public" })
+    .where(eq(agentProfiles.agentId, personal.id));
+  expect((await profileById(owner, personal.id)).personalAssistant).not.toBe(
+    true,
+  );
+  await database
+    .update(agentProfiles)
+    .set({ visibility: "private" })
+    .where(eq(agentProfiles.agentId, personal.id));
+  await database
+    .update(agents)
+    .set({
+      configuration: { systemPrompt: "Help", saathiOwnerId: "another-owner" },
+    })
+    .where(eq(agents.id, personal.id));
+  expect((await profileById(owner, personal.id)).personalAssistant).not.toBe(
+    true,
+  );
+  await database
+    .update(agents)
+    .set({
+      type: "remote_ag_ui",
+      configuration: {
+        endpoint: "https://example.test/ag-ui",
+        saathiOwnerId: owner.id,
+      },
+    })
+    .where(eq(agents.id, personal.id));
+  expect((await profileById(owner, personal.id)).personalAssistant).not.toBe(
+    true,
+  );
+});
+
 function expectListed(
   profiles: AgentProfile[],
   agentId: string,

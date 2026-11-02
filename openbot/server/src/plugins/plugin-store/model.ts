@@ -1,4 +1,5 @@
 import { and, eq, sql } from "drizzle-orm";
+import { tokenRequest, revocationRequest } from "../oauth-http";
 import type { ApprovalGate } from "../../approvals/types";
 import type { AuditStore } from "../../audit";
 import type { ActionPolicy } from "../../computer/policy";
@@ -948,8 +949,7 @@ export async function exchangeRefreshTokenOverHttp(input: {
 
   const response = await fetch(input.tokenUrl, {
     method: "POST",
-    headers: { "content-type": "application/x-www-form-urlencoded" },
-    body: params,
+    ...tokenRequest(input.tokenUrl, params),
     /*
      * A redirect is a refusal, not a detour to be followed.
      *
@@ -1078,8 +1078,7 @@ export async function revokeRefreshTokenOverHttp(input: {
   try {
     response = await fetch(input.revokeUrl, {
       method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: params,
+      ...revocationRequest(input.revokeUrl, params, input.refreshToken),
       // A redirect is a refusal, not a detour: this request carries somebody's refresh token and
       // the deployment's client secret, and following a 3xx would hand both to the address it named.
       redirect: "manual",

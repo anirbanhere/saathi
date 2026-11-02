@@ -45,6 +45,7 @@ const PLACES: readonly {
   adminOnly?: boolean;
 }[] = [
   { label: "Bots", icon: "bolt", to: "/bots" },
+  { label: "Saathi models and WhatsApp", icon: "key", to: "/settings/saathi" },
   { label: "Connections", icon: "plug", to: "/connections" },
   { label: "Capabilities", icon: "box", to: "/capabilities" },
   { label: "Routines", icon: "repeat", to: "/routines" },
