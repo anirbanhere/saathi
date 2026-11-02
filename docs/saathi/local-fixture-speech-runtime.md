@@ -2,6 +2,8 @@
 
 This opt-in local operation connects the existing owned admission/claim/settlement store to the keyless fixture coordinator. It performs synthetic tone lookup, not speech recognition. No vendor factory, credential, microphone, model submission, real action or public speech is enabled. The upload UI has no fixture execution button in this increment. Current user/private/public profiles and schema11 remain unchanged.
 
+The separate [owned status read boundary](fixture-status-reads.md) now supplies bounded metadata/recovery and exact privacy-checked result GET without new execution or charges. It uses this same explicit local/public-denied capability.
+
 `SAATHI_LOCAL_FIXTURE_SPEECH=false` is the default, separate from upload/privacy flags. Literal `true` requires a reviewed fixture-a/b STT role with synthetic-stt-v1 and supported fixture languages; disabled/live roles fail configuration before opening the database. Configuration and app registration independently refuse public mode. The entry creates one coordinator runtime only for this explicit local profile. `/health` reports `fixture_speech` separately; `speech` and `actions` remain false. A configured chat key cannot enable this operation.
 
 `POST /api/media/:id/fixture-stt` accepts exactly:

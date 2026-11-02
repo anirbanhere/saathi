@@ -302,6 +302,41 @@ export class SttAdmissions {
       })
       .immediate();
   }
+  /** Owned historical metadata only; never load retained text or private executor columns. */
+  list(owner: string) {
+    this.session(owner, this.now());
+    return this.db
+      .query<
+        Pick<
+          Row,
+          | "id"
+          | "request"
+          | "media"
+          | "consent_revision"
+          | "state"
+          | "pending"
+          | "created"
+          | "updated"
+          | "expires"
+        >,
+        [string, number]
+      >(
+        "SELECT id,request,media,consent_revision,state,pending,created,updated,expires FROM stt_admissions WHERE owner=? ORDER BY created DESC,id DESC LIMIT ?",
+      )
+      .all(owner, Math.min(20, this.limits.ownerRecords))
+      .map((row) => ({
+        id: row.id,
+        request_id: row.request,
+        media_id: row.media,
+        consent_revision: row.consent_revision,
+        mode: "fixture" as const,
+        state: row.state,
+        pending: row.pending === 1,
+        created_at: row.created,
+        updated_at: row.updated,
+        expires_at: row.expires,
+      }));
+  }
   get(owner: string, id: string) {
     const row = this.row(owner, id);
     this.session(owner, this.now());

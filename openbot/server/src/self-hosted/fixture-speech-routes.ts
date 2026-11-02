@@ -24,6 +24,17 @@ export function attachFixtureSpeech(
   const runtime = options.runtime;
   if (!runtime)
     throw new LocalError("Local fixture runtime is not configured.", 503);
+  app.get("/api/fixture-stt", (c) => {
+    if (new URL(c.req.url).search)
+      throw new LocalError("Fixture listing accepts no query fields.");
+    return c.json(runtime.recent(c.var.session.owner));
+  });
+  app.get("/api/fixture-stt/:id", (c) => {
+    const id = z.uuid().safeParse(c.req.param("id"));
+    if (!id.success || new URL(c.req.url).search)
+      throw new LocalError("Use a fixture admission ID without query fields.");
+    return c.json(runtime.view(c.var.session.owner, id.data));
+  });
   app.post("/api/media/:id/fixture-stt", async (c) => {
     const media = z.uuid().safeParse(c.req.param("id")),
       body = input.safeParse(c.var.body);
