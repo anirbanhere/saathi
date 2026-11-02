@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { PageSection } from "@/components/layout/page-shell";
 import { client } from "@/lib/client";
 import { SaathiCalls } from "./saathi-calls";
+import { SaathiSwiggy } from "./saathi-swiggy";
 
 type Provider = "openai" | "anthropic" | "meta";
 type Status = {
@@ -111,6 +112,7 @@ export function SaathiSettings() {
   return (
     <div className="space-y-10 pb-10">
       <SaathiCalls />
+      <SaathiSwiggy />
       {error ? (
         <p role="alert" className="text-sm text-destructive">
           {error}

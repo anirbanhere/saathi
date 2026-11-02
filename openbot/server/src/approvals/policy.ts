@@ -134,6 +134,13 @@ export function safetyRequirement(
 ): { id: string; reason: string } | undefined {
   if (candidate.effect === "read") return undefined;
   if (NOT_ACCOUNT_ACTIONS.test(candidate.toolRef)) return undefined;
+  // Food orders can charge saved money or create a COD obligation. Always hand checkout over.
+  if (/^swiggy-food\/(place_food_order|confirm_order)$/.test(candidate.toolRef))
+    return {
+      id: "payments",
+      reason:
+        "Complete Swiggy checkout and payment yourself in the Swiggy app.",
+    };
   const words = [
     candidate.toolRef,
     candidate.scope,

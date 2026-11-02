@@ -2,6 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { seal, unseal } from "../auth/signed-value";
 import { OAUTH_REQUEST_TIMEOUT_MS } from "../timeouts";
 import type { CatalogueAuth } from "./catalogue";
+import { tokenRequest } from "./oauth-http";
 
 /**
  * The connect flow: sending a person to a vendor to consent, and believing what comes back.
@@ -411,8 +412,7 @@ export async function redeemAuthorizationCode(input: {
   try {
     response = await fetch(input.tokenUrl, {
       method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: params,
+      ...tokenRequest(input.tokenUrl, params),
       /*
        * A redirect is a refusal, not a detour to be followed.
        *
