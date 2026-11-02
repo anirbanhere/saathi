@@ -38,6 +38,9 @@ test("the console serves only its fixed assets with local security headers", asy
     const media = await app.request("http://localhost:8790/assets/media.js");
     expect(media.status).toBe(200);
     expect(await media.text()).toContain("createMediaConsole");
+    const upload = await app.request("http://localhost:8790/assets/upload.js");
+    expect(upload.status).toBe(200);
+    expect(await upload.text()).toContain("createAudioUpload");
     expect(
       (await app.request("http://localhost:8790/assets/.env")).status,
     ).toBe(404);

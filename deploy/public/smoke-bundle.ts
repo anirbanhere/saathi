@@ -187,6 +187,7 @@ try {
   assert.equal((await request("/assets/appointments.js")).status, 200);
   assert.equal((await request("/assets/plans.js")).status, 200);
   assert.equal((await request("/assets/media.js")).status, 200);
+  assert.equal((await request("/assets/upload.js")).status, 200);
   const session = await request("/api/session", {
     method: "POST",
     body: JSON.stringify({ consent: true }),

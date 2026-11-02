@@ -1,6 +1,7 @@
 import { createAppointmentConsole } from "./appointments.js";
 import { createMediaConsole } from "./media.js";
 import { createPlanConsole } from "./plans.js";
+import { createAudioUpload } from "./upload.js";
 
 const $ = (selector) => document.querySelector(selector);
 const el = (tag, text) => {
@@ -16,6 +17,33 @@ let csrf = "",
 const demoAppointments = createAppointmentConsole({ api, run, el, button });
 const taskPlans = createPlanConsole({ api, run, el, button });
 const savedMedia = createMediaConsole({ api, run, el, button });
+const audioUpload = createAudioUpload({
+  api,
+  run,
+  upload: uploadAudio,
+  refresh: savedMedia.refresh,
+});
+async function uploadAudio(attempt, signal) {
+  const response = await fetch("/api/media/upload", {
+    method: "POST",
+    signal,
+    headers: {
+      "Content-Type": "audio/wav",
+      "X-Saathi-CSRF": csrf,
+      "X-Saathi-Request-ID": attempt.id,
+      "X-Saathi-Consent-Store": "true",
+      "X-Saathi-Consent-Process": String(attempt.process),
+      ...(attempt.language ? { "X-Saathi-Language": attempt.language } : {}),
+    },
+    body: attempt.file,
+  });
+  if (!response.ok) {
+    const error = new Error("Upload response was not confirmed.");
+    error.status = response.status;
+    throw error;
+  }
+  return response.json();
+}
 async function api(path, body, method = "POST") {
   const response = await fetch(
     path,
@@ -47,6 +75,7 @@ async function run(action, focusAfter = null) {
   demoAppointments.setBusy(true);
   taskPlans.setBusy(true);
   savedMedia.setBusy(true);
+  audioUpload.setBusy(true);
   $("#model-select").disabled = true;
   $("#message").readOnly = true;
   document.querySelectorAll("button").forEach((button) => {
@@ -74,6 +103,7 @@ async function run(action, focusAfter = null) {
     demoAppointments.setBusy(false);
     taskPlans.setBusy(false);
     savedMedia.setBusy(false);
+    audioUpload.setBusy(false);
     if (succeeded) focusAfter?.focus();
   }
 }
@@ -249,6 +279,7 @@ async function enter(session) {
   await threads();
   await memories();
   await savedMedia.initialize();
+  await audioUpload.initialize();
   const records = await api("/api/threads");
   if (records.length) {
     await show(records[0].id);
