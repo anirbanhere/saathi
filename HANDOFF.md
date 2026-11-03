@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — complete role-compatibility CI passed
+
+Exact source80f99f9 widerCI41629762723 completed success with no failed/unfinished jobs. Scoped Linux308/2535, matching-tree and clean bundle evidence below remain authoritative. Held checkpointcd86cd9 is preserved and can now be published. Ordinary allowance available16% primary/80% weekly; no reset/credit use, retry, provider call or deployment. Full PRD goal remains incomplete.
+
+Next bounded increment: optional trusted local role snapshots atomically associated only with new budget holds. Existing14 records stay unbound; no retroactive bind API or authority backfill. Both bound and unbound metadata remain executionAllowed=false. Do not invent verified account grants or activate a worker/provider/route; preserve existing metadata-only mode and all old unit/cancellation semantics.
+
 ## STT role compatibility — PR45 scoped Linux checks pass
 
 Source `80f99f936eb273047279502c07e62fa84ad20390` is pushed in draft [PR45](https://github.com/anirbanhere/saathi/pull/45), stacked on PR44/clean `9b93fa2`, and attached to this chat. [Self-hosted41629762552](https://github.com/anirbanhere/saathi/actions/runs/41629762552) and [tenant41629762543](https://github.com/anirbanhere/saathi/actions/runs/41629762543) pass. Tested merge `876cb4338cdc165d9f534fbd7174a2975358a1e1` has tree `5f98449970cf974994873bb799ce244c6762e75e`, exactly matching source (parents `9b93fa2`/`80f99f9`). Linux308 tests/2535 assertions, server types, unchanged frozen239 and audit/packed checks pass. WiderCI41629762723 remains unfinished with no failed completed jobs: tests/Python are running and macOS startup is queued. No whole-platform-green claim or blind queue/capacity retry. Hold this final documentation checkpoint locally until the useful source run completes, since a push cancels non-main runs. Read PR45 headRefOid if the local tracking ref is absent.
