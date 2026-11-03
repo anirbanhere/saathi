@@ -5,8 +5,17 @@ import { LocalError } from "./errors";
 import type { OwnedMedia } from "./media-store";
 import { createSttBudgetPreview } from "./stt-budget";
 import { estimateSttCost } from "./stt-cost";
+import {
+  assertSttHoldSchema as schema,
+  sttHoldColumns,
+} from "./stt-hold-schema";
 import type { SttPolicyCatalogue } from "./stt-policy-catalog";
 import { createSttPolicyPin } from "./stt-policy-pin";
+
+export {
+  migrateSttBudgetHolds,
+  migrateSttHoldCancellation,
+} from "./stt-hold-schema";
 
 const integer = z.number().int().min(0).max(Number.MAX_SAFE_INTEGER);
 const clock = integer.max(8640000000000000);
@@ -56,73 +65,14 @@ const rowSchema = z
     billable_ms: integer,
     balance_at: clock,
     balance_available: integer,
+    state: z.enum(["held", "cancelled_unissued"]),
+    cancelled_at: clock.nullable(),
   })
   .strict();
 type Row = z.infer<typeof rowSchema>;
 const unavailable = () =>
   new LocalError("Speech budget hold storage is unavailable.", 503);
-const table = `CREATE TABLE IF NOT EXISTS stt_budget_holds(
- id TEXT PRIMARY KEY, owner TEXT NOT NULL UNIQUE, request TEXT NOT NULL, media TEXT NOT NULL,
- consent_revision INTEGER NOT NULL CHECK(consent_revision>=1), content_hash TEXT NOT NULL,
- policy_hash TEXT NOT NULL REFERENCES stt_policy_catalogue(digest), effective_json TEXT NOT NULL CHECK(length(effective_json)<=8192), effective_hash TEXT NOT NULL,
- duration_ms INTEGER NOT NULL CHECK(duration_ms BETWEEN 100 AND 29000), byte_length INTEGER NOT NULL CHECK(byte_length BETWEEN 1 AND 2097152),
- language TEXT NOT NULL CHECK(language IN('en-IN','hi-IN','ta-IN')), created INTEGER NOT NULL CHECK(created BETWEEN 0 AND 8640000000000000),
- cost_micros INTEGER NOT NULL CHECK(cost_micros BETWEEN 0 AND 9007199254740991), billable_ms INTEGER NOT NULL CHECK(billable_ms BETWEEN 0 AND 9007199254740991),
- balance_at INTEGER NOT NULL CHECK(balance_at BETWEEN 0 AND 8640000000000000), balance_available INTEGER NOT NULL CHECK(balance_available BETWEEN 0 AND 9007199254740991),
- UNIQUE(owner,request)
-) STRICT;`;
-const definitions = [
-  { name: "stt_budget_holds", type: "table", sql: table },
-  ...["update", "delete"].map((op) => ({
-    name: `stt_holds_no_${op}`,
-    type: "trigger",
-    sql: `CREATE TRIGGER IF NOT EXISTS stt_holds_no_${op} BEFORE ${op.toUpperCase()} ON stt_budget_holds BEGIN SELECT RAISE(ABORT,'Budget holds are immutable.'); END;`,
-  })),
-];
-const normalize = (sql: string) =>
-  sql
-    .replace(/\bIF NOT EXISTS\b/g, "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/;$/, "");
-function schema(db: Database) {
-  try {
-    for (const expected of definitions) {
-      const row = db
-        .query<{ type: string; sql: string }, [string]>(
-          "SELECT type,sql FROM sqlite_schema WHERE name=?",
-        )
-        .get(expected.name);
-      if (
-        !row ||
-        row.type !== expected.type ||
-        normalize(row.sql) !== normalize(expected.sql)
-      )
-        throw Error("Unsupported schema");
-    }
-    if (
-      db
-        .query<{ n: number }, []>(
-          "SELECT count(*) n FROM sqlite_schema WHERE type='trigger' AND tbl_name='stt_budget_holds'",
-        )
-        .get()?.n !== 2
-    )
-      throw Error("Unsupported guards");
-  } catch {
-    throw unavailable();
-  }
-}
-/** Additive schema13 migration, called only within the store migration transaction. */
-export function migrateSttBudgetHolds(db: Database) {
-  try {
-    for (const d of definitions) db.exec(d.sql);
-    schema(db);
-  } catch {
-    throw unavailable();
-  }
-}
-
-/** Internal unexecuted holds only. There is deliberately no claim, release, provider or HTTP interface. */
+/** Internal never-dispatched holds only. No claim, provider, remote settlement or HTTP interface. */
 export class SttBudgetHolds {
   private working = false;
   constructor(
@@ -163,6 +113,12 @@ export class SttBudgetHolds {
   private validated(value: unknown) {
     try {
       const r = rowSchema.parse(value);
+      if (
+        (r.state === "held" && r.cancelled_at !== null) ||
+        (r.state === "cancelled_unissued" &&
+          (r.cancelled_at === null || r.cancelled_at < r.created))
+      )
+        throw unavailable();
       const content: unknown = JSON.parse(r.effective_json);
       if (
         !content ||
@@ -229,7 +185,9 @@ export class SttBudgetHolds {
       kind: "budget_hold" as const,
       id: row.id,
       request_id: row.request,
-      state: "held" as const,
+      state: row.state,
+      cancelled_at: row.cancelled_at,
+      outstandingMicros: row.state === "held" ? row.cost_micros : 0,
       created_at: row.created,
       currency: pin.profile.price.currency,
       estimateMicros: row.cost_micros,
@@ -270,6 +228,42 @@ export class SttBudgetHolds {
       if (!row) throw new LocalError("Speech budget hold not found.", 404);
       return this.view(this.validated(row).r);
     });
+  }
+  cancelUnissued(ownerInput: unknown, idInput: unknown) {
+    let owner: string, id: string;
+    try {
+      owner = ref.parse(ownerInput);
+      id = z.uuid().parse(idInput);
+    } catch {
+      throw new LocalError("Invalid unissued hold cancellation reference.");
+    }
+    return this.storage(() =>
+      this.db
+        .transaction(() => {
+          schema(this.db);
+          this.session(owner, this.time());
+          const raw = this.db
+            .query("SELECT * FROM stt_budget_holds WHERE owner=? AND id=?")
+            .get(owner, id);
+          if (!raw) throw new LocalError("Speech budget hold not found.", 404);
+          const { r } = this.validated(raw);
+          const at = this.time();
+          this.session(owner, at);
+          if (r.state === "cancelled_unissued") return this.view(r);
+          if (at < r.created) throw unavailable();
+          const changed = this.db
+            .query(
+              "UPDATE stt_budget_holds SET state='cancelled_unissued',cancelled_at=? WHERE owner=? AND id=? AND state='held'",
+            )
+            .run(at, owner, id);
+          if (changed.changes !== 1) throw unavailable();
+          const saved = this.db
+            .query("SELECT * FROM stt_budget_holds WHERE owner=? AND id=?")
+            .get(owner, id);
+          return this.view(this.validated(saved).r);
+        })
+        .immediate(),
+    );
   }
   reserve(ownerInput: unknown, input: unknown) {
     if (!this.reader)
@@ -346,7 +340,7 @@ export class SttBudgetHolds {
             );
             if (committed)
               return this.duplicate(committed.r, request, pin.contentSha256);
-            if (rows.some(({ r }) => r.owner === owner))
+            if (rows.some(({ r }) => r.owner === owner && r.state === "held"))
               throw new LocalError(
                 "An owner speech budget hold is already pending.",
                 409,
@@ -399,7 +393,10 @@ export class SttBudgetHolds {
                 costMicros: sum(
                   sameCurrency
                     .filter(
-                      ({ r }) => (!owned || r.owner === owner) && sameDay(r),
+                      ({ r }) =>
+                        (!owned || r.owner === owner) &&
+                        sameDay(r) &&
+                        r.state === "held",
                     )
                     .map(({ r }) => r.cost_micros),
                 ),
@@ -426,7 +423,9 @@ export class SttBudgetHolds {
               {
                 ...balance,
                 outstandingMicros: sum(
-                  sameCurrency.map(({ r }) => r.cost_micros),
+                  sameCurrency
+                    .filter(({ r }) => r.state === "held")
+                    .map(({ r }) => r.cost_micros),
                 ),
               },
               at,
@@ -454,10 +453,12 @@ export class SttBudgetHolds {
               billable_ms: preview.billableMs,
               balance_at: balance.observedAt,
               balance_available: balance.availableMicros,
+              state: "held",
+              cancelled_at: null,
             };
             this.db
               .query(
-                "INSERT INTO stt_budget_holds VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                `INSERT INTO stt_budget_holds(${sttHoldColumns.join(",")},state,cancelled_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
               )
               .run(
                 row.id,
@@ -477,6 +478,8 @@ export class SttBudgetHolds {
                 row.billable_ms,
                 row.balance_at,
                 row.balance_available,
+                row.state,
+                row.cancelled_at,
               );
             return this.view(row);
           })

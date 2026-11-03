@@ -135,7 +135,7 @@ test("v5 upgrade preserves history, preferences, mock bookings and attempt usage
   store.close();
   const db = new Database(path);
   db.exec(
-    "DROP TABLE plan_events; DROP TABLE task_plans; UPDATE version SET value=5",
+    "DROP TABLE plan_events; DROP TABLE task_plans; DROP TABLE stt_budget_holds; UPDATE version SET value=5",
   );
   db.close();
   const migrated = new SelfHostedStore(path);
@@ -149,7 +149,7 @@ test("v5 upgrade preserves history, preferences, mock bookings and attempt usage
     expect(
       verify.query<{ value: number }, []>("SELECT value FROM version").get()
         ?.value,
-    ).toBe(13);
+    ).toBe(14);
     expect(
       verify
         .query<{ n: number }, []>("SELECT count(*) n FROM inference_usage")

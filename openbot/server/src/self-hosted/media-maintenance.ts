@@ -56,7 +56,7 @@ function validateSchema(db: Database) {
     if (
       versions.length !== 1 ||
       versions[0]?.id !== 1 ||
-      ![11, 12, 13].includes(versions[0]?.value ?? 0)
+      ![11, 12, 13, 14].includes(versions[0]?.value ?? 0)
     )
       throw new Error("Unsupported version");
     for (const table of Object.keys(columns) as (keyof typeof columns)[]) {
