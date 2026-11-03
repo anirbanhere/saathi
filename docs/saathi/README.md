@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Optional durable STT role snapshots](stt-role-snapshots.md) add source15 metadata only for new holds with an explicitly injected reader. Old holds stay unbound and no execution is enabled.
+
 [STT role/policy compatibility metadata](stt-role-binding.md) adds a shared strict candidate-role boundary and immutable content identity. Existing journal rows stay unbound; no provider or execution is enabled.
 
 [Confirmed unissued hold cancellation](stt-unissued-cancellation.md) adds internal source14 lifecycle control with immutable history and no dispatch or vendor refund authority.

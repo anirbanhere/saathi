@@ -80,7 +80,7 @@ test("default policy metadata is durable, immutable and duplicate-safe without a
   expect(reopened.sttPolicies.register(profile())).toEqual(one);
   expect(
     w.db.query<{ value: number }, []>("SELECT value FROM version").get()?.value,
-  ).toBe(14);
+  ).toBe(15);
 });
 
 test("revision conflicts and provider-account boundaries preserve all stored content", () => {
@@ -227,7 +227,7 @@ test("synthetic v11 migration preserves existing data and compatible maintenance
   expect(speech.outcome?.status).toBe("completed");
   w.store.close();
   w.db.exec(
-    "DROP TABLE stt_budget_holds; DROP TABLE stt_policy_catalogue; UPDATE version SET value=11",
+    "DROP TABLE stt_hold_roles; DROP TABLE stt_budget_holds; DROP TABLE stt_policy_catalogue; UPDATE version SET value=11",
   );
   maintainMedia(w.path, { now: Date.now });
   expect(
@@ -262,7 +262,7 @@ test("synthetic v11 migration preserves existing data and compatible maintenance
   maintainMedia(w.path, { apply: true, now: Date.now });
   expect(
     w.db.query<{ value: number }, []>("SELECT value FROM version").get()?.value,
-  ).toBe(14);
+  ).toBe(15);
   const reopened = new SelfHostedStore(w.path);
   stores.push(reopened);
   expect(reopened.sttPolicies.get(scope, "policy-v1")).toEqual(record);
@@ -272,7 +272,7 @@ test("failed additive catalogue migration rolls back version/data and releases t
   const w = world();
   w.store.close();
   w.db.exec(
-    "DROP TABLE stt_budget_holds; DROP TABLE stt_policy_catalogue; UPDATE version SET value=11; CREATE VIEW stt_policy_catalogue AS SELECT 1 AS unsupported",
+    "DROP TABLE stt_hold_roles; DROP TABLE stt_budget_holds; DROP TABLE stt_policy_catalogue; UPDATE version SET value=11; CREATE VIEW stt_policy_catalogue AS SELECT 1 AS unsupported",
   );
   expect(() => new SelfHostedStore(w.path)).toThrow("storage is unavailable");
   expect(

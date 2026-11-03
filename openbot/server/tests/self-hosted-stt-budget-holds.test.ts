@@ -512,7 +512,7 @@ test("synthetic schema12 upgrades preserve policy, media and inference; malforme
   w.store.completeRun(a, run.id, "Synthetic answer");
   w.store.close();
   w.db.exec(
-    "DROP TABLE stt_budget_holds; UPDATE version SET value=12; CREATE VIEW stt_budget_holds AS SELECT 1 AS unsupported",
+    "DROP TABLE stt_hold_roles; DROP TABLE stt_budget_holds; UPDATE version SET value=12; CREATE VIEW stt_budget_holds AS SELECT 1 AS unsupported",
   );
   expect(() => attemptOpen(w.path)).toThrow("storage is unavailable");
   expect(
@@ -530,7 +530,7 @@ test("synthetic schema12 upgrades preserve policy, media and inference; malforme
   stores.push(reopened);
   expect(
     w.db.query<{ value: number }, []>("SELECT value FROM version").get()?.value,
-  ).toBe(14);
+  ).toBe(15);
   expect(
     reopened.sttPolicies.get(
       { provider: "sarvam", accountRef: "synthetic-account" },
@@ -867,7 +867,7 @@ function legacy13(w: ReturnType<typeof world>) {
   w.db
     .transaction(() => {
       w.db.exec(
-        `CREATE TABLE synthetic_hold_copy AS SELECT ${columns} FROM stt_budget_holds; DROP TABLE stt_budget_holds`,
+        `CREATE TABLE synthetic_hold_copy AS SELECT ${columns} FROM stt_budget_holds; DROP TABLE stt_hold_roles; DROP TABLE stt_budget_holds`,
       );
       migrateSttBudgetHolds(w.db);
       w.db.exec(
@@ -910,7 +910,7 @@ test("the exact13 migration preserves original holds and cancelled history survi
   stores.push(reopened);
   expect(
     w.db.query<{ value: number }, []>("SELECT value FROM version").get()?.value,
-  ).toBe(14);
+  ).toBe(15);
   expect(reopened.sttBudgetHolds.get(a, hold.id)).toEqual(hold);
   expect(reopened.sttBudgetHolds.get(b, other.id)).toEqual(other);
   expect(reopened.media.metadata(a, media.id)).toEqual(media);

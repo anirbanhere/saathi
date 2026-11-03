@@ -252,7 +252,7 @@ test("v7 upgrade preserves owned chat/preferences/usage and an approved MOCK rec
   w.store.close();
   const fixture = inspect(w.path);
   fixture.exec(
-    "DROP TABLE owned_media; DROP TABLE stt_budget_holds; UPDATE version SET value=7 WHERE id=1",
+    "DROP TABLE owned_media; DROP TABLE stt_hold_roles; DROP TABLE stt_budget_holds; UPDATE version SET value=7 WHERE id=1",
   );
   const migrated = w.open();
   expect(migrated.thread(w.a.owner, thread.id).messages).toHaveLength(2);
@@ -263,7 +263,7 @@ test("v7 upgrade preserves owned chat/preferences/usage and an approved MOCK rec
   expect(
     check.query<{ value: number }, []>("SELECT value FROM version").get()
       ?.value,
-  ).toBe(14);
+  ).toBe(15);
   expect(
     check.query<{ n: number }, []>("SELECT count(*) n FROM memories").get()?.n,
   ).toBe(1);
@@ -361,7 +361,7 @@ test("v8 migration snapshots current consent honestly without inventing older gr
   );
   migrateMedia(fixture);
   fixture.exec(
-    `INSERT INTO owned_media SELECT ${columns} FROM media_copy; DROP TABLE media_copy; DROP TABLE stt_budget_holds; UPDATE version SET value=8`,
+    `INSERT INTO owned_media SELECT ${columns} FROM media_copy; DROP TABLE media_copy; DROP TABLE stt_hold_roles; DROP TABLE stt_budget_holds; UPDATE version SET value=8`,
   );
   w.clock(w.now() + 1000);
   const migrated = w.open();
