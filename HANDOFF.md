@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — PR39 code checks pass, macOS capacity unchanged
+
+Completed widerCI41495892500 passes all substantive code checks, including10358 Bun passes/75 skips/0 failures/37997 assertions and the full Python harness job. Aggregate remains failure only because macOS startup125450607212 again acquired no hosted runner (same explicit arm64-capacity annotations), so verify correctly fails. No rerun/gate change is warranted while that external condition is unchanged. Previously held local checkpoint48331b0 is preserved; publish it with this evidence before starting the next branch. Source12afd60/scoped Linux facts below remain authoritative, not this docs-only revision. No public/profile/provider/paid/action change; ordinary usage available0% primary/65% weekly after a normal window reset, credits untouched.
+
+Next bounded increment: an isolated, default-disabled budget preview over trusted reviewed ceilings, pinned tariff and fresh usage/balance snapshots, with tightenable limits and fixed denials. It must call canonical cost arithmetic, never accept a client-proposed estimate, and return no reservation/claim/approval or provider authority. No store/schema/runtime integration in this increment. Current fixture-only admission and data remain unchanged; durable atomic live reservations/reconciliation remain a separate task.
+
 ## Offline STT cost arithmetic — PR39 scoped Linux checks pass
 
 Source12afd60755bbb86b8c733ce48d87aecdca7a8f73 is pushed in draft [PR39](https://github.com/anirbanhere/saathi/pull/39), stacked on PR38/clean9f52c6c and attached to this chat. [Self-hosted41495892441](https://github.com/anirbanhere/saathi/actions/runs/41495892441) and [tenant41495892149](https://github.com/anirbanhere/saathi/actions/runs/41495892149) pass. Tested merge b9a643ce1d10a3480f354a599c7f893aadbfb3f4 has tree fd4b5e2cfc66e945194798d48e7f5e6ea2ea335e exactly matching source (parents9f52c6c/12afd60). Full Linux244 tests/2071 assertions, server types, unchanged frozen239, audit/packed pass. WiderCI41495892500 is queued; no whole-platform-green claim. Preserve this useful source run: final documentation checkpoint is local-only until its result is captured, because a push cancels non-main runs. This checkout may have no remote-tracking ref; inspect PR39 headRefOid rather than assuming one exists.
