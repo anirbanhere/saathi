@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — PR49 source checks pass; macOS capacity unavailable
+
+Exact-source widerCI41667301115 ended failure: macOS startup126025939887 acquired no hosted runner (zero steps; arm64 capacity annotations). All executable source jobs passed; aggregate verify rejected the cancelled/abandoned job. Scoped Linux342/3000 and exact-tree build evidence below remain valid, not whole-platform-green proof. No blind retry or CI weakening. Held d888b14 is preserved and can now be published. Ordinary allowance reset naturally (1% primary/90% weekly); both reset credits remain untouched. No provider/key/paid call, profile upgrade or deployment.
+
+Next bounded slice is tasks/text-export-console.md: one explicit accessible text download using the existing owned API and shared busy/focus guard, bounded response/deadline, accurate download-requested wording and temporary URL cleanup. Use fresh synthetic/no-key browser fixtures only; no existing localhost8790/public profile, automatic export/upload/retry or new runtime permissions.
+
 ## Bounded owned text export — PR49 scoped Linux checks pass
 
 Source `b7772a171ef300de391941d1ea1eecc6cf3064f4` is pushed in draft [PR49](https://github.com/anirbanhere/saathi/pull/49), stacked on PR48/clean published `ab77d2e`, and attached to this chat. [Self-hosted41667300885](https://github.com/anirbanhere/saathi/actions/runs/41667300885) and [tenant41667301718](https://github.com/anirbanhere/saathi/actions/runs/41667301718) pass. Tested merge `f870f24d45606e5886877c33d794c34f8860e4d8` has tree `907732c457243df45e2b0df905e51c6d889a78e1`, exactly matching source (parents ab77d2e/b7772a1). Linux342 tests/3000 assertions, server types, unchanged frozen239 and audit/packed pass. WiderCI41667301115 remains unfinished with no failed completed jobs: tests/Python running and macOS queued. No whole-platform-green claim or blind runner-capacity retry. Hold this final documentation checkpoint locally until the useful exact-source run finishes, since a push cancels non-main runs; use PR49 headRefOid if tracking refs are absent.
