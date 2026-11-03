@@ -1,5 +1,7 @@
 # PRD implementation audit — 29 October 2026
 
+**3 November development note:** source schema12 adds a bounded immutable internal default-policy catalogue, canonical bytes/digest revalidation and transactional revision conflicts. Offline cost/preview/pin foundations and synthetic migration tests are present; no live reservation, verified account/balance, provider execution, new public route or active-policy grant follows. Public release below remains schema7, with existing profiles unmodified. Read stt-policy-catalogue.md and HANDOFF.md for current development evidence.
+
 **Latest public release:** source27de098 now runs independent planner selection, saved typed proposals and cached read-only evidence on schema v7, after a consistent snapshot and preservation checks. One approved local Meta plan/read succeeded; approval consumed. Public speech/live actions remain off. See current HANDOFF and public-deployment.md for exact evidence.
 **Shipped after this audit:** the controlled demo clinic text workflow is now live at https://35.208.235.27.sslip.io/. Choose **Try a demo appointment**. It adds owned tasks, exact expiring approval, slot contention protection, saved mock receipts, reject/cancel and reload recovery. No inference key is needed for this flow. It remains a simulation; real appointments, voice, reminders and general autonomous planning are not complete. Core PR9 and UI PR10 remain draft/unmerged. Deployed executable source: `9123f2f`; exact evidence is in HANDOFF.md.
 

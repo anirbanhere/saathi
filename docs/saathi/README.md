@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Internal speech policy catalogue](stt-policy-catalogue.md) persists bounded immutable default-policy metadata on source schema12. It grants no account access, active policy, reservation or execution. Existing profiles/public schema7 remain untouched.
+
 [Canonical speech policy identity](stt-policy-pins.md) binds complete reviewed profiles and effective limits to immutable content digests. This is metadata for the future journal, not policy approval or a worker lease.
 
 [Offline speech budget preview](stt-budget-preview.md) composes tariff arithmetic with trusted fresh usage/balance evidence and tightenable ceilings. It does not authenticate snapshots, reserve money or authorize live speech.

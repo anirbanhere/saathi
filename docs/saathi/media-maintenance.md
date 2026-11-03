@@ -2,7 +2,7 @@
 
 This local operator command counts expired active clips and can explicitly clear their stored audio and linked retained STT results. It is separate from the website, anonymous sessions and model tools. It does not enable uploads, speech, background cleanup or account erasure. Current public schema7 and existing private profiles have not been upgraded or maintained by this work.
 
-From the fork root, supply the absolute path of an existing supported schema11 SQLite database:
+From the fork root, supply the absolute path of an existing supported schema11 or12 SQLite database. These versions share the same media/claim format; exact media guards are still validated. Schema12 policy catalogue metadata is unrelated and is never modified by this command. Unknown future versions are refused:
 
 ```powershell
 # Default: report only; no media lifecycle writes.
