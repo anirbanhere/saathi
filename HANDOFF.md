@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — complete hold CI passed
+
+Exact source c27e1e4 widerCI41614666364 completed success with no failed or unfinished jobs. Scoped Linux290/2399, exact-tree and bundle evidence below remain authoritative. Held checkpoint36d801d is preserved and can now be published. No retry, gate workaround, provider call, deployment or credit/reset use. Ordinary allowance available68% primary/75% weekly; full PRD goal incomplete.
+
+Next bounded slice: confirmed never-dispatched hold cancellation, preserving all attempt/audio/lifetime history and exact request identity. This must not introduce dispatch, unknown-charge refunds, provider access or public routes. Use a reviewed additive migration and fresh synthetic preservation/rollback tests only; current private/public profiles remain unopened.
+
 ## Durable budget holds — PR43 scoped Linux checks pass
 
 Source `c27e1e4b0cc1e9220e5bf0ba3d202049b1d1edda` is pushed in draft [PR43](https://github.com/anirbanhere/saathi/pull/43), stacked on PR42/clean `c3ced20`, and attached to this chat. [Self-hosted41614666170](https://github.com/anirbanhere/saathi/actions/runs/41614666170) and [tenant41614666205](https://github.com/anirbanhere/saathi/actions/runs/41614666205) pass. Tested merge `791d33ce483d499b73535882e0bb577741ca9fd7` has tree `c335b359a8dfaad239cdc4b2288fbfec99b1f7f7`, exactly matching source (parents `c3ced20`/`c27e1e4`). Full Linux290 tests/2399 assertions, server types, unchanged frozen239 and audit/packed checks pass. WiderCI41614666364 is still in progress with no failed completed jobs at the last inspection; this is not a whole-platform-green claim. Keep this final documentation checkpoint local until the useful source run completes, since pushing cancels non-main runs. Read PR43 headRefOid if the local tracking ref is absent.
