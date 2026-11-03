@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — PR41 full CI passed
+
+Exact sourcec25c398 widerCI41598446483 completed success with no unfinished/failed jobs; prior scoped263/2228, matching-tree and unchanged bundle facts below remain authoritative. Held local checkpoint9c8f5ba is preserved and can be published now. No manual rerun, deployment, provider call or reset. Ordinary allowance available34% primary/70% weekly; full PRD goal incomplete.
+
+Next bounded durable increment: schema12 internal immutable default-policy metadata catalogue, under the existing SQLite ownership guard, with transactional revision conflicts/lifetime bounds, canonical row revalidation, no public route or policy activation. Preserve compatible media maintenance for genuine11/12 (same media/claim schema), deny unknown future versions, and use only fresh synthetic migration fixtures. No private/public profile upgrade is authorized by tests; older binaries reject12. Actual reservations/usage/balance/claims/remote IO remain the next independent slice.
+
 ## Canonical policy identity — PR41 scoped Linux checks pass
 
 Sourcec25c39866dcf37098c9b763ecda246808b2acec7 is pushed in draft [PR41](https://github.com/anirbanhere/saathi/pull/41), stacked on PR40/clean08b2e67 and attached to this chat. [Self-hosted41598446413](https://github.com/anirbanhere/saathi/actions/runs/41598446413) and [tenant41598447249](https://github.com/anirbanhere/saathi/actions/runs/41598447249) pass. Tested mergec3f5f84e87d6c875c27abd073b98848fbbf543a1 has treef57fc2432cf71a36a41f35184889981441298122 exactly matching source (parents08b2e67/c25c398). Linux263 tests/2228 assertions, server types, unchanged frozen239 and clean audit/packed pass. WiderCI41598446483 remains in progress; prior sourcebf85cbd's full green does not prove this new source. Final documentation checkpoint is local-only while the useful source run continues, because a push cancels non-main runs. If no remote-tracking ref exists, read PR41 headRefOid.
