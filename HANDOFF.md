@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — complete role-snapshot CI passed
+
+Exact source6e1f619 widerCI41639434160 completed success with no failed/unfinished jobs. Scoped Linux317/2614, matching-tree and clean bundle facts below remain authoritative. Held checkpoint67430b5 is preserved and can now be published. Ordinary allowance available33% primary/83% weekly; no reset/credit use, manual retry, provider call or deployment. Full PRD goal remains incomplete.
+
+Next bounded slice: an explicit owner-scoped read-only access-blocker review over an owned hold, with an optional synchronous trusted local reviewer port that accepts only denial/action-required outcomes. Unconfigured/positive/forged verification results never grant execution. This exposes a concrete setup/admission boundary without pretending to verify an account or enabling a worker, provider, route or migration.
+
 ## Optional role snapshots — PR46 scoped Linux checks pass
 
 Source `6e1f619a6fec831a4f6de1cc7d1ba2fc107887cd` is pushed in draft [PR46](https://github.com/anirbanhere/saathi/pull/46), stacked on PR45/clean `92bfd3b`, and attached to this chat. [Self-hosted41639434126](https://github.com/anirbanhere/saathi/actions/runs/41639434126) and [tenant41639434244](https://github.com/anirbanhere/saathi/actions/runs/41639434244) pass. Tested merge `bf86f2bf1c21687b8f702903f131223f4b507288` has tree `0e27505c3fc5316e94bce1193db2ba434d6c5517`, exactly matching source (parents `92bfd3b`/`6e1f619`). Linux317 tests/2614 assertions, server types, unchanged frozen239 and audit/packed checks pass. WiderCI41639434160 remains unfinished with no failed completed jobs; only tests/Python were still running at last inspection. This is not a whole-platform-green claim. Hold this final docs checkpoint locally until that useful source run completes, since a push cancels non-main runs. Read PR46 headRefOid if the local tracking ref is absent.
