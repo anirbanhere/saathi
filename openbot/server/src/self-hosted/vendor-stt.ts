@@ -18,6 +18,7 @@ import {
   vendorSttModels,
   vendorSttTimeoutSchema,
 } from "./vendor-stt-contract";
+import { compileVendorSttRequest } from "./vendor-stt-request";
 import { inspectPcmWav } from "./wav";
 
 type Options = {
@@ -34,13 +35,6 @@ const transcript = z.object({
   text: z.string().trim().min(1).max(2000),
   language_code: z.string().nullable(),
 });
-const iso: Record<SpeechLanguage, string> = {
-  "en-IN": "eng",
-  "hi-IN": "hin",
-  "ta-IN": "tam",
-  "ml-IN": "mal",
-  "kn-IN": "kan",
-};
 const locales: Record<string, SpeechLanguage> = {
   eng: "en-IN",
   en: "en-IN",
@@ -114,33 +108,25 @@ function createStt(
           type: "audio/wav",
         }),
       );
-      let url: string;
-      const headers: Record<string, string> = { Accept: "application/json" };
-      if (provider === "sarvam") {
-        url = "https://api.sarvam.ai/speech-to-text";
-        headers["api-subscription-key"] = key;
-        form.set("model", model);
-        if (model === "saaras:v3") form.set("mode", "transcribe");
-        form.set("language_code", parsed.languageHint ?? "unknown");
-        form.set("with_timestamps", "false");
-      } else {
-        url = `https://api.elevenlabs.io/v1/speech-to-text?enable_logging=${logging === "allow"}`;
-        headers["xi-api-key"] = key;
-        form.set("model_id", model);
-        if (parsed.languageHint)
-          form.set("language_code", iso[parsed.languageHint]);
-        form.set("diarize", "false");
-        form.set("tag_audio_events", "false");
-        form.set("timestamps_granularity", "none");
-        form.set("webhook", "false");
-        form.set("use_multi_channel", "false");
-      }
+      const request = compileVendorSttRequest({
+        provider,
+        model,
+        languageHint: parsed.languageHint,
+        providerLogging: provider === "elevenlabs" ? logging : undefined,
+        timeoutMs: timeout,
+      });
+      const headers: Record<string, string> = {
+        Accept: "application/json",
+        [request.credentialHeader]: key,
+      };
+      for (const [name, value] of Object.entries(request.fields))
+        form.set(name, value);
       const response = await speechJson(
         call,
-        url,
+        request.url,
         { method: "POST", headers, body: form },
         signal,
-        timeout,
+        request.timeoutMs,
       );
       const adapted =
         provider === "sarvam" && response && typeof response === "object"

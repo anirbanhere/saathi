@@ -1,5 +1,7 @@
 # Gated vendor STT transport foundation
 
+The existing exact wire fields/endpoints/header names/timeouts are now built through compileVendorSttRequest; see stt-wire-options.md for strict input and current official account/retention review. Default disablement, language/WAV/consent checks, one-attempt behavior and unverified retention eligibility are preserved. No runtime registration or live setup is added.
+
 Two internal factories implement the existing `SpeechToTextProvider` port: `createSarvamStt` and `createElevenLabsStt` in `vendor-stt.ts`. They are disabled by default. No public route, upload, speech-role registry binding, private profile, vendor key or live request is added by this slice. Existing diagnostic `adapter_missing` still describes the missing runtime binding, even though transport code is now present. Public speech remains off.
 
 This advances provider interchangeability; it does not complete the voice product. Owner-scoped media, durable consent, retention/deletion, speech-attempt budgets, response policies, actual TTS and consented language/critical-field evaluation remain required before exposing voice. A literal call consent flag is neither a user identity nor a durable permission record.

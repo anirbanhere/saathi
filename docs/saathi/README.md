@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Exact STT wire options and admission design](stt-wire-options.md) share the credential-free request compiler with disabled vendor transports and document verified-source account/retention gaps. No live authority is added.
+
 [Read-only STT access blockers](stt-access-review.md) add an explicit owner-scoped diagnostic and unconfigured account-review port. No positive authorization, provider or execution is supported.
 
 [Optional durable STT role snapshots](stt-role-snapshots.md) add source15 metadata only for new holds with an explicitly injected reader. Old holds stay unbound and no execution is enabled.
