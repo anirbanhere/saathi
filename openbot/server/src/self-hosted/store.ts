@@ -16,6 +16,12 @@ import {
   SttAdmissions,
 } from "./stt-admission";
 import { migrateSttExecution } from "./stt-execution-schema";
+import {
+  migrateSttPolicyCatalogue,
+  SttPolicyCatalogue,
+  type SttPolicyCatalogueLimits,
+  sttPolicyCatalogueLimits,
+} from "./stt-policy-catalog";
 
 export { LocalError } from "./errors";
 export type StoredMessage = {
@@ -50,6 +56,7 @@ export class SelfHostedStore {
   readonly planReads: PlanReads;
   readonly media: OwnedMedia;
   readonly sttAdmissions: SttAdmissions;
+  readonly sttPolicies: SttPolicyCatalogue;
   private db: Database;
   private release: () => void;
   private closed = false;
@@ -60,8 +67,10 @@ export class SelfHostedStore {
       now?: () => number;
       mediaLimits?: Partial<MediaLimits>;
       sttLimits?: Partial<SttAdmissionLimits>;
+      sttPolicyLimits?: Partial<SttPolicyCatalogueLimits>;
     } = {},
   ) {
+    const policyLimits = sttPolicyCatalogueLimits(options.sttPolicyLimits);
     mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
     this.release = ownDatabase(path);
     let opened: Database | undefined;
@@ -107,7 +116,8 @@ export class SelfHostedStore {
         version?.value !== 8 &&
         version?.value !== 9 &&
         version?.value !== 10 &&
-        version?.value !== 11
+        version?.value !== 11 &&
+        version?.value !== 12
       )
         throw new LocalError("Unsupported local schema version.", 503);
       if (version && version.value <= 3)
@@ -174,6 +184,18 @@ export class SelfHostedStore {
         this.media,
         options.now,
         options.sttLimits,
+      );
+      if (version && version.value <= 11)
+        this.db
+          .transaction(() => {
+            migrateSttPolicyCatalogue(this.db);
+            this.db.exec("UPDATE version SET value=12 WHERE id=1");
+          })
+          .immediate();
+      this.sttPolicies = new SttPolicyCatalogue(
+        this.db,
+        options.now,
+        policyLimits,
       );
       this.sttAdmissions.recoverOnExclusiveStartup();
       this.plans = new TaskPlans(this.db, {

@@ -1,5 +1,13 @@
 # Saathi on OpenDuet handoff
 
+## Working checkpoint — schema12 policy metadata catalogue
+
+Current codex/stt-policy-catalogue is based on clean83c3e47, with uncommitted source/tests/docs. Added internal immutable default-policy catalogue, Store additive12 migration and compatible media-only maintenance for11/12. No automatic registration/route/active policy or execution. Existing public27de098/schema7, private profiles and contributor work remain untouched.
+
+Nine focused synthetic tests/61 assertions pass. Initial missing module was red; new regression guards reproduced explicit-undefined cap bypass and raw DDL migration error, then fixes passed. Synthetic11 migration preserves chat/inference plus completed fixture transcript, media consent and usage; failure rolls back version and releases ownership. Clock/quota/duplicate/conflict/canonical/schema guard checks pass. Server types, OpenBot format/lint pass. Frozen Windows retains exactly eight known gallery absolute-path mismatches (baseline unchanged). Restricted full suite had five socket/temp-link environment failures; authorized unchanged rerun passed270 tests/2275 assertions with two existing Windows platform skips. No live/provider/key/paid call, deployment, existing-profile migration or reset/credit use. Ordinary allowance available44% primary/72% weekly. Full PRD goal incomplete.
+
+Next: capture full authorized suite, review/stage/secret scan, publish a stacked draft PR on codex/stt-policy-pins, then clean audited/packed build and exact-source Linux CI. New Store import changes bundle; do not reuse earlier bundle hash. Schema12 startup upgrades supported earlier profiles; older binaries refuse12, so existing-data rollout still requires its own backed-up checkpoint. Actual durable reservation/usage/balance/reconciliation remains separate. PR41 widerCI41598446483 completed success; its pending wording below is historical.
+
 ## 3 November continuation — PR41 full CI passed
 
 Exact sourcec25c398 widerCI41598446483 completed success with no unfinished/failed jobs; prior scoped263/2228, matching-tree and unchanged bundle facts below remain authoritative. Held local checkpoint9c8f5ba is preserved and can be published now. No manual rerun, deployment, provider call or reset. Ordinary allowance available34% primary/70% weekly; full PRD goal incomplete.
