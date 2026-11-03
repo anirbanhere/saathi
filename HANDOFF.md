@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — complete unissued-cancellation CI passed
+
+Exact source f21026d widerCI41622672695 completed success with no failed or unfinished jobs. Scoped Linux300/2473, matching-tree and clean bundle evidence below remain authoritative. Held checkpointc8fa0f2 is preserved and can now be published. Ordinary allowance is available after its normal window reset (1% primary/78% weekly); both reset credits remain unused. No manual rerun, provider call or deployment. Full PRD goal remains incomplete.
+
+Next bounded slice is a shared reviewed vendor STT role contract and isolated role/price consistency pin. Reuse existing transport allowlists/bounds, reject provider/model/language/media mismatches and retain exact actual role identity. This does not persist bindings, enable a factory or grant account/worker authority; existing source14 profiles and the public schema7 service stay untouched.
+
 ## Unissued cancellation — PR44 scoped Linux checks pass
 
 Source `f21026dae8882ed3ae1a303e8f27d874f451a2f9` is pushed in draft [PR44](https://github.com/anirbanhere/saathi/pull/44), stacked on PR43/clean `aab9cb5`, and attached to this chat. [Self-hosted41622672715](https://github.com/anirbanhere/saathi/actions/runs/41622672715) and [tenant41622672728](https://github.com/anirbanhere/saathi/actions/runs/41622672728) pass. Tested merge `f5d4322b9617824a620707882867a2ad1e896236` has tree `b78587be00ec3097a479db2d2c9fd214bf01b72d`, exactly matching source (parents `aab9cb5`/`f21026d`). Linux300 tests/2473 assertions, server types, unchanged frozen239 and audit/packed checks pass. WiderCI41622672695 remains unfinished with no failed completed jobs: tests/Python/Windows startup are running and macOS startup is queued. Do not claim whole-platform green or rerun a queued/capacity-constrained job blindly. Keep this final documentation checkpoint local until the useful source run completes, since a push cancels non-main runs. Read PR44 headRefOid if a local tracking ref is absent.
