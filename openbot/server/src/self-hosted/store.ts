@@ -30,6 +30,7 @@ import {
   type SttPolicyCatalogueLimits,
   sttPolicyCatalogueLimits,
 } from "./stt-policy-catalog";
+import { createOwnedTextExport } from "./text-export";
 
 export { LocalError } from "./errors";
 export type StoredMessage = {
@@ -537,6 +538,9 @@ export class SelfHostedStore {
       .get(id, owner);
     if (!row) throw new LocalError("Run not found.", 404);
     return row;
+  }
+  exportText(owner: string) {
+    return createOwnedTextExport(this.db, owner);
   }
   memories(owner: string) {
     return this.db

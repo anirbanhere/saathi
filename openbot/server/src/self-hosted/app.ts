@@ -256,6 +256,19 @@ export function createSelfHostedApp(options: {
       daily_limits: store.limits(),
     }),
   );
+  app.post("/api/text-export", (c) => {
+    input(
+      z
+        .object({ scope: z.literal("conversations_and_reviewed_preferences") })
+        .strict(),
+      c.var.body,
+    );
+    if (new URL(c.req.url).search)
+      throw new LocalError("Invalid or unsupported request fields.");
+    return c.json(store.exportText(c.var.session.owner), 200, {
+      "Content-Disposition": 'attachment; filename="saathi-text-export.json"',
+    });
+  });
   app.get("/api/threads", (c) =>
     c.json(
       store

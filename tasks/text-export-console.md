@@ -1,0 +1,11 @@
+# Follow-up: explicit text download in the console
+
+Prerequisite: inspect HANDOFF and exact-source PR49 CI before publishing its held final docs. Base future work on the tested owned-text-export branch; do not integrate/main-merge/deploy. Scope: saathi-web, its served-asset/build allowlist only if a module is introduced, export capability metadata if needed, focused tests and docs. Preserve other contributors' ownership.
+
+Add one accessible explicit download control, associated explanation/status and busy/focus/error behavior. Say that the file contains this workspace's conversation text and saved reviewed preferences, may contain sensitive text and excludes tasks/audio/ledgers/backups. Do not describe it as full account backup/erasure. Use fixed filename and existing POST /api/text-export strict scope; no GET/prefetch, startup/reload auto-export or model/cloud upload. No new auth or speech permissions.
+
+Inspect current app.js: api() always parses JSON, run() has shared busy/focus guards and a default success message "Saved on this server." That success text is unsuitable as download confirmation; preserve existing callers while making actual export state clear. Do not bypass shared busy guards or make a response mean the user saved a file. Treat the POST as a bounded read snapshot, not a replayable external effect. Do not auto-retry after network/session failure. Keep error text safe and downloads bounded. Revoke temporary object URLs without breaking the download; never persist export data in browser storage.
+
+Test an explicit click and resulting exact JSON filename/content, duplicate clicks while busy, unsupported/unavailable/over-budget/expired-session/network errors, no download on enter/refresh/startup, no provider call or quota mutation, keyboard/focus/status behavior and cleanup. Existing text export and full self-hosted/format/lint/type/audit checks remain required. Verify in a real browser against a new synthetic no-key database/test server on an unused loopback port. Do not open/upgrade the existing localhost8790 or public profile, use private household data, record audio or load provider keys. No public deployment follows from browser tests.
+
+Full account export/delete/provider/backups and actual speech admission stay separate PRD gaps. Record exact source/checks and handoff; publish a feature-branch draft PR only.
