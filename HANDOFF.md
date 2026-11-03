@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November — full PR40 CI passed, including macOS
+
+Exact sourcebf85cbd widerCI41591469409 completed success: all required jobs, aggregate verify, macOS startup125768938683 and complete Python harness125768938658 pass. Full Bun10369 pass/75 skip/0 fail/38077 assertions; scoped Linux255/2161 and matching-tree facts below remain authoritative. Runner capacity recovered for this new-source run without any manual rerun, gate change or credit/reset use. Held checkpoint594342a is preserved and can now be published with this result. Public/demo runtime remains unchanged; full PRD goal remains incomplete. Ordinary allowance available18% primary/68% weekly.
+
+Next bounded piece of the reservation contract is canonical immutable complete-policy identity: use the same strict budget profile, normalize only semantically unordered language membership, pin the complete content/digest and expose no execution authority. This precedes durable policy revision conflicts/atomic reservations; no migration/store/vendor/route is enabled by a hash. Same revision with changed price/caps/account must yield changed identity, not silently reuse a label.
+
 ## Offline budget preview — PR40 scoped Linux checks pass
 
 Sourcebf85cbdce785e67b66186dd88715b43571d73e43 is pushed in draft [PR40](https://github.com/anirbanhere/saathi/pull/40), stacked on PR39/clean7213359 and attached to this chat. [Self-hosted41591469413](https://github.com/anirbanhere/saathi/actions/runs/41591469413) and [tenant41591469499](https://github.com/anirbanhere/saathi/actions/runs/41591469499) pass. Tested mergef54f502b893f1fe25f2ed418e41724ec409eef22 has treebd8751c6d05ab5189a8ef1fad58f16fda85e32be exactly matching source (parents7213359/bf85cbd). Linux full255 tests/2161 assertions, server types, unchanged frozen239 and audit/packed pass. WiderCI41591469409 remains in progress; no whole-platform-green claim. Final documentation checkpoint is local-only while this useful source run continues, because a push cancels older non-main runs. Inspect PR40 headRefOid if a local remote-tracking ref is absent.
