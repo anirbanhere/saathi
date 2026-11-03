@@ -5,12 +5,14 @@ import { LocalError } from "./errors";
 import type { OwnedMedia } from "./media-store";
 import { createSttBudgetPreview } from "./stt-budget";
 import { estimateSttCost } from "./stt-cost";
+import { SttHoldRoles, type SttRoleReader } from "./stt-hold-roles";
 import {
   assertSttHoldSchema as schema,
   sttHoldColumns,
 } from "./stt-hold-schema";
 import type { SttPolicyCatalogue } from "./stt-policy-catalog";
 import { createSttPolicyPin } from "./stt-policy-pin";
+import { createSttRoleBinding, type SttRoleBinding } from "./stt-role-binding";
 
 export {
   migrateSttBudgetHolds,
@@ -75,14 +77,17 @@ const unavailable = () =>
 /** Internal never-dispatched holds only. No claim, provider, remote settlement or HTTP interface. */
 export class SttBudgetHolds {
   private working = false;
+  private roles: SttHoldRoles;
   constructor(
     private db: Database,
     private media: OwnedMedia,
     private policies: SttPolicyCatalogue,
     private now: () => number = Date.now,
     private reader?: SttBalanceReader,
+    private roleReader?: SttRoleReader,
   ) {
     schema(db);
+    this.roles = new SttHoldRoles(db);
   }
   private time() {
     try {
@@ -183,6 +188,7 @@ export class SttBudgetHolds {
     const { pin } = this.validated(row);
     return Object.freeze({
       kind: "budget_hold" as const,
+      roleBinding: this.roles.status(row.owner, row.id, row.created, pin),
       id: row.id,
       request_id: row.request,
       state: row.state,
@@ -315,6 +321,37 @@ export class SttBudgetHolds {
             accountRef: p.accountRef,
             currency: p.price.currency,
           });
+        let roleBinding: SttRoleBinding | undefined;
+        if (this.roleReader) {
+          let snapshot: unknown;
+          try {
+            snapshot = this.roleReader(
+              Object.freeze({
+                ownerRef: owner,
+                provider: p.price.provider,
+                accountRef: p.accountRef,
+                policyRevision: p.revision,
+              }),
+            );
+            if (snapshot instanceof Promise) {
+              void snapshot.catch(() => {});
+              throw Error("Synchronous role snapshot required");
+            }
+          } catch {
+            throw new LocalError("Speech role snapshot is unavailable.", 503);
+          }
+          const candidate = createSttRoleBinding(
+            p,
+            snapshot,
+            pin.effectiveLimits,
+          );
+          if (candidate.kind !== "role_binding")
+            throw new LocalError(
+              "Speech role does not match the reviewed budget policy.",
+              409,
+            );
+          roleBinding = candidate;
+        }
         let balance: z.infer<typeof balanceSchema>;
         try {
           const observation = this.reader?.(scope);
@@ -481,6 +518,18 @@ export class SttBudgetHolds {
                 row.state,
                 row.cancelled_at,
               );
+            if (roleBinding) {
+              this.roles.assert();
+              this.db
+                .query("INSERT INTO stt_hold_roles VALUES(?,?,?,?,?)")
+                .run(
+                  row.id,
+                  owner,
+                  roleBinding.canonicalJson,
+                  roleBinding.contentSha256,
+                  row.created,
+                );
+            }
             return this.view(row);
           })
           .immediate();

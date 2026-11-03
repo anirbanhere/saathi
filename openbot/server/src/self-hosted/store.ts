@@ -22,6 +22,7 @@ import {
   SttBudgetHolds,
 } from "./stt-budget-holds";
 import { migrateSttExecution } from "./stt-execution-schema";
+import { migrateSttHoldRoles, type SttRoleReader } from "./stt-hold-roles";
 import {
   migrateSttPolicyCatalogue,
   SttPolicyCatalogue,
@@ -76,6 +77,7 @@ export class SelfHostedStore {
       sttLimits?: Partial<SttAdmissionLimits>;
       sttPolicyLimits?: Partial<SttPolicyCatalogueLimits>;
       sttBalanceReader?: SttBalanceReader;
+      sttRoleReader?: SttRoleReader;
     } = {},
   ) {
     const policyLimits = sttPolicyCatalogueLimits(options.sttPolicyLimits);
@@ -127,7 +129,8 @@ export class SelfHostedStore {
         version?.value !== 11 &&
         version?.value !== 12 &&
         version?.value !== 13 &&
-        version?.value !== 14
+        version?.value !== 14 &&
+        version?.value !== 15
       )
         throw new LocalError("Unsupported local schema version.", 503);
       if (version && version.value <= 3)
@@ -221,12 +224,20 @@ export class SelfHostedStore {
             this.db.exec("UPDATE version SET value=14 WHERE id=1");
           })
           .immediate();
+      if (version && version.value <= 14)
+        this.db
+          .transaction(() => {
+            migrateSttHoldRoles(this.db);
+            this.db.exec("UPDATE version SET value=15 WHERE id=1");
+          })
+          .immediate();
       this.sttBudgetHolds = new SttBudgetHolds(
         this.db,
         this.media,
         this.sttPolicies,
         options.now,
         options.sttBalanceReader,
+        options.sttRoleReader,
       );
       this.sttAdmissions.recoverOnExclusiveStartup();
       this.plans = new TaskPlans(this.db, {

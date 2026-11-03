@@ -1,5 +1,7 @@
 # PRD implementation audit — 29 October 2026
 
+**Current development association:** source15 can atomically record a selected role snapshot with a newly created hold through an optional trusted internal reader (stt-role-snapshots.md). Old14 rows stay unbound; recorded metadata is not verified account/grant/worker authority and never permits execution. No provider/route or current-profile upgrade is enabled. Public schema7 is unchanged.
+
 **Latest development metadata:** isolated STT-role/policy compatibility pins and shared reviewed transport constraints are present (stt-role-binding.md). This adds no durable role/grant binding, live speech, new route or migration. Source schema14 and public schema7 remain as described below.
 
 **Current development increment:** source14 adds explicit internal cancellation for confirmed never-dispatched holds while preserving attempt/audio/lifetime history (stt-unissued-cancellation.md). There is no dispatch, remote refund, worker/provider or public route. Source13 introduced disabled-by-default durable internal budget holds, atomic consent/media/usage rechecks and cross-revision/day/account-bound accounting. No verified account/balance service, actual STT-role binding, claim/remote settlement, live speech or public setup is supplied. See stt-budget-holds.md and HANDOFF; the deployed schema7 site is unchanged.

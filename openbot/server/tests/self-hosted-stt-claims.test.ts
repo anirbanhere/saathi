@@ -218,7 +218,7 @@ test("real v10 migration preserves reservations/unit ledger and interrupts old p
   );
   migrateSttAdmissions(fixture);
   fixture.exec(
-    `INSERT INTO stt_admissions SELECT ${columns} FROM admission_copy; DROP TABLE admission_copy; DROP TABLE stt_budget_holds; UPDATE version SET value=10`,
+    `INSERT INTO stt_admissions SELECT ${columns} FROM admission_copy; DROP TABLE admission_copy; DROP TABLE stt_hold_roles; DROP TABLE stt_budget_holds; UPDATE version SET value=10`,
   );
   const migrated = w.open();
   expect(migrated.sttAdmissions.get(w.a.owner, w.admission.id).state).toBe(

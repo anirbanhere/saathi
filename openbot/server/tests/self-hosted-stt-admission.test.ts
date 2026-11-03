@@ -286,7 +286,7 @@ test("v9 upgrade preserves media consent/history, chat and inference usage witho
   w.store.close();
   const fixture = inspect(w.path);
   fixture.exec(
-    "DROP TABLE stt_admissions; DROP TABLE stt_admission_usage; DROP TABLE stt_budget_holds; UPDATE version SET value=9",
+    "DROP TABLE stt_admissions; DROP TABLE stt_admission_usage; DROP TABLE stt_hold_roles; DROP TABLE stt_budget_holds; UPDATE version SET value=9",
   );
   const reopened = w.open();
   expect(reopened.media.metadata(w.a.owner, w.media.id)).toEqual(w.media);
