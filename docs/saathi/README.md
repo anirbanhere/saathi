@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[STT role/policy compatibility metadata](stt-role-binding.md) adds a shared strict candidate-role boundary and immutable content identity. Existing journal rows stay unbound; no provider or execution is enabled.
+
 [Confirmed unissued hold cancellation](stt-unissued-cancellation.md) adds internal source14 lifecycle control with immutable history and no dispatch or vendor refund authority.
 
 [Durable internal speech budget holds](stt-budget-holds.md) add schema13 local reservations with no execution authority. Default bootstrap has no balance reader; uncancelled holds remain outstanding and public/private profiles stay unchanged.

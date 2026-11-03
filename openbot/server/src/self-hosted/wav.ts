@@ -1,5 +1,7 @@
 import { LocalError } from "./errors";
 
+export const pcmWavMaxBytes = 2_000_000;
+
 /** Wrap signed little-endian PCM16 without decoding, resampling or changing samples. */
 export function pcm16ToWav(pcm: Uint8Array, sampleRate: number, channels = 1) {
   if (
@@ -8,7 +10,7 @@ export function pcm16ToWav(pcm: Uint8Array, sampleRate: number, channels = 1) {
     ![8000, 16000, 22050, 24000, 44100, 48000].includes(sampleRate) ||
     pcm.length < channels * 2 ||
     pcm.length % (channels * 2) !== 0 ||
-    pcm.length + 44 > 2_000_000 ||
+    pcm.length + 44 > pcmWavMaxBytes ||
     pcm.length > sampleRate * channels * 2 * 60
   )
     throw new LocalError("Invalid or oversized PCM16 audio.");
@@ -43,7 +45,7 @@ export function inspectPcmWav(bytes: Uint8Array) {
   if (
     !(bytes instanceof Uint8Array) ||
     bytes.length < 44 ||
-    bytes.length > 2_000_000
+    bytes.length > pcmWavMaxBytes
   )
     return invalid();
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
