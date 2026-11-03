@@ -1,0 +1,37 @@
+{
+  "profile": {
+    "enabled": true,
+    "revision": "policy-v1",
+    "accountRef": "synthetic-account",
+    "languages": ["ta-IN", "en-IN", "hi-IN"],
+    "maxBytes": 2097152,
+    "maxDurationMs": 29000,
+    "maxSnapshotAgeMs": 10000,
+    "price": {
+      "enabled": true,
+      "provider": "sarvam",
+      "model": "synthetic-model",
+      "revision": "tariff-v1",
+      "currency": "INR",
+      "rateMicros": 7,
+      "unitMs": 3000,
+      "quantumMs": 1000,
+      "minimumMs": 0,
+      "requestFeeMicros": 2,
+      "effectiveAt": 1000,
+      "expiresAt": 9000
+    },
+    "ceilings": {
+      "ownerAttempts": 4,
+      "globalAttempts": 20,
+      "ownerAudioMs": 60000,
+      "globalAudioMs": 300000,
+      "ownerRecords": 100,
+      "globalRecords": 5000,
+      "requestCostMicros": 100,
+      "ownerCostMicros": 400,
+      "globalCostMicros": 2000
+    }
+  },
+  "sha256": "38afeb2ca98c6f809e9efa97f54238a282f63731f38bf4c432c353dd96889e5f"
+}
