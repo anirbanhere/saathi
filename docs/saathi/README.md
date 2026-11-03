@@ -1,6 +1,8 @@
 # Saathi customization guide
 
-[Durable internal speech budget holds](stt-budget-holds.md) add schema13 local reservations with no execution authority. Default bootstrap has no balance reader; all current holds remain outstanding and public/private profiles stay unchanged.
+[Confirmed unissued hold cancellation](stt-unissued-cancellation.md) adds internal source14 lifecycle control with immutable history and no dispatch or vendor refund authority.
+
+[Durable internal speech budget holds](stt-budget-holds.md) add schema13 local reservations with no execution authority. Default bootstrap has no balance reader; uncancelled holds remain outstanding and public/private profiles stay unchanged.
 
 [Internal speech policy catalogue](stt-policy-catalogue.md) persists bounded immutable default-policy metadata on source schema12. It grants no account access, active policy, reservation or execution. Existing profiles/public schema7 remain untouched.
 

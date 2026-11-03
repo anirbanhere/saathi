@@ -17,6 +17,7 @@ import {
 } from "./stt-admission";
 import {
   migrateSttBudgetHolds,
+  migrateSttHoldCancellation,
   type SttBalanceReader,
   SttBudgetHolds,
 } from "./stt-budget-holds";
@@ -125,7 +126,8 @@ export class SelfHostedStore {
         version?.value !== 10 &&
         version?.value !== 11 &&
         version?.value !== 12 &&
-        version?.value !== 13
+        version?.value !== 13 &&
+        version?.value !== 14
       )
         throw new LocalError("Unsupported local schema version.", 503);
       if (version && version.value <= 3)
@@ -210,6 +212,13 @@ export class SelfHostedStore {
           .transaction(() => {
             migrateSttBudgetHolds(this.db);
             this.db.exec("UPDATE version SET value=13 WHERE id=1");
+          })
+          .immediate();
+      if (version && version.value <= 13)
+        this.db
+          .transaction(() => {
+            migrateSttHoldCancellation(this.db);
+            this.db.exec("UPDATE version SET value=14 WHERE id=1");
           })
           .immediate();
       this.sttBudgetHolds = new SttBudgetHolds(

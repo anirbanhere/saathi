@@ -14,7 +14,9 @@ test("v3 upgrade preserves owned replies, sources, usage and duplicate identity 
   store.completeRun(a.owner, old.id, "Old answer");
   store.close();
   const db = new Database(path);
-  db.exec("DROP TABLE IF EXISTS run_evidence; UPDATE version SET value=3");
+  db.exec(
+    "DROP TABLE IF EXISTS run_evidence; DROP TABLE stt_budget_holds; UPDATE version SET value=3",
+  );
   db.close();
   const migrated = new SelfHostedStore(path);
   stores.push(migrated);
@@ -263,7 +265,7 @@ test("v1 migration preserves historical messages and leaves their model unknown"
   const old = new Database(path);
   try {
     old.exec(
-      "ALTER TABLE runs DROP COLUMN model; UPDATE version SET value=1 WHERE id=1",
+      "ALTER TABLE runs DROP COLUMN model; DROP TABLE stt_budget_holds; UPDATE version SET value=1 WHERE id=1",
     );
   } finally {
     old.close();

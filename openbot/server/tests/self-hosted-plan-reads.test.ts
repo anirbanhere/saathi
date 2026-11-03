@@ -162,7 +162,9 @@ test("schema v6 migration preserves pinned plans and adds empty read records", (
   store.close();
   const db = new Database(path);
   try {
-    db.exec("DROP TABLE plan_read_runs; UPDATE version SET value=6");
+    db.exec(
+      "DROP TABLE plan_read_runs; DROP TABLE stt_budget_holds; UPDATE version SET value=6",
+    );
   } finally {
     db.close();
   }

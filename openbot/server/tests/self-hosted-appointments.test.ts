@@ -225,7 +225,7 @@ test("schema v4 upgrade preserves chat, source evidence, preferences and daily u
   store.close();
   const db = new Database(path);
   db.exec(
-    "DROP TABLE IF EXISTS demo_decisions; DROP TABLE IF EXISTS demo_bookings; DROP TABLE IF EXISTS demo_audit; DROP TABLE IF EXISTS demo_tasks; UPDATE version SET value=4",
+    "DROP TABLE IF EXISTS demo_decisions; DROP TABLE IF EXISTS demo_bookings; DROP TABLE IF EXISTS demo_audit; DROP TABLE IF EXISTS demo_tasks; DROP TABLE stt_budget_holds; UPDATE version SET value=4",
   );
   db.close();
   const reopened = new SelfHostedStore(path);
