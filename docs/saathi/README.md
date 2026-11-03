@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Owned bounded text export](owned-text-export.md) adds an explicit session/CSRF-protected JSON download of conversation text and reviewed preferences only. No UI, migration, provider call or public rollout.
+
 [Exact STT wire options and admission design](stt-wire-options.md) share the credential-free request compiler with disabled vendor transports and document verified-source account/retention gaps. No live authority is added.
 
 [Read-only STT access blockers](stt-access-review.md) add an explicit owner-scoped diagnostic and unconfigured account-review port. No positive authorization, provider or execution is supported.
