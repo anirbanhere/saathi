@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — full catalogue CI passed
+
+Exact sourceabfd432 widerCI41606101511 completed success with no failed/unfinished jobs; scoped Linux272/2292, matching-tree and clean bundle facts below remain authoritative. Held checkpoint03f7bcb is preserved and can now be published. No retry, gate workaround, deployment, provider call or reset/credit use. Ordinary allowance available51% primary/73% weekly; full PRD goal incomplete.
+
+Next inspect the current fixture/media/preview contracts and deliver the next bounded durable reservation boundary with fresh synthetic tests. Source12 metadata alone is never an authenticated grant. Preserve current profiles, public schema7, contributor PR18, unknown remote costs and all paid/action/channel gates.
+
 ## Immutable policy metadata — PR42 scoped Linux checks pass
 
 Sourceabfd4327bc7ba45923598140eed88603473d437f is pushed in draft [PR42](https://github.com/anirbanhere/saathi/pull/42), stacked on PR41/clean83c3e47 and attached to this chat. [Self-hosted41606101587](https://github.com/anirbanhere/saathi/actions/runs/41606101587) and [tenant41606101503](https://github.com/anirbanhere/saathi/actions/runs/41606101503) pass. Tested merge5b0808719245da5371e7ae7ea9ad80bd4b150792 has tree82e6afd4cfac8e27df6a87aa899fbe20324d21f5 exactly matching source (parents83c3e47/abfd432). Full Linux272 tests/2292 assertions, server types, unchanged frozen239 and clean audit/packed pass. WiderCI41606101511 remains in progress, no failed completed jobs; macOS/Windows startup already pass, tests/Python harness remain running. Do not claim whole-platform green. Final docs checkpoint stays local-only while this useful source run continues, since a push cancels non-main runs. Read PR42 headRefOid if the local tracking ref is absent.
