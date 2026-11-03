@@ -23,7 +23,32 @@ const coherent = (l: Limits) =>
   l.ownerRecords <= l.globalRecords &&
   l.requestCostMicros <= l.ownerCostMicros &&
   l.ownerCostMicros <= l.globalCostMicros;
-const profileSchema = z
+
+/** Shared normalization only; this does not reserve units or grant execution. */
+export function resolveSttBudgetLimits(
+  ceilings: unknown,
+  tightenedLimits?: unknown,
+): Readonly<Limits> | null {
+  try {
+    const hard = limitsSchema.safeParse(ceilings);
+    const narrowed = limitsSchema
+      .partial()
+      .safeParse(tightenedLimits === undefined ? {} : tightenedLimits);
+    if (!hard.success || !coherent(hard.data) || !narrowed.success) return null;
+    const limits = { ...hard.data, ...narrowed.data };
+    if (
+      !coherent(limits) ||
+      (Object.keys(limits) as (keyof Limits)[]).some(
+        (k) => limits[k] > hard.data[k],
+      )
+    )
+      return null;
+    return Object.freeze(limits);
+  } catch {
+    return null;
+  }
+}
+export const sttBudgetProfileSchema = z
   .object({
     enabled: z.literal(true),
     revision: ref,
@@ -38,7 +63,8 @@ const profileSchema = z
     price: sttTariffSchema,
     ceilings: limitsSchema,
   })
-  .strict();
+  .strict()
+  .refine((p) => coherent(p.ceilings));
 const mediaSchema = z
   .object({
     durationMs: integer.min(100).max(29000),
@@ -131,22 +157,11 @@ export function createSttBudgetPreview(
       profileInput.enabled !== true
     )
       return fixed("disabled");
-    const parsed = profileSchema.safeParse(profileInput);
-    if (!parsed.success || !coherent(parsed.data.ceilings))
-      return fixed("invalid_policy");
+    const parsed = sttBudgetProfileSchema.safeParse(profileInput);
+    if (!parsed.success) return fixed("invalid_policy");
     const p = parsed.data;
-    const narrowed = limitsSchema
-      .partial()
-      .safeParse(tightenedLimits === undefined ? {} : tightenedLimits);
-    if (!narrowed.success) return fixed("invalid_limits");
-    const limits = { ...p.ceilings, ...narrowed.data };
-    if (
-      !coherent(limits) ||
-      (Object.keys(limits) as (keyof Limits)[]).some(
-        (k) => limits[k] > p.ceilings[k],
-      )
-    )
-      return fixed("invalid_limits");
+    const limits = resolveSttBudgetLimits(p.ceilings, tightenedLimits);
+    if (!limits) return fixed("invalid_limits");
     return Object.freeze((owner, mediaInput, usageInput, balanceInput, now) => {
       try {
         if (!integer.max(8640000000000000).safeParse(now).success)
