@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const integer = z.number().int().min(0).max(Number.MAX_SAFE_INTEGER);
 const currency = z.enum(["INR", "USD"]);
-const priceSchema = z
+export const sttTariffSchema = z
   .object({
     enabled: z.literal(true),
     provider: z.enum(["sarvam", "elevenlabs"]),
@@ -68,7 +68,7 @@ export function estimateSttCost(
       priceInput.enabled !== true
     )
       return denied("disabled");
-    const parsedPrice = priceSchema.safeParse(priceInput);
+    const parsedPrice = sttTariffSchema.safeParse(priceInput);
     if (!parsedPrice.success) return denied("invalid_price");
     const media = mediaSchema.safeParse(inspectedMedia);
     if (!media.success) return denied("invalid_media");
