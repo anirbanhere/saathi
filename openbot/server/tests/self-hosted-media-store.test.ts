@@ -261,7 +261,7 @@ test("v7 upgrade preserves owned chat/preferences/usage and an approved MOCK rec
   expect(
     check.query<{ value: number }, []>("SELECT value FROM version").get()
       ?.value,
-  ).toBe(12);
+  ).toBe(13);
   expect(
     check.query<{ n: number }, []>("SELECT count(*) n FROM memories").get()?.n,
   ).toBe(1);

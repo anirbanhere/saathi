@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Durable internal speech budget holds](stt-budget-holds.md) add schema13 local reservations with no execution authority. Default bootstrap has no balance reader; all current holds remain outstanding and public/private profiles stay unchanged.
+
 [Internal speech policy catalogue](stt-policy-catalogue.md) persists bounded immutable default-policy metadata on source schema12. It grants no account access, active policy, reservation or execution. Existing profiles/public schema7 remain untouched.
 
 [Canonical speech policy identity](stt-policy-pins.md) binds complete reviewed profiles and effective limits to immutable content digests. This is metadata for the future journal, not policy approval or a worker lease.

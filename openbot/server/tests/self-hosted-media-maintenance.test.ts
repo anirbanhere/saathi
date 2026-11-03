@@ -167,7 +167,7 @@ test("maintenance refuses missing/malformed/older/newer/incomplete schema withou
     expect(() => maintainMedia(invalid, { apply: true })).toThrow();
     expect(readFileSync(invalid, "utf8")).toBe(data);
   }
-  for (const version of [7, 13, 12, 11]) {
+  for (const version of [7, 14, 13, 12, 11]) {
     const path = join(dir, `v${version}.sqlite`),
       db = inspect(path);
     db.exec(

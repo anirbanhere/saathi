@@ -80,7 +80,7 @@ test("default policy metadata is durable, immutable and duplicate-safe without a
   expect(reopened.sttPolicies.register(profile())).toEqual(one);
   expect(
     w.db.query<{ value: number }, []>("SELECT value FROM version").get()?.value,
-  ).toBe(12);
+  ).toBe(13);
 });
 
 test("revision conflicts and provider-account boundaries preserve all stored content", () => {
@@ -260,7 +260,7 @@ test("synthetic v11 migration preserves existing data and compatible maintenance
   maintainMedia(w.path, { apply: true, now: Date.now });
   expect(
     w.db.query<{ value: number }, []>("SELECT value FROM version").get()?.value,
-  ).toBe(12);
+  ).toBe(13);
   const reopened = new SelfHostedStore(w.path);
   stores.push(reopened);
   expect(reopened.sttPolicies.get(scope, "policy-v1")).toEqual(record);

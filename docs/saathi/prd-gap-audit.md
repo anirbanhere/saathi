@@ -1,5 +1,7 @@
 # PRD implementation audit — 29 October 2026
 
+**Current development increment:** source13 adds disabled-by-default durable internal budget holds, atomic consent/media/usage rechecks and cross-revision/day/account-bound accounting. No verified account/balance service, actual STT-role binding, claim/release/settlement, live speech or public setup is supplied. See stt-budget-holds.md and HANDOFF; the deployed schema7 site is unchanged.
+
 **3 November development note:** source schema12 adds a bounded immutable internal default-policy catalogue, canonical bytes/digest revalidation and transactional revision conflicts. Offline cost/preview/pin foundations and synthetic migration tests are present; no live reservation, verified account/balance, provider execution, new public route or active-policy grant follows. Public release below remains schema7, with existing profiles unmodified. Read stt-policy-catalogue.md and HANDOFF.md for current development evidence.
 
 **Latest public release:** source27de098 now runs independent planner selection, saved typed proposals and cached read-only evidence on schema v7, after a consistent snapshot and preservation checks. One approved local Meta plan/read succeeded; approval consumed. Public speech/live actions remain off. See current HANDOFF and public-deployment.md for exact evidence.
