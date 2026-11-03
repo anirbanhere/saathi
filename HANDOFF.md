@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 3 November continuation — PR47 source checks pass; macOS runner abandoned
+
+Exact-source widerCI41647508857 finished failure because macOS startup125956625442 acquired no runner (zero steps; annotations report hosted macOS arm64 capacity). All executable source jobs, including tests/Python/browser/build/types, passed; aggregate verify correctly rejected the abandoned job. Scoped Linux325/2691 and exact-tree bundle evidence below still stand. This is not whole-platform-green evidence; no blind capacity retry or CI weakening. Held0524a16 is preserved and can now be published. Ordinary allowance available52% primary/86% weekly, both reset credits untouched. No provider/key/paid call, profile upgrade or deployment.
+
+Next bounded slice: compile the exact existing synchronous STT wire request from strict credential-free inputs and reuse it inside the disabled vendor adapters. Document reviewed account/retention verification gaps and a default-denied admission design. This must not turn request metadata, a subscription tier or a cache callback into verified grants, switch logging after rejection, or enable any route/provider/worker.
+
 ## STT access blockers — PR47 scoped Linux checks pass
 
 Source `98880e6679fa2045138ac00a008b1ed343a0480e` is pushed in draft [PR47](https://github.com/anirbanhere/saathi/pull/47), stacked on PR46/clean `4eb1642`, and attached to this chat. [Self-hosted41647508436](https://github.com/anirbanhere/saathi/actions/runs/41647508436) and [tenant41647508422](https://github.com/anirbanhere/saathi/actions/runs/41647508422) pass. Tested merge `378dfdb65c527131bd8848ca348ba98fed93d142` has tree `7c9c1681714fc9ca78d97da9887ca773a4d4a596`, exactly matching source (parents `4eb1642`/`98880e6`). Linux325 tests/2691 assertions, server types, unchanged frozen239 and audit/packed checks pass. WiderCI41647508857 remains unfinished with no failed completed jobs: tests/Python are running and macOS startup is queued. No whole-platform-green claim or blind queue/capacity retry. Hold this final documentation checkpoint locally until that useful source run completes, since a push cancels non-main runs. Read PR47 headRefOid if a local tracking ref is absent.
