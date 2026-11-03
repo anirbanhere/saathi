@@ -1,5 +1,13 @@
 # Saathi on OpenDuet handoff
 
+## Working checkpoint — explicit read-only access blockers
+
+Current codex/stt-access-review is based on clean published4eb1642/PR46 complete-CI checkpoint. Uncommitted reviewAccess(owner,id) checks current owned hold/role/media and reports fixed local blockers, with an optional trusted synchronous local account-blocker reviewer. Only denial/action-required outcomes are accepted; positive/verified/ready blobs never grant access and executionAllowed stays false. Reviewer runs outside a write transaction, then session/hold/privacy are rechecked. Source schema remains15; no migration, quota mutation, actual account/grant verification, route, reader activation, provider/worker or existing-profile access. Public27de098/schema7 and contributor work stay untouched.
+
+Missing-method regression was red first. A storage-fault regression then reproduced unexpected SQLite errors being incorrectly reported as consent review; it failed before narrowing that catch to known privacy errors. Seventeen combined role/review tests/149 assertions pass, including eight new diagnostic cases, forged positive/extra fields/async failures, context projection, ownership/current-session and independent privacy/cancellation/session changes. Existing role/status reads do not trigger reviewer or role/balance observers. Final authorized Windows full323 tests/2674 assertions pass with two existing platform skips. Server types and OpenBot format/lint pass; frozen Windows retains only the eight known gallery path-text mismatches, baseline unchanged. No real provider/key/paid call, recording, deployment or reset/credit use.
+
+Next capture gates, review/stage/known-secret scan and publish a stacked draft on codex/stt-role-snapshots; then clean audit/packed and exact-source Linux CI. This negative diagnostic cannot serve as a credential verifier or worker permit. Independently verified account/grant/request-option and one-shot worker/reconciliation authority remain separate prerequisites; do not fabricate a verified state or activate a channel/provider.
+
 ## 3 November continuation — complete role-snapshot CI passed
 
 Exact source6e1f619 widerCI41639434160 completed success with no failed/unfinished jobs. Scoped Linux317/2614, matching-tree and clean bundle facts below remain authoritative. Held checkpoint67430b5 is preserved and can now be published. Ordinary allowance available33% primary/83% weekly; no reset/credit use, manual retry, provider call or deployment. Full PRD goal remains incomplete.

@@ -1,5 +1,7 @@
 # PRD implementation audit — 29 October 2026
 
+**Latest admission diagnostic:** explicit owned STT access-blocker review and a default-unconfigured synchronous local reviewer port are present (stt-access-review.md). The port accepts only denials/action-required outcomes; no verified account/grant/positive permit, worker, route or provider is added. Source15 and public7 remain unchanged.
+
 **Current development association:** source15 can atomically record a selected role snapshot with a newly created hold through an optional trusted internal reader (stt-role-snapshots.md). Old14 rows stay unbound; recorded metadata is not verified account/grant/worker authority and never permits execution. No provider/route or current-profile upgrade is enabled. Public schema7 is unchanged.
 
 **Latest development metadata:** isolated STT-role/policy compatibility pins and shared reviewed transport constraints are present (stt-role-binding.md). This adds no durable role/grant binding, live speech, new route or migration. Source schema14 and public schema7 remain as described below.
