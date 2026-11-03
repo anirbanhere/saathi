@@ -1,5 +1,13 @@
 # Saathi on OpenDuet handoff
 
+## Working checkpoint — isolated STT role compatibility
+
+Current codex/stt-role-binding is based on clean published9b93fa2/PR44 complete-CI checkpoint. Uncommitted shared vendor-stt-contract reuses the existing model allowlists/language/timeout/duration bounds, with a common2,000,000-byte PCM cap in wav/speech. Isolated createSttRoleBinding compares complete policy and candidate role provider/model/languages/media limits, captures sorted/frozen full role/policy identity and always returns executionAllowed=false. No migration, journal binding/backfill, actual role/account provenance, registry/reader/worker/route or provider authority. Current schema14 profiles, last public27de098/schema7 and contributor work remain untouched.
+
+Missing-module test was red first. Eight focused tests/62 assertions pass; combined binding/vendor/WAV18 tests/157 assertions pass, including independent Python canonical fixture, immutable copy isolation, switched model/timeout/effective limits, strict/fixed denials, role language coverage,2MiB versus2MB mismatch and a key+binding leaving the factory disabled with zero HTTP. Shared factory constraints preserve existing reviewed models/numerical limits and mocked wire/deadline/cancellation behavior. Final authorized Windows full306 tests/2522 assertions pass with two existing platform skips. Server types and OpenBot format/lint pass; frozen Windows retains only the eight known gallery absolute-path mismatches, baseline unchanged. No real provider/key/paid test, recording, private profile, deployment or reset/credit use.
+
+Next capture those gates, review/stage/known-secret scan and publish a stacked draft on codex/stt-unissued-cancellation; then clean audit/packed build and exact-source Linux CI. Reuse current role/policy schema instead of recreating pricing math. The next durable role/account-grant/worker boundary must establish trusted provenance and persisted identity before dispatch; this helper is only compatibility metadata and historical price content can still identify.
+
 ## 3 November continuation — complete unissued-cancellation CI passed
 
 Exact source f21026d widerCI41622672695 completed success with no failed or unfinished jobs. Scoped Linux300/2473, matching-tree and clean bundle evidence below remain authoritative. Held checkpointc8fa0f2 is preserved and can now be published. Ordinary allowance is available after its normal window reset (1% primary/78% weekly); both reset credits remain unused. No manual rerun, provider call or deployment. Full PRD goal remains incomplete.

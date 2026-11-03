@@ -1,0 +1,44 @@
+{
+  "profile": {
+    "enabled": true,
+    "revision": "policy-v1",
+    "accountRef": "synthetic-account",
+    "languages": ["ta-IN", "en-IN", "hi-IN"],
+    "maxBytes": 2000000,
+    "maxDurationMs": 29000,
+    "maxSnapshotAgeMs": 10000,
+    "price": {
+      "enabled": true,
+      "provider": "sarvam",
+      "model": "saaras:v3",
+      "revision": "tariff-v1",
+      "currency": "INR",
+      "rateMicros": 7,
+      "unitMs": 3000,
+      "quantumMs": 1000,
+      "minimumMs": 0,
+      "requestFeeMicros": 2,
+      "effectiveAt": 1000,
+      "expiresAt": 9000
+    },
+    "ceilings": {
+      "ownerAttempts": 4,
+      "globalAttempts": 20,
+      "ownerAudioMs": 60000,
+      "globalAudioMs": 300000,
+      "ownerRecords": 100,
+      "globalRecords": 5000,
+      "requestCostMicros": 100,
+      "ownerCostMicros": 400,
+      "globalCostMicros": 2000
+    }
+  },
+  "role": {
+    "provider": "sarvam",
+    "model": "saaras:v3",
+    "languages": ["ta-IN", "en-IN", "hi-IN"],
+    "timeoutMs": 20000
+  },
+  "canonicalJson": "{\"format\":\"saathi-stt-role-binding-v1\",\"policy\":{\"effectiveLimits\":{\"globalAttempts\":20,\"globalAudioMs\":300000,\"globalCostMicros\":2000,\"globalRecords\":5000,\"ownerAttempts\":4,\"ownerAudioMs\":60000,\"ownerCostMicros\":400,\"ownerRecords\":100,\"requestCostMicros\":100},\"format\":\"saathi-stt-policy-pin-v1\",\"profile\":{\"accountRef\":\"synthetic-account\",\"ceilings\":{\"globalAttempts\":20,\"globalAudioMs\":300000,\"globalCostMicros\":2000,\"globalRecords\":5000,\"ownerAttempts\":4,\"ownerAudioMs\":60000,\"ownerCostMicros\":400,\"ownerRecords\":100,\"requestCostMicros\":100},\"enabled\":true,\"languages\":[\"en-IN\",\"hi-IN\",\"ta-IN\"],\"maxBytes\":2000000,\"maxDurationMs\":29000,\"maxSnapshotAgeMs\":10000,\"price\":{\"currency\":\"INR\",\"effectiveAt\":1000,\"enabled\":true,\"expiresAt\":9000,\"minimumMs\":0,\"model\":\"saaras:v3\",\"provider\":\"sarvam\",\"quantumMs\":1000,\"rateMicros\":7,\"requestFeeMicros\":2,\"revision\":\"tariff-v1\",\"unitMs\":3000},\"revision\":\"policy-v1\"}},\"role\":{\"languages\":[\"en-IN\",\"hi-IN\",\"ta-IN\"],\"model\":\"saaras:v3\",\"provider\":\"sarvam\",\"timeoutMs\":20000}}",
+  "sha256": "488b40ca56bd150e96421e8c92bcc316fa12786c564487bccf586edffe3582af"
+}

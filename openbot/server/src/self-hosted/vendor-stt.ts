@@ -12,6 +12,12 @@ import {
   type Transcript,
 } from "./speech";
 import { speechJson } from "./speech-http";
+import {
+  vendorSttBounds,
+  vendorSttLanguagesSchema,
+  vendorSttModels,
+  vendorSttTimeoutSchema,
+} from "./vendor-stt-contract";
 import { inspectPcmWav } from "./wav";
 
 type Options = {
@@ -53,21 +59,17 @@ function createStt(
   provider: "sarvam" | "elevenlabs",
   options: Options,
 ): SpeechToTextProvider {
-  const models =
-    provider === "sarvam" ? ["saaras:v3", "saaras:v4"] : ["scribe_v2"];
-  if (!models.includes(options.model))
+  if (!vendorSttModels[provider].some((model) => model === options.model))
     throw new LocalError("Unsupported speech provider model.");
   if (provider === "sarvam" && options.providerLogging !== undefined)
     throw new LocalError(
       "No Sarvam retention-control option has been verified.",
     );
-  const languages = z
-    .array(locale)
-    .min(1)
-    .max(5)
-    .parse([...(options.languages ?? fixtureLanguages)]);
+  const languages = vendorSttLanguagesSchema.parse([
+    ...(options.languages ?? fixtureLanguages),
+  ]);
   const timeout = options.timeoutMs ?? 20000;
-  if (!Number.isInteger(timeout) || timeout < 1000 || timeout > 60000)
+  if (!vendorSttTimeoutSchema.safeParse(timeout).success)
     throw new LocalError("Unsupported speech timeout budget.");
   if (
     options.providerLogging !== undefined &&
@@ -98,7 +100,10 @@ function createStt(
         throw new LocalError("Selected speech language is not enabled.");
       const audio = Uint8Array.from(parsed.audio);
       const wav = inspectPcmWav(audio);
-      if (wav.durationMs < 100 || wav.durationMs > 29000)
+      if (
+        wav.durationMs < vendorSttBounds.minDurationMs ||
+        wav.durationMs > vendorSttBounds.maxDurationMs
+      )
         throw new LocalError(
           "Vendor STT accepts WAV audio from 100ms through 29 seconds in this slice.",
         );

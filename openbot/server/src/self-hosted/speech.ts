@@ -7,12 +7,12 @@ import {
   type SpeechLanguage,
   speechLanguages,
 } from "./roles";
-import { inspectPcmWav } from "./wav";
+import { inspectPcmWav, pcmWavMaxBytes } from "./wav";
 
 const language = z.enum(speechLanguages),
   audioBytes = z
     .instanceof(Uint8Array)
-    .refine((value) => value.length >= 44 && value.length <= 2_000_000);
+    .refine((value) => value.length >= 44 && value.length <= pcmWavMaxBytes);
 const source = z
   .object({
     mode: z.enum(["fixture", "live"]),
