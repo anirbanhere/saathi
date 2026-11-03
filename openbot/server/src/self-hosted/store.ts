@@ -10,6 +10,7 @@ import { type MediaLimits, migrateMedia, OwnedMedia } from "./media-store";
 import { migratePlanReads, PlanReads } from "./plan-reads";
 import { migratePlans, TaskPlans } from "./plans";
 import type { SearchEvidence } from "./search";
+import type { SttAccessReviewer } from "./stt-access-review";
 import {
   migrateSttAdmissions,
   type SttAdmissionLimits,
@@ -78,6 +79,7 @@ export class SelfHostedStore {
       sttPolicyLimits?: Partial<SttPolicyCatalogueLimits>;
       sttBalanceReader?: SttBalanceReader;
       sttRoleReader?: SttRoleReader;
+      sttAccessReviewer?: SttAccessReviewer;
     } = {},
   ) {
     const policyLimits = sttPolicyCatalogueLimits(options.sttPolicyLimits);
@@ -238,6 +240,7 @@ export class SelfHostedStore {
         options.now,
         options.sttBalanceReader,
         options.sttRoleReader,
+        options.sttAccessReviewer,
       );
       this.sttAdmissions.recoverOnExclusiveStartup();
       this.plans = new TaskPlans(this.db, {

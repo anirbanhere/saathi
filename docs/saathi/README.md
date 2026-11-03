@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Read-only STT access blockers](stt-access-review.md) add an explicit owner-scoped diagnostic and unconfigured account-review port. No positive authorization, provider or execution is supported.
+
 [Optional durable STT role snapshots](stt-role-snapshots.md) add source15 metadata only for new holds with an explicitly injected reader. Old holds stay unbound and no execution is enabled.
 
 [STT role/policy compatibility metadata](stt-role-binding.md) adds a shared strict candidate-role boundary and immutable content identity. Existing journal rows stay unbound; no provider or execution is enabled.

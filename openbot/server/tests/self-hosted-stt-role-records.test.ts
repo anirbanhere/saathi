@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { syntheticSpeechFixture } from "../src/self-hosted/speech";
 import { SelfHostedStore } from "../src/self-hosted/store";
+import type { SttAccessReviewer } from "../src/self-hosted/stt-access-review";
 import fixture from "./fixtures/stt-policy-pin.json";
 
 const folders: string[] = [],
@@ -28,7 +29,7 @@ const role = () => ({
   languages: ["en-IN", "hi-IN", "ta-IN"],
   timeoutMs: 20000,
 });
-function world(enabled = true) {
+function world(enabled = true, reviewer?: SttAccessReviewer) {
   const dir = mkdtempSync(join(tmpdir(), "saathi-role-record-"));
   folders.push(dir);
   const path = join(dir, "state.sqlite"),
@@ -39,6 +40,7 @@ function world(enabled = true) {
   let beforeBalance: (() => void) | undefined;
   const store = new SelfHostedStore(path, {
     now: () => at,
+    sttAccessReviewer: reviewer,
     sttBalanceReader: (s) => {
       balanceCalls++;
       beforeBalance?.();
@@ -99,6 +101,7 @@ function world(enabled = true) {
     input,
     profile,
     now: () => at,
+    sttAccessReviewer: reviewer,
     select: (r: unknown) => {
       selected = r;
     },
@@ -294,4 +297,196 @@ test("privacy changes during observation persist while no hold or snapshot is co
   expect(w.store.media.metadata(w.owner, w.media.id).consentToProcess).toBe(
     false,
   );
+});
+
+test("an explicit owned access review defaults to account connection required without consuming units", () => {
+  const w = world(),
+    held = w.store.sttBudgetHolds.reserve(w.owner, w.input),
+    before = w.calls();
+  expect(w.store.sttBudgetHolds.reviewAccess(w.owner, held.id)).toEqual({
+    kind: "access_review",
+    status: "requires_auth",
+    code: "account_not_connected",
+    executionAllowed: false,
+  });
+  expect(w.calls()).toEqual(before);
+  expect(w.count()).toBe(1);
+  expect(w.count("stt_budget_holds")).toBe(1);
+});
+
+test("unbound and closed holds report local blockers instead of account readiness", () => {
+  const w = world(false),
+    held = w.store.sttBudgetHolds.reserve(w.owner, w.input);
+  expect(w.store.sttBudgetHolds.reviewAccess(w.owner, held.id).code).toBe(
+    "role_snapshot_required",
+  );
+  w.store.sttBudgetHolds.cancelUnissued(w.owner, held.id);
+  expect(w.store.sttBudgetHolds.reviewAccess(w.owner, held.id).code).toBe(
+    "hold_closed",
+  );
+});
+
+test("the trusted reviewer receives frozen minimal server context and only blocker codes reach callers", () => {
+  let calls = 0;
+  const w = world(true, (context) => {
+    calls++;
+    expect(Object.isFrozen(context)).toBe(true);
+    expect(context.ownerRef).toBe(w.owner);
+    expect(context.maxCostMicros).toBe(5);
+    expect(context.model).toBe("saaras:v3");
+    expect(context.requestOptionsBound).toBe(false);
+    expect(context.roleContentSha256).toMatch(/^[a-f0-9]{64}$/);
+    expect(Object.keys(context).sort()).toEqual([
+      "accountRef",
+      "checkedAt",
+      "currency",
+      "holdId",
+      "language",
+      "maxCostMicros",
+      "model",
+      "ownerRef",
+      "policyContentSha256",
+      "provider",
+      "requestOptionsBound",
+      "roleContentSha256",
+    ]);
+    return {
+      status: "requires_user_action",
+      code: "retention_eligibility_unverified",
+    };
+  });
+  const held = w.store.sttBudgetHolds.reserve(w.owner, w.input),
+    before = w.calls(),
+    report = w.store.sttBudgetHolds.reviewAccess(w.owner, held.id);
+  expect(report).toEqual({
+    kind: "access_review",
+    status: "requires_user_action",
+    code: "retention_eligibility_unverified",
+    executionAllowed: false,
+  });
+  expect(calls).toBe(1);
+  expect(w.calls()).toEqual(before);
+  expect(JSON.stringify(report)).not.toMatch(
+    /canonical|digest|token|accountRef|ownerRef|model|sha256/i,
+  );
+});
+
+test("positive, forged, extra-field, thrown and async reviewer results never become verified access", () => {
+  const results = [
+    () => ({ status: "verified", allowed: true }),
+    () => ({ status: "ready", code: "ok" }),
+    () => ({
+      status: "requires_auth",
+      code: "grant_revoked",
+      message: "synthetic-private-value",
+    }),
+    () => true,
+    () => {
+      throw Error("synthetic-private-value");
+    },
+    () =>
+      Promise.resolve({
+        status: "requires_auth",
+        code: "account_not_connected",
+      }),
+    () => Promise.reject(Error("synthetic-private-value")),
+  ];
+  for (const reviewer of results) {
+    const w = world(true, reviewer),
+      held = w.store.sttBudgetHolds.reserve(w.owner, w.input),
+      report = w.store.sttBudgetHolds.reviewAccess(w.owner, held.id);
+    expect(report.status).toBe("unavailable");
+    expect(report.executionAllowed).toBe(false);
+    expect(JSON.stringify(report)).not.toContain("synthetic-private-value");
+    expect(w.count("stt_budget_holds")).toBe(1);
+  }
+});
+
+test("foreign or expired owners cannot ask a reviewer about a hold", () => {
+  let calls = 0;
+  const w = world(true, () => {
+      calls++;
+      return { status: "requires_auth", code: "grant_revoked" };
+    }),
+    held = w.store.sttBudgetHolds.reserve(w.owner, w.input),
+    other = w.store.createSession().owner;
+  expect(() => w.store.sttBudgetHolds.reviewAccess(other, held.id)).toThrow(
+    "not found",
+  );
+  expect(() =>
+    w.store.sttBudgetHolds.reviewAccess(w.owner, {
+      id: held.id,
+      verified: true,
+    }),
+  ).toThrow("Invalid");
+  w.db
+    .query("UPDATE sessions SET expires=? WHERE owner=?")
+    .run(w.now(), w.owner);
+  expect(() => w.store.sttBudgetHolds.reviewAccess(w.owner, held.id)).toThrow(
+    "active owner session",
+  );
+  expect(calls).toBe(0);
+});
+
+test("independent privacy and cancellation during review persist and override stale reviewer context", () => {
+  for (const kind of ["privacy", "cancel"]) {
+    const action: { run?: () => void } = {};
+    const w = world(true, () => {
+        action.run?.();
+        return { status: "requires_auth", code: "grant_expired" };
+      }),
+      held = w.store.sttBudgetHolds.reserve(w.owner, w.input);
+    action.run = () => {
+      if (kind === "privacy")
+        w.store.media.revokeProcessing(w.owner, w.media.id);
+      else w.store.sttBudgetHolds.cancelUnissued(w.owner, held.id);
+    };
+    const report = w.store.sttBudgetHolds.reviewAccess(w.owner, held.id);
+    expect(report.code).toBe(
+      kind === "privacy" ? "media_review_required" : "hold_closed",
+    );
+    expect(report.executionAllowed).toBe(false);
+    if (kind === "privacy")
+      expect(w.store.media.metadata(w.owner, w.media.id).consentToProcess).toBe(
+        false,
+      );
+    else
+      expect(w.store.sttBudgetHolds.get(w.owner, held.id).state).toBe(
+        "cancelled_unissued",
+      );
+  }
+});
+
+test("a session expired through another connection during review suppresses the final report", () => {
+  const action: { run?: () => void } = {};
+  const w = world(true, () => {
+      action.run?.();
+      return { status: "requires_auth", code: "grant_expired" };
+    }),
+    held = w.store.sttBudgetHolds.reserve(w.owner, w.input);
+  action.run = () => {
+    w.db
+      .query("UPDATE sessions SET expires=? WHERE owner=?")
+      .run(w.now(), w.owner);
+  };
+  expect(() => w.store.sttBudgetHolds.reviewAccess(w.owner, held.id)).toThrow(
+    "active owner session",
+  );
+  expect(w.db.query("SELECT state FROM stt_budget_holds").get()).toEqual({
+    state: "held",
+  });
+});
+
+test("unexpected media storage errors remain unavailable instead of asking the user to regrant consent", () => {
+  let calls = 0;
+  const w = world(true, () => {
+      calls++;
+      return { status: "requires_auth", code: "account_not_connected" };
+    }),
+    held = w.store.sttBudgetHolds.reserve(w.owner, w.input);
+  w.db.exec("DROP TABLE owned_media");
+  expect(() => w.store.sttBudgetHolds.reviewAccess(w.owner, held.id)).toThrow(
+    "storage is unavailable",
+  );
+  expect(calls).toBe(0);
 });

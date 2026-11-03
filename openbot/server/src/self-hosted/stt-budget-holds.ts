@@ -3,6 +3,11 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { LocalError } from "./errors";
 import type { OwnedMedia } from "./media-store";
+import {
+  reviewSttAccountAccess,
+  type SttAccessReviewer,
+  sttAccessBlocked,
+} from "./stt-access-review";
 import { createSttBudgetPreview } from "./stt-budget";
 import { estimateSttCost } from "./stt-cost";
 import { SttHoldRoles, type SttRoleReader } from "./stt-hold-roles";
@@ -85,6 +90,7 @@ export class SttBudgetHolds {
     private now: () => number = Date.now,
     private reader?: SttBalanceReader,
     private roleReader?: SttRoleReader,
+    private accessReviewer?: SttAccessReviewer,
   ) {
     schema(db);
     this.roles = new SttHoldRoles(db);
@@ -233,6 +239,97 @@ export class SttBudgetHolds {
         .get(owner, id);
       if (!row) throw new LocalError("Speech budget hold not found.", 404);
       return this.view(this.validated(row).r);
+    });
+  }
+  /** Explicit read-only diagnostic, never an account-verification or execution-permit API. */
+  reviewAccess(ownerInput: unknown, idInput: unknown) {
+    let owner: string, id: string;
+    try {
+      owner = ref.parse(ownerInput);
+      id = z.uuid().parse(idInput);
+    } catch {
+      throw new LocalError("Invalid speech access-review reference.");
+    }
+    return this.storage(() => {
+      const probe = () => {
+        schema(this.db);
+        this.session(owner, this.time());
+        const raw = this.db
+          .query("SELECT * FROM stt_budget_holds WHERE owner=? AND id=?")
+          .get(owner, id);
+        if (!raw) throw new LocalError("Speech budget hold not found.", 404);
+        const { r, pin } = this.validated(raw);
+        if (r.state !== "held")
+          return {
+            blocker: sttAccessBlocked({
+              status: "requires_user_action",
+              code: "hold_closed",
+            }),
+          };
+        const binding = this.roles.read(owner, id, r.created, pin);
+        if (!binding)
+          return {
+            blocker: sttAccessBlocked({
+              status: "requires_user_action",
+              code: "role_snapshot_required",
+            }),
+          };
+        try {
+          const consent = this.media.checkProcessingConsent(
+            owner,
+            r.media,
+            r.consent_revision,
+          );
+          if (consent.contentSha256 !== r.content_hash)
+            return {
+              blocker: sttAccessBlocked({
+                status: "requires_user_action",
+                code: "media_review_required",
+              }),
+            };
+        } catch (error) {
+          if (
+            !(error instanceof LocalError) ||
+            ![403, 404, 409, 410].includes(error.status)
+          )
+            throw error;
+          return {
+            blocker: sttAccessBlocked({
+              status: "requires_user_action",
+              code: "media_review_required",
+            }),
+          };
+        }
+        return { r, binding };
+      };
+      const first = probe();
+      if (first.blocker) {
+        this.session(owner, this.time());
+        return first.blocker;
+      }
+      const r = first.r,
+        binding = first.binding;
+      const review = reviewSttAccountAccess(
+        {
+          ownerRef: owner,
+          holdId: id,
+          provider: binding.role.provider,
+          accountRef: binding.policy.profile.accountRef,
+          currency: binding.policy.profile.price.currency,
+          model: binding.role.model,
+          roleContentSha256: binding.contentSha256,
+          policyContentSha256: binding.policy.contentSha256,
+          maxCostMicros: r.cost_micros,
+          language: r.language,
+          checkedAt: this.time(),
+          requestOptionsBound: false,
+        },
+        this.accessReviewer,
+      );
+      // No write transaction surrounds a callback; independent privacy/cancellation must persist.
+      const current = probe();
+      this.session(owner, this.time());
+      return current.blocker ?? review;
     });
   }
   cancelUnissued(ownerInput: unknown, idInput: unknown) {

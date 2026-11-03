@@ -1,7 +1,7 @@
 import type { Database } from "bun:sqlite";
 import { LocalError } from "./errors";
 import type { SttPolicyPin } from "./stt-policy-pin";
-import { createSttRoleBinding } from "./stt-role-binding";
+import { createSttRoleBinding, type SttRoleBinding } from "./stt-role-binding";
 
 export type SttRoleReader = (
   scope: Readonly<{
@@ -88,6 +88,15 @@ export class SttHoldRoles {
     created: number,
     policy: SttPolicyPin,
   ): "recorded" | "unbound" {
+    return this.read(owner, id, created, policy) ? "recorded" : "unbound";
+  }
+  /** Private server metadata only. Never project this content to an HTTP/model/channel response. */
+  read(
+    owner: string,
+    id: string,
+    created: number,
+    policy: SttPolicyPin,
+  ): SttRoleBinding | null {
     try {
       schema(this.db);
       const row = this.db
@@ -103,7 +112,7 @@ export class SttHoldRoles {
           "SELECT owner,created,canonical_json,digest FROM stt_hold_roles WHERE hold_id=?",
         )
         .get(id);
-      if (!row) return "unbound";
+      if (!row) return null;
       if (row.owner !== owner || row.created !== created) throw unavailable();
       const content: unknown = JSON.parse(row.canonical_json);
       const role =
@@ -121,7 +130,7 @@ export class SttHoldRoles {
         binding.contentSha256 !== row.digest
       )
         throw unavailable();
-      return "recorded";
+      return binding;
     } catch {
       throw unavailable();
     }
