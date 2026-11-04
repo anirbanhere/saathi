@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## PR53 source checks complete; historical upgrade review next
+
+Ordinary allowance available40% primary/22% weekly, one reset credit observed; no credit action. WiderCI41852265401 completed failure: macos-latest job126651396077 was never acquired (zero steps; hosted runner capacity annotations); aggregate verify correctly failed on abandoned. All acquired source jobs passed; no whole-platform-green claim or blind rerun. Scoped/tenant successes and Linux364/3394 below remain valid. Held42c2a73 can now be published with this checkpoint. PR18 remains OPEN/feat/saathi-whatsapp/main, untouched.
+
+Next tasks/public-demo-release-review.md begins with authentic historical schema7 seed/upgrade evidence on fresh synthetic state only. No production/private profile access, migration, deployment, merge, provider/live/paid probe, runtime download or gate change. Full goal remains incomplete.
+
 ## Per-card status source published in stacked draft PR53
 
 Source74784da0d7a4dfabb08ce28a82c29260b6d09c00 is pushed to codex/task-status-console in draft PR53 https://github.com/anirbanhere/saathi/pull/53, base PR52/0168dc4, attached. Configured-secret scan0 and clean audit/packed smoke pass. Server bundle94bb01484d2ba143ea87eb7191e9cb3fa4481fad2c78749361c579af29c3b4c9 remains identical because this slice changes static UI; tracked source/manifest asset inventory identify those changes. Four shipped packages/zero observed shipped advisory matches,29 wider/runtimeIntegrity=null (not Linux release runtime). Local/browser verification below is unchanged. PR51/52 descriptions now record their completed wider/scoped successes and checkpoints; both reattached. Contributor PR18 remains OPEN feat/saathi-whatsapp against main, untouched.
