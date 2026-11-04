@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 4 November continuation — PR50 complete source CI passed
+
+Exact-source79c842f widerCI41775098774 completed success with no failed/unfinished jobs. Scoped Linux348/3103, matching merge tree and clean audit/packed evidence below remain valid. Held7300e1c is preserved and can now be published. Current allowance is available1% primary/0% weekly with one reset credit visible; this continuation did not redeem/reset/buy credits (the previous checkpoint observed two, so do not repeat that historical count as current). No provider/key/paid call, profile access/upgrade or deployment.
+
+Next FR-006 read-only help/status slice needs a separate narrow metadata reader: existing appointments.get/list materialize approval expiry and write audit rows. Do not call those getters for a no-write status operation. Read only validated owned task state/expiry/pending/updated metadata, project effective approval expiry without persisting it, preserve mock/draft labels and pending-cancel distinction, and leave existing mutation/approval flows unchanged. Locale/help/status only; no model/catalogue/provider call, quota mutation, arbitrary-chat interception or generic cancellation. Source15/public7 and profiles stay unchanged.
+
 ## Text download console — PR50 scoped Linux checks pass
 
 Source `79c842f4ffafe81353138b24cd9f672b28a71f59` is pushed in draft [PR50](https://github.com/anirbanhere/saathi/pull/50), stacked on PR49/clean published `8769994`, and attached to this chat. [Self-hosted41775098794](https://github.com/anirbanhere/saathi/actions/runs/41775098794) and [tenant41775098779](https://github.com/anirbanhere/saathi/actions/runs/41775098779) pass. Tested merge `3252a0f3f19b108a632ca7e97b737e7674de5691` has tree `ba10cd40997050003c470aeba89596c0d208d73a`, exactly matching source (parents8769994/79c842f). Linux348 tests/3103 assertions, server types, unchanged frozen239 and audit/packed pass. WiderCI41775098774 is unfinished with no failed completed jobs: tests/Python running; both startup platforms have passed. No whole-platform-green claim or blind retry. Hold this final documentation checkpoint locally until the useful exact-source run finishes, since a push cancels non-main runs; use PR50 headRefOid if tracking refs are absent.
