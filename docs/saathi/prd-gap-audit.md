@@ -1,5 +1,7 @@
 # PRD implementation audit — 29 October 2026
 
+**Latest console slice:** Download my text now explicitly requests the existing limited conversation/preference export, with shared busy/focus state, bounded deadline/bytes and native browser checks (text-export-console.md). No automatic export, model/provider call, migration or public rollout. FR-034 remains partial: full account/media/financial export, erasure and backups are unfinished.
+
 **Latest lifecycle slice:** development source has an explicit bounded owned conversation/preference JSON download API (owned-text-export.md), with consistent read snapshot, strict projections/UTF-8 ceilings and no provider calls. No console button, full account export/erasure, migration or public release is added. FR-034 remains partial; source15/public7 unchanged.
 
 **Latest request boundary:** disabled STT factories now use the strict credential-free wire compiler (stt-wire-options.md). Reviewed official account/retention contracts and a proposed default-denied admission design are documented; verified account/credit/retention/grant/worker and request-options-to-hold binding remain absent. This is not completion of FR-007/008 or a public rollout; source15/public7 stay unchanged.
@@ -62,7 +64,7 @@ The separate Python repository has tested mock task/approval/audio fixtures. The
 | FR-031 recurring reminders/quiet hours | Absent | Durable scheduler, opt-in destination, retries/stop and notifications pending |
 | FR-032 sourced travel/status | General Meta lookup only; no typed travel adapter | Authorized fare/train services and partner checkout/handoff pending |
 | FR-033 family grants/revocation | Visitor isolation only | Household identity and resource-scoped sharing pending |
-| FR-034 export/deletion | Owned thread/memory deletion; local opt-in media revocation/deletion clears BLOB/linked retained text atomically | Development: limited owned conversation/preference text-export API; no UI/public rollout or full export/account erasure. Ledger/metadata, WAL/backups, provider and whole-account lifecycle remain pending |
+| FR-034 export/deletion | Owned thread/memory deletion; local opt-in media revocation/deletion clears BLOB/linked retained text atomically | Development: limited owned conversation/preference text-export API and explicit console download; no public rollout or full export/account erasure. Ledger/metadata, WAL/backups, provider and whole-account lifecycle remain pending |
 
 This table distinguishes partial coverage from completion. The appointment implementation is not a measured voice MVP, generic autonomous planning engine, real clinic connection or complete Phase1 port.
 

@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Explicit text download console](text-export-console.md) connects the limited owned-text API to an accessible download button, with bounded responses, failure handling and synthetic real-browser evidence. No public rollout or full account backup.
+
 [Owned bounded text export](owned-text-export.md) adds an explicit session/CSRF-protected JSON download of conversation text and reviewed preferences only. No UI, migration, provider call or public rollout.
 
 [Exact STT wire options and admission design](stt-wire-options.md) share the credential-free request compiler with disabled vendor transports and document verified-source account/retention gaps. No live authority is added.
