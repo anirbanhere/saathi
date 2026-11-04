@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Localized explicit Help console](localized-help-console.md) adds safe English/Hindi/Tamil guidance with no automatic/model/task calls. Exact-target per-card status UI remains separate.
+
 [Explicit read-only help/status](read-only-help-status.md) adds protected localized help and exact owned task-state metadata without model calls or expiry/audit mutation. No new console/chat/channel routing or generic action permission.
 
 [Explicit text download console](text-export-console.md) connects the limited owned-text API to an accessible download button, with bounded responses, failure handling and synthetic real-browser evidence. No public rollout or full account backup.

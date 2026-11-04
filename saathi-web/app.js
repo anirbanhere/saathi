@@ -1,3 +1,4 @@
+import { createHelpConsole } from "./help.js";
 import { downloadTextExport } from "./export.js";
 import { createAppointmentConsole } from "./appointments.js";
 import { createFixtureConsole } from "./fixture.js";
@@ -32,6 +33,7 @@ const audioUpload = createAudioUpload({
   upload: uploadAudio,
   refresh: savedMedia.refresh,
 });
+const helpConsole = createHelpConsole({ api, run });
 async function uploadAudio(attempt, signal) {
   const response = await fetch("/api/media/upload", {
     method: "POST",
@@ -91,6 +93,7 @@ async function run(
   savedMedia.setBusy(true);
   audioUpload.setBusy(true);
   fixtureSpeech.setBusy(true);
+  helpConsole.setBusy(true);
   $("#model-select").disabled = true;
   $("#message").readOnly = true;
   document.querySelectorAll("button").forEach((button) => {
@@ -120,6 +123,7 @@ async function run(
     savedMedia.setBusy(false);
     audioUpload.setBusy(false);
     fixtureSpeech.setBusy(false);
+    helpConsole.setBusy(false);
     if (succeeded) focusAfter?.focus();
   }
 }

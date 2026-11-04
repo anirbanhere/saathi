@@ -19,6 +19,7 @@ export function attachSelfHostedWeb(
       ![
         "app.js",
         "export.js",
+        "help.js",
         "appointments.js",
         "plans.js",
         "media.js",

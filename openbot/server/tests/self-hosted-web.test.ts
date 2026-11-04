@@ -27,6 +27,7 @@ test("the console serves only its fixed assets with local security headers", asy
     const html = await page.text();
     expect(html).toContain("SELF-HOSTED STORAGE");
     expect(html).toContain('id="text-export"');
+    expect(html).toContain('id="help-show"');
     expect(html).toContain("not a full account backup");
     expect(page.headers.get("cache-control")).toBe("no-store");
     expect(page.headers.get("content-security-policy")).toContain(
@@ -38,6 +39,9 @@ test("the console serves only its fixed assets with local security headers", asy
     expect(
       (await app.request("http://localhost:8790/assets/plans.js")).status,
     ).toBe(200);
+    const help = await app.request("http://localhost:8790/assets/help.js");
+    expect(help.status).toBe(200);
+    expect(await help.text()).toContain("createHelpConsole");
     const download = await app.request(
       "http://localhost:8790/assets/export.js",
     );
