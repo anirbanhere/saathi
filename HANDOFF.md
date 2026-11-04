@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 4 November afternoon — PR52 complete source CI passed
+
+Ordinary allowance reset and is available1% primary/16% weekly; one reset credit observed, none redeemed/reset/bought by this continuation. Exact-source78a5903 self-hosted41789674886/tenant41789674794/widerCI41789674856 all completed success. Linux360/3326 and frozen239 pass; tested merge696dfc42903df8954b3173c0e88c3da030ab4488 must match source treefd54781739613b022301eec86047456af157ff41 before release claims. Held11ebf45 is preserved and can now be published. No deployment/profile upgrade/provider call.
+
+Next bounded slice: explicit per-card saved status for the two existing task kinds, using already-rendered owned IDs and the Help language selector. No target-list refresh, legacy expiry-writing get/list, task control/nonce changes, automatic read/poll, model call or mutating intent. Validate response target/locale/mock-or-draft/code and metadata bounds, render notice/pending snapshot safely, retain shared busy/focus/deadline and native no-write browser checks. Source15/public7 stay unchanged.
+
 ## Localized Help — PR52 published, source CI pending; allowance checkpoint
 
 Source78a5903001761b540a9597235ba00dd56f5a3ca8 is pushed in draft PR52 https://github.com/anirbanhere/saathi/pull/52 on published PR51/98ff564 and attached to this chat. Clean audit/packed pass; bundle94bb01484d2ba143ea87eb7191e9cb3fa4481fad2c78749361c579af29c3b4c9, four shipped packages/zero observed shipped advisory matches,29 wider/runtimeIntegrity=null (not release runtime). help.js is packaged. Secret scan0. Local full358/3309+two existing skips, types/format/lint/Node and synthetic browser evidence below remain valid. Self-hosted41789674886, tenant41789674794 and widerCI41789674856 are running; no Linux/full CI conclusion yet. Hold this final docs commit locally while useful source checks run to avoid cancellation. Last allowance observed96% primary/15% weekly with one reset credit; this run did not redeem/reset/purchase credits. No more implementation started near the limit.
