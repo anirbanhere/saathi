@@ -1,15 +1,12 @@
 """Explicit operator deployment, never run by PR CI. No secrets in arguments/logs/source."""
-import hashlib
 import ipaddress
 import json
-import os
-import re
 from pathlib import Path
 import shutil
 import subprocess
 import sys
-import tarfile
 from datetime import datetime, timezone
+from release_inputs import pack_release, validate_build
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = "sathi-home-agent"
@@ -78,11 +75,8 @@ def update_existing(archive, manifest, digest, object_name):
 
 def main():
     build = ROOT / "artifacts/public-build"
-    manifest = json.loads((build / "manifest.json").read_text(encoding="utf-8"))
-    if manifest["dirty"] or not manifest["runtimeIntegrity"]:
-        raise RuntimeError("Build a clean committed release with --runtime first.")
-    if hashlib.sha256((build / "app.js").read_bytes()).hexdigest() != manifest["bundleSha256"]:
-        raise RuntimeError("Bundle changed after its manifest.")
+    # Pure input validation precedes any private-profile read or cloud call.
+    validate_build(build)
     private = {}
     for line in (ROOT / "openbot/.env.self-hosted").read_text(encoding="utf-8-sig").splitlines():
         if "=" in line and not line.lstrip().startswith("#"):
@@ -92,21 +86,7 @@ def main():
     if not all(keys.values()):
         raise RuntimeError("Both provider keys must exist in the private profile.")
     archive = ROOT / "artifacts/saathi-demo-release.tgz"
-    with tarfile.open(archive, "w:gz") as tar:
-        for name in manifest["files"]:
-            path=build/name
-            if ".." in name or not re.fullmatch(r"(?:app.js|manifest.json|LICENSE|linux-runtime.tgz|examples/saathi/[A-Za-z0-9_./-]+\.(?:yaml|md)|saathi-web/(?:index.html|app.js|appointments.js|plans.js|style.css)|licenses/[A-Za-z0-9_.-]+)",name) or not path.resolve().is_relative_to(build.resolve()) or not path.is_file() or path.is_symlink():
-                raise RuntimeError("Unexpected or escaping release input.")
-            tar.add(path, arcname=name, recursive=False)
-    content = archive.read_bytes()
-    if any(value.encode() in content for value in keys.values()):
-        raise RuntimeError("Credential found in release archive.")
-    # Scan uncompressed inputs as well; compression is not a secret boundary.
-    with tarfile.open(archive) as tar:
-        for member in tar.getmembers():
-            if member.isfile() and any(value.encode() in tar.extractfile(member).read() for value in keys.values()):
-                raise RuntimeError("Credential found in packaged input.")
-    digest = hashlib.sha256(content).hexdigest()
+    manifest, digest = pack_release(build, archive, secret_values=keys.values())
     object_name = f"releases/{manifest['source']}-{digest}.tgz"
     if "--update" in sys.argv[1:]:
         update_existing(archive, manifest, digest, object_name)

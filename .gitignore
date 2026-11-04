@@ -4,3 +4,4 @@ node_modules/
 .copilotkit/
 .saathi/
 artifacts/
+__pycache__/
