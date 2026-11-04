@@ -1,6 +1,6 @@
 # Explicit localized Help console
 
-Development source now offers Help in your language with English/Hindi/Tamil selection and a Show help button. This is the smallest UI part of tasks/help-status-console.md: per-card exact-target status controls remain future work. It neither classifies arbitrary chat nor enables voice, channels or generic mutating intents. Source15/public7 and existing profiles/deployment are unchanged.
+Development source now offers Help in your language with English/Hindi/Tamil selection and a Show help button. This is the smallest UI part of tasks/help-status-console.md: per-card exact-target status controls are now documented in task-status-console.md. It neither classifies arbitrary chat nor enables voice, channels or generic mutating intents. Source15/public7 and existing profiles/deployment are unchanged.
 
 The module installs listeners without making requests. An explicit click captures the selected locale and uses the existing authenticated api()/CSRF helper for one fixed help POST. Shared run() busy/focus handling freezes the locale and suppresses overlapping clicks. Successful guidance receives its locale's lang attribute and focus; shared status reports localized Help loaded / No task was run, preserving other actions' default messages. Failed requests render fixed localized unavailable/expired-session text, never raw server/provider errors, and restore controls for an explicit later attempt.
 

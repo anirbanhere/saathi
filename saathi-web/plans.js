@@ -1,4 +1,4 @@
-export function createPlanConsole({ api, run, el, button }) {
+export function createPlanConsole({ api, run, el, button, statusControl }) {
   const $ = (selector) => document.querySelector(selector);
   let pending = null,
     sending = false,
@@ -163,6 +163,8 @@ export function createPlanConsole({ api, run, el, button }) {
           ),
         );
       card.append(history);
+      if (statusControl)
+        card.append(statusControl("task_plan", task.id, task.input.goal));
       list.append(card);
     }
     if (!records.length)
