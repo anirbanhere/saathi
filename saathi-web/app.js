@@ -1,3 +1,4 @@
+import { downloadTextExport } from "./export.js";
 import { createAppointmentConsole } from "./appointments.js";
 import { createFixtureConsole } from "./fixture.js";
 import { createMediaConsole } from "./media.js";
@@ -78,7 +79,11 @@ async function api(path, body, method = "POST", signal) {
   }
   return result;
 }
-async function run(action, focusAfter = null) {
+async function run(
+  action,
+  focusAfter = null,
+  successMessage = "Saved on this server.",
+) {
   if (busy) return;
   busy = true;
   demoAppointments.setBusy(true);
@@ -96,7 +101,7 @@ async function run(action, focusAfter = null) {
   try {
     await action();
     succeeded = true;
-    $("#status").textContent = "Saved on this server.";
+    $("#status").textContent = successMessage;
   } catch (error) {
     $("#status").textContent = error.message;
   } finally {
@@ -302,6 +307,13 @@ async function enter(session) {
   await taskPlans.initialize();
 }
 
+$("#text-export").addEventListener("click", () =>
+  run(
+    () => downloadTextExport(csrf),
+    $("#text-export"),
+    "Download requested. Check your browser’s downloads and keep the file private.",
+  ),
+);
 $("#models-refresh").addEventListener("click", () => run(models));
 $("#model-select").addEventListener("change", () => {
   $("#send").disabled = !$("#model-select").value;

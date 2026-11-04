@@ -24,7 +24,10 @@ test("the console serves only its fixed assets with local security headers", asy
     );
     const page = await app.request("http://localhost:8790/");
     expect(page.status).toBe(200);
-    expect(await page.text()).toContain("SELF-HOSTED STORAGE");
+    const html = await page.text();
+    expect(html).toContain("SELF-HOSTED STORAGE");
+    expect(html).toContain('id="text-export"');
+    expect(html).toContain("not a full account backup");
     expect(page.headers.get("cache-control")).toBe("no-store");
     expect(page.headers.get("content-security-policy")).toContain(
       "frame-ancestors 'none'",
@@ -35,6 +38,11 @@ test("the console serves only its fixed assets with local security headers", asy
     expect(
       (await app.request("http://localhost:8790/assets/plans.js")).status,
     ).toBe(200);
+    const download = await app.request(
+      "http://localhost:8790/assets/export.js",
+    );
+    expect(download.status).toBe(200);
+    expect(await download.text()).toContain("downloadTextExport");
     const media = await app.request("http://localhost:8790/assets/media.js");
     expect(media.status).toBe(200);
     expect(await media.text()).toContain("createMediaConsole");
