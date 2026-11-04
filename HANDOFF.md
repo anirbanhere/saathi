@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## PR54 source CI complete; release-input guard next
+
+Ordinary allowance50% primary/23% weekly remains available; one reset credit observed, untouched. Source5920b41 self-hosted41861332291/tenant41861332417 completed SUCCESS: Linux366/3446, server types/frozen239/audit/packed pass. WiderCI41861332126 failed: macOS startup126683608673 never acquired a runner, zero steps/capacity annotation; aggregate verify failed on abandoned. All acquired source jobs passed, no whole-platform-green claim or blind retry. Helda329425 may now be published with this checkpoint. No public/private profile, cloud/provider/paid action, schema/gate change or deployment occurred.
+
+Next tasks/release-input-integrity.md: pure keyless validator/packer and complete input hashes for the exact current asset set, negative tests and scoped CI. Existing public executable27de098/schema7 remains unchanged. Full PRD goal incomplete.
+
 ## Historical upgrade source published in draft PR54
 
 Source5920b4165a102580bc81c0e05df14d963582585c is pushed to codex/historical-upgrade-review, stacked draft PR54 https://github.com/anirbanhere/saathi/pull/54 on PR53/913189c, attached. Secret scan0; clean audit/packed pass with unchanged server bundle94bb01484d2ba143ea87eb7191e9cb3fa4481fad2c78749361c579af29c3b4c9, four shipped packages/zero observed shipped advisory matches,29 wider/runtimeIntegrity=null (not release runtime). Historical fixture/tests/generator are not release assets. Final format/lint/Python syntax and focused2/52 pass; full364/3429+two skips/server types/frozen Windows-only differences below remain applicable.
