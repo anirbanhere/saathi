@@ -256,6 +256,15 @@ export function createSelfHostedApp(options: {
       daily_limits: store.limits(),
     }),
   );
+  app.post("/api/control-read", (c) => {
+    if (new URL(c.req.url).search)
+      throw new LocalError("Invalid control-read fields.");
+    return c.json(
+      store.controls.read(c.var.session.owner, c.var.body, {
+        planningConfigured: Boolean(options.roles && options.planner),
+      }),
+    );
+  });
   app.post("/api/text-export", (c) => {
     input(
       z

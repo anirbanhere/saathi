@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Explicit read-only help/status](read-only-help-status.md) adds protected localized help and exact owned task-state metadata without model calls or expiry/audit mutation. No new console/chat/channel routing or generic action permission.
+
 [Explicit text download console](text-export-console.md) connects the limited owned-text API to an accessible download button, with bounded responses, failure handling and synthetic real-browser evidence. No public rollout or full account backup.
 
 [Owned bounded text export](owned-text-export.md) adds an explicit session/CSRF-protected JSON download of conversation text and reviewed preferences only. No UI, migration, provider call or public rollout.

@@ -454,3 +454,5 @@ export class DemoAppointments {
       .immediate();
   }
 }
+
+export type { State as DemoAppointmentState };
