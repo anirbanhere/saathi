@@ -1,0 +1,19 @@
+# Next bounded task: review the existing public demo upgrade
+
+Status: planned; no release, profile inspection, deployment or migration performed. Continue after PR53 exact-source checks finish. Public executable remains27de098/schema7; current development source is74784da/schema15. The stack is draft/unmerged; contributor PR18 is separate and must remain untouched. This task prepares a concrete reviewable release candidate, not a main merge or automatic release.
+
+## First evidence to collect
+
+Read latest AGENTS/HANDOFF/public-deployment docs, current human deployment authorization and PR stack. Check ordinary usage before substantial work. Resolve all required exact-source CI outcomes, including platform runner failures, and distinguish source tree, merge tree, server bundle, static assets and release archive. Do not label runtimeIntegrity=null packaging a Linux release. Record any actual blocker rather than rerunning healthy work.
+
+Use only isolated fresh synthetic paths and a clean environment without provider keys or existing profile configuration. Build an authentic schema7 fixture from historical executable source27de098 (or a separately reviewed exact schema7 fixture), seed two owners, conversations/source evidence/preferences, inference usage and mock receipts/draft roles/read records. Preserve a consistent closed/SQLite-backup copy before opening a second copy with the candidate. Existing media-store upgrade coverage constructs a current database then drops selected tables and changes its version; that useful regression is not independent proof of an authentic deployed schema7 upgrade.
+
+Compare old records, ownership, immutable usage/receipt/duplicate identity and draft/read history before/after migration to15 and restart. Verify foreign-key integrity, no provider dispatch/replay, old binary refusal of15, current exclusive store lock, and unchanged default public speech/media/transaction gates. Schema version rewriting is fixture construction only, never an operator rollback. Keep fixtures/keyless logs ignored, stop all isolated processes and remove only resolved task-specific temporary paths.
+
+## Concrete review deliverable
+
+Prepare a release checklist with exact source/stack dependencies, required checks, packaged file/asset inventory, Linux runtime integrity, archive identity and configuration defaults. Document same VM/disk/address update, downtime, stopped consistent snapshot readiness, retained previous code/config, failure before/after migration and data-preserving recovery choices. Older code plus a newer database is invalid; restoring an old snapshot can lose subsequent user data and requires an explicit operator decision. A disk snapshot is not verified restore evidence until tested separately.
+
+Read deploy/public/deploy.py and startup.sh without executing them or opening secret/profile files. Identify changes needed to prevent a bad release before any cloud mutation; do not broaden IAM, rotate keys, create unrelated resources or connect new accounts. A future actual release also needs public HTTPS, visitor isolation, safe text/UI checks and persisted state after restart. Paid/live model validation requires its own scope; the prior one-shot Meta approval is consumed. No new live test is included here.
+
+Finish all authorized local preparation before deciding whether a final operator action needs new human approval. Cite the applicable authorization/rule if approval is required, present exact candidate/backup/downtime/rollback facts, and keep actual release work separate from speculative voice/channel activation. Save results and remaining gates in HANDOFF. The full PRD remains incomplete.
