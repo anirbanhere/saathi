@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## 4 November continuation — PR51 complete source CI passed
+
+Exact-source78a5412 widerCI41782879421 completed success with no failed/unfinished jobs. Scoped Linux356/3263, matching tree and audit/packed evidence below stand. Held d150ccb is preserved and can now be published. Ordinary allowance available75% primary/12% weekly with one reset credit observed; no reset/redemption/purchase by this continuation, provider call, profile upgrade or deployment.
+
+Next take the task's smallest useful UI increment: explicit localized Help only, with shared busy/focus, bounded message/deadline and no automatic/model/task IO. Per-card exact-target status integration remains a separate slice, preserving the warning that appointment get/list writes expiry/audit. Reuse shared authenticated api() for the fixed small server help response rather than introducing another transport framework; validate returned locale/format/action/message bounds and suppress late responses. Product copy should direct people to their task panels, not require implementation IDs.
+
 ## Explicit help/status reads — PR51 scoped Linux checks pass
 
 Source `78a5412480082226a9079b12bcf30eec5f7d50b4` is pushed in draft [PR51](https://github.com/anirbanhere/saathi/pull/51), stacked on PR50/clean published `0e89e16`, and attached to this chat. [Self-hosted41782879522](https://github.com/anirbanhere/saathi/actions/runs/41782879522) and [tenant41782879574](https://github.com/anirbanhere/saathi/actions/runs/41782879574) pass. Tested merge `5fda11226e123a7f99a9c19fa73eceb7b5cb05ec` has tree `4276cb17e0bd811a34540c2c5aeb53b6fa9f7c6e`, exactly matching source (parents0e89e16/78a5412). Linux356 tests/3263 assertions, server types, unchanged frozen239 and audit/packed pass. WiderCI41782879421 is unfinished with no failed completed jobs: tests/Python running, both startup platforms passed. No whole-platform-green claim or blind retry. Hold final docs locally until the useful exact-source run finishes, since a push cancels non-main runs; use PR51 headRefOid if tracking refs are absent.
