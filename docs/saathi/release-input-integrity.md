@@ -29,4 +29,4 @@ Public release is still separate. The historical schema7-to15 synthetic preserva
 
 Fresh-context adversarial review (doubt-driven-development) found a linked-ancestor gap: checking only the build directory/descendants allowed an artifacts ancestor to redirect the root. The implementation now rejects linked build ancestry before reads, with a valid-content ancestor-link regression. Follow-up review found no additional issue within the stated operator-owned checkout boundary. Cross-model skipped: non-interactive context.
 
-Exact-source Linux scoped CI41870191768 subsequently passed all15 stdlib tests, including all three symlink cases with no skips, plus self-hosted366/3446, server types/frozen239, audit/actual normal-build guard/packed smoke. Tenant/security also pass; wider platform CI remains separate and pending in HANDOFF.
+Exact-source Linux scoped CI41870191768 subsequently passed all15 stdlib tests, including all three symlink cases with no skips, plus self-hosted366/3442, server types/frozen239, audit/actual normal-build guard/packed smoke. Tenant/security also pass; wider platform CI remains separate and pending in HANDOFF.
