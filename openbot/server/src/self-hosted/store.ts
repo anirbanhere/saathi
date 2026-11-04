@@ -3,6 +3,7 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { chmodSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { DemoAppointments, migrateAppointments } from "./appointments";
+import { ControlReads } from "./control-reads";
 import { ownDatabase } from "./database-ownership";
 import { LocalError } from "./errors";
 import { migrateMediaConsent } from "./media-consent";
@@ -60,6 +61,7 @@ type Memory = { id: string; content: string; created: number };
 const hash = (text: string) => createHash("sha256").update(text).digest("hex");
 
 export class SelfHostedStore {
+  readonly controls: ControlReads;
   readonly appointments: DemoAppointments;
   readonly plans: TaskPlans;
   readonly planReads: PlanReads;
@@ -250,6 +252,7 @@ export class SelfHostedStore {
         now: options.now ?? Date.now,
       });
       this.plans.recover();
+      this.controls = new ControlReads(this.db, options.now);
       this.planReads = new PlanReads(
         this.db,
         this.plans,

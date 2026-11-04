@@ -232,3 +232,5 @@ export class TaskPlans {
       .immediate();
   }
 }
+
+export type { State as TaskPlanState };
