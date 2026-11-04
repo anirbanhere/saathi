@@ -1,0 +1,231 @@
+{
+  "source": "27de0986f21098a5173061000ba97a02ab01a3a5",
+  "source_sha256": {
+    "store.ts": "c3d7d203f6885b19c53eca4572c781474fb9069a1429c6474c03a1c5542d9823",
+    "appointments.ts": "0e1e7fe9aa3000c8208633fa6e80d79143dc1c8ba02fd3911aece89725f385e2",
+    "errors.ts": "b57f12ff3b34115f596a431c9de4850015833e768c09069475b823b454c4eb95",
+    "plan-reads.ts": "8bfaafe319b52da7333e86350e77ce6eacac32b77bd6912c747af06d8f4656ec",
+    "plans.ts": "c56d750ce00ef5a7d931dbd077fec8e168e78e6c3567a1d927f8d4f95dbe1a33",
+    "plan-contract.ts": "d195d1c5aee23c6f17f446b9ea956335684309b8b75cda846ea527e90555ca81",
+    "roles.ts": "4e8afe17f3cac58e1f8c5ebb6f787b4f6fdb8ffea1995ea5dbebce56c1cc16a0",
+    "config.ts": "08743411474d8c6a0b633af05110eafbaf2aeefd4fed457ee401b72c51dd1a7a"
+  },
+  "sha256": "ba144c6aa52eb343be4debc4e88e120b084818aaea9ac699f71f0f5d7326949e",
+  "seed": {
+    "now": 1793235600000,
+    "a": {
+      "owner": "ce74b8bb-e4bc-4ad6-a512-255c4339d429"
+    },
+    "b": {
+      "owner": "e1479dd1-1cce-4159-8673-0409292ac6dc"
+    },
+    "thread": {
+      "id": "fe31c39c-7a1d-41b2-bee4-b6373d191029"
+    },
+    "run": {
+      "id": "0a906e5b-170f-4f8e-86f7-ad1bbe97c71c"
+    },
+    "evidence": {
+      "sources": [
+        {
+          "title": "Synthetic source",
+          "url": "https://example.com/synthetic"
+        }
+      ],
+      "searchedAt": "2026-10-29T01:00:00.000Z",
+      "searchCalls": 1
+    },
+    "booking": {
+      "id": "5a1a9b36-5f0c-4eab-aede-8f7fcba9ce72",
+      "mode": "mock",
+      "provider": "demo-clinic",
+      "date": "2026-10-30",
+      "locale": "en-IN",
+      "state": "COMPLETED",
+      "version": 3,
+      "plan": [
+        {
+          "id": "availability",
+          "tool": "demo.appointments.list",
+          "risk": "READ",
+          "requires_approval": false
+        },
+        {
+          "id": "preview",
+          "tool": "demo.appointments.prepare",
+          "risk": "DRAFT",
+          "requires_approval": false
+        },
+        {
+          "id": "book",
+          "tool": "demo.appointments.book",
+          "risk": "BOOK",
+          "requires_approval": true
+        },
+        {
+          "id": "verify",
+          "tool": "demo.appointments.receipt",
+          "risk": "READ",
+          "requires_approval": false
+        }
+      ],
+      "preview": {
+        "provider": "demo-clinic",
+        "clinic": "Saathi DEMO Dental",
+        "service": "Dental cleaning (simulation)",
+        "date": "2026-10-30",
+        "slot_id": "10:00",
+        "timezone": "Asia/Kolkata",
+        "city": "Chennai",
+        "duration_minutes": 30,
+        "amount": 500,
+        "currency": "INR",
+        "terms": "MOCK only. No payment, real appointment or notification. Pre-commit cancellation only; the mock receipt is terminal.",
+        "hash": "9c11c5e91348fcb1b1f26ecf06d5954e6d2131660fc03b400aa44a80598808b7"
+      },
+      "expires_at": null,
+      "receipt": {
+        "mode": "mock",
+        "reference": "MOCK-SAATHI-69EF1CF7D1C04083B348D09204474754",
+        "confirmed_at": 1793235600000,
+        "summary": "Demo booking confirmed. This is not a real appointment.",
+        "quote": {
+          "provider": "demo-clinic",
+          "clinic": "Saathi DEMO Dental",
+          "service": "Dental cleaning (simulation)",
+          "date": "2026-10-30",
+          "slot_id": "10:00",
+          "timezone": "Asia/Kolkata",
+          "city": "Chennai",
+          "duration_minutes": 30,
+          "amount": 500,
+          "currency": "INR",
+          "terms": "MOCK only. No payment, real appointment or notification. Pre-commit cancellation only; the mock receipt is terminal.",
+          "hash": "9c11c5e91348fcb1b1f26ecf06d5954e6d2131660fc03b400aa44a80598808b7"
+        }
+      },
+      "created": 1793235600000,
+      "updated": 1793235600000,
+      "audit": [
+        {
+          "event": "task.created",
+          "state": "AWAITING_SELECTION",
+          "at": 1793235600000
+        },
+        {
+          "event": "approval.requested",
+          "state": "APPROVAL_PENDING",
+          "at": 1793235600000
+        },
+        {
+          "event": "approval.granted",
+          "state": "APPROVAL_PENDING",
+          "at": 1793235600000
+        },
+        {
+          "event": "mock.booking_confirmed",
+          "state": "COMPLETED",
+          "at": 1793235600000
+        }
+      ]
+    },
+    "approval": {
+      "request_id": "mock-approval",
+      "decision": "approve",
+      "version": 2,
+      "nonce": "ZSyuG-t3ePXsPz1HqyuMp3ghIDpLajcHGaaOHkPRA8c"
+    },
+    "plan": {
+      "id": "dfa64951-c7f6-455f-83b0-f5610687114d",
+      "input": {
+        "request_id": "read-draft",
+        "goal": "Synthetic demo slots",
+        "locale": "en-IN",
+        "date": "2026-10-30"
+      }
+    },
+    "read": {
+      "task": "dfa64951-c7f6-455f-83b0-f5610687114d",
+      "mode": "read_only",
+      "status": "completed",
+      "at": 1793235600000,
+      "results": [
+        {
+          "step": "s1",
+          "tool": "demo.clinic.options",
+          "skipped": false,
+          "at": 1793235600000,
+          "status": "completed",
+          "evidence_mode": "mock",
+          "output": {
+            "mode": "mock",
+            "timezone": "Asia/Kolkata",
+            "min_date": "2026-10-29",
+            "max_date": "2026-11-28",
+            "date": "2026-10-30",
+            "clinic": "Saathi DEMO Dental · Chennai",
+            "slots": [
+              {
+                "id": "11:00",
+                "label": "11:00 IST · 30 minutes · MOCK ₹500"
+              },
+              {
+                "id": "15:00",
+                "label": "15:00 IST · 30 minutes · MOCK ₹500"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "pendingThread": {
+      "id": "e21fbd2c-c190-47b3-b354-b896bcd4f2e1"
+    },
+    "pendingRun": {
+      "id": "c1cd3e6d-c41b-409b-942d-e63489666308"
+    },
+    "pendingPlan": {
+      "id": "590bf0c1-3738-464d-acf1-3c4005f95de1",
+      "input": {
+        "request_id": "interrupted-draft",
+        "goal": "Synthetic pending plan",
+        "locale": "ta-IN",
+        "date": "2026-10-30"
+      }
+    },
+    "roles": {
+      "reasoning": {
+        "id": "openrouter:openrouter/free",
+        "provider": "openrouter",
+        "model": "openrouter/free",
+        "timeoutMs": 60000,
+        "maxOutputTokens": 2048,
+        "attempts": 1,
+        "fallbacks": []
+      },
+      "conversation": {
+        "id": "openrouter:openrouter/free",
+        "provider": "openrouter",
+        "model": "openrouter/free",
+        "timeoutMs": 60000,
+        "maxOutputTokens": 2048,
+        "attempts": 1,
+        "fallbacks": []
+      },
+      "extraction": null,
+      "stt": {
+        "provider": "disabled",
+        "model": null,
+        "languages": ["en-IN", "hi-IN", "ta-IN"],
+        "timeoutMs": 20000
+      },
+      "tts": {
+        "provider": "disabled",
+        "model": null,
+        "languages": ["en-IN", "hi-IN", "ta-IN"],
+        "timeoutMs": 20000
+      },
+      "revision": "14186b2093581727a32ebe340f726829d3090bed141f181775f720703e0dc11e"
+    }
+  }
+}
