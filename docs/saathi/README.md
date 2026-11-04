@@ -158,3 +158,5 @@ Read root HANDOFF.md for exact commands/results/CI. Focused tests validate a rea
 Read-only live information: [web lookup and date plan](live-web-plan.md), including the Meta opt-in, source evidence, costs and migration boundaries.
 
 Next operator-preparation task: [public demo release review](../../tasks/public-demo-release-review.md), including authentic synthetic schema7-to15 preservation and same-resource backup/rollback evidence. Planned only; no rollout or existing-profile access.
+
+[Historical schema7 upgrade review](historical-upgrade-review.md): independent pinned-source synthetic fixture, copied-backup migration/recovery evidence and remaining packaging/rollout blockers. No public rollout.

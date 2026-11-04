@@ -1,5 +1,7 @@
 # PRD implementation audit — 29 October 2026
 
+**Latest release preparation:** independent pinned27de098 historical-store synthetic fixture verifies7-to15 preservation, ownership, duplicate/usage and once-only recovery on copied state (historical-upgrade-review.md). No runtime migration code/public data changed. Actual release remains pending: current deploy asset allowlist rejects newer modules; keyless packaging/input-integrity checks and backed-up rollout are next. This is synthetic store evidence, not a public upgrade or infrastructure restore.
+
 **Latest status UI slice:** existing owned mock/draft cards now offer explicit localized saved-state reads (task-status-console.md), without extra legacy expiry-writing GETs, provider/model calls or mutation. Help and per-card status UI are present on development source; natural-language/voice/channel routing and generic cancel/stop/forget/disconnect remain pending. FR-006 is partial; no public release or schema change.
 
 **Latest Help UI slice:** explicit English/Hindi/Tamil Help now calls the protected read-only API, with locale/busy/focus/late-result guards and synthetic real-browser evidence (localized-help-console.md). No automatic help or extra task reads; per-card status UI, natural-language/voice/channel routing and generic mutating intents remain pending. FR-006 is partial; source15/public7 unchanged.
