@@ -1,4 +1,10 @@
-export function createAppointmentConsole({ api, run, el, button }) {
+export function createAppointmentConsole({
+  api,
+  run,
+  el,
+  button,
+  statusControl,
+}) {
   const $ = (selector) => document.querySelector(selector);
   let pendingAppointmentCreate = null;
   const reviewNonces = new Map(),
@@ -226,6 +232,14 @@ export function createAppointmentConsole({ api, run, el, button }) {
           ),
         );
       card.append(details);
+      if (statusControl)
+        card.append(
+          statusControl(
+            "demo_appointment",
+            task.id,
+            `Demo appointment on ${task.date}`,
+          ),
+        );
       list.append(card);
     }
     if (!records.length)

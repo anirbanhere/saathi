@@ -17,8 +17,21 @@ let csrf = "",
   busy = false,
   pending = null,
   lastModel = null;
-const demoAppointments = createAppointmentConsole({ api, run, el, button });
-const taskPlans = createPlanConsole({ api, run, el, button });
+const helpConsole = createHelpConsole({ api, run, el });
+const demoAppointments = createAppointmentConsole({
+  api,
+  run,
+  el,
+  button,
+  statusControl: helpConsole.statusControl,
+});
+const taskPlans = createPlanConsole({
+  api,
+  run,
+  el,
+  button,
+  statusControl: helpConsole.statusControl,
+});
 const savedMedia = createMediaConsole({
   api,
   run,
@@ -33,7 +46,6 @@ const audioUpload = createAudioUpload({
   upload: uploadAudio,
   refresh: savedMedia.refresh,
 });
-const helpConsole = createHelpConsole({ api, run });
 async function uploadAudio(attempt, signal) {
   const response = await fetch("/api/media/upload", {
     method: "POST",

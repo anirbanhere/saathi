@@ -394,3 +394,7 @@ footer span {
     max-height: 60vh;
   }
 }
+
+.control-readout {
+  white-space: pre-line;
+}

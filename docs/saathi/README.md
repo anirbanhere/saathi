@@ -1,5 +1,7 @@
 # Saathi customization guide
 
+[Saved status on owned cards](task-status-console.md) adds explicit localized metadata snapshots with no expiry/audit/task refresh side effects and synthetic real-browser evidence. Generic intents and live completion remain separate.
+
 [Localized explicit Help console](localized-help-console.md) adds safe English/Hindi/Tamil guidance with no automatic/model/task calls. Exact-target per-card status UI remains separate.
 
 [Explicit read-only help/status](read-only-help-status.md) adds protected localized help and exact owned task-state metadata without model calls or expiry/audit mutation. No new console/chat/channel routing or generic action permission.
@@ -154,3 +156,5 @@ Free inference does not make computer containers, storage, speech, hosted memory
 Read root HANDOFF.md for exact commands/results/CI. Focused tests validate a real tenant load and configuration rejection, and nearby upstream tests mock HTTP transports. They do not demonstrate live OpenRouter, Intelligence, ASR, approvals, bookings or a public site. The existing Python project's tests/deployment remain independent evidence, not test counts for this fork.
 
 Read-only live information: [web lookup and date plan](live-web-plan.md), including the Meta opt-in, source evidence, costs and migration boundaries.
+
+Next operator-preparation task: [public demo release review](../../tasks/public-demo-release-review.md), including authentic synthetic schema7-to15 preservation and same-resource backup/rollback evidence. Planned only; no rollout or existing-profile access.
