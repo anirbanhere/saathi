@@ -1,5 +1,13 @@
 # Saathi on OpenDuet handoff
 
+## Cached read validation — local verified source, publication pending
+
+Branch codex/cached-read-validation on published PR58/1ea6229. Fixed savedPlanRead unchecked persisted JSON cast with SQL text/64KB pre-materialization guard, strict target/envelope/tool/status/timestamp/output and aggregate coherence. Corrupt cache returns sanitized503 and remains retained; no observer retry, writes, usage release or approval/gate change. Valid cached cancellation/restart behavior is preserved. Shape checking does not authenticate coherent tampering or bind all content/date fields to the original plan. See docs/saathi/cached-read-validation.md.
+
+Red reproduced corrupt cache accepted; final focused7/83 and full Windows368/3519 plus two existing skips pass. Server types/format/lint pass; frozen tests only eight known Windows path-text differences, baseline unchanged. A lint unsafe-finally error was fixed by using a separately guarded cleanup helper, without removing path checks. Fresh-context review identified impossible unskipped manual failure; fixed tool/status constraint plus regression, follow-up found no further issue. Cross-model skipped non-interactive. Native mock corrupt-cache test confirms lookup count stays1, row/events/usage unchanged; malformed/BLOB/oversized/cache target/verification/extra/status/step corruption checked. No browser or live provider call, private DB/cloud/deployment/credit action.
+
+Clean source audit/input guard/packed and draft publication pending. Candidate3b81c85 separate unchanged, deployment approval still pending with no reply inferred. Full goal active. Prior shared-contract58 all configured CI success recorded below; this independent code is not in that pending rollout candidate.
+
 ## PR58 all configured CI passed; cached-read boundary next
 
 Ordinary allowance naturally reset0% primary/43% weekly; one reset credit untouched. Source3ffa8a4 scoped42085131012/tenant42085130892/wider42085130894 all SUCCESS. Linux369/3487, types/frozen239/audit/guard/packed pass. Held e2d8164 can publish. Next independent FR-021 slice fixes savedPlanRead's unchecked persisted JSON cast: bounded strict cached read envelope, fixed mock/draft output semantics and no replay on corrupted rows. Existing valid cache/cancel/restart behavior must remain. Pending rollout remains specific to3b81c85 and public data/gates unchanged.

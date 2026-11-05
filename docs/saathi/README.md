@@ -166,3 +166,5 @@ Next operator-preparation task: [public demo release review](../../tasks/public-
 [Local public release candidate](public-release-candidate.md): exact official-runtime archive, extracted synthetic verification and concrete same-resource rollout/recovery record; no actual rollout.
 
 [Fixed native catalogue](native-tool-catalog.md): descriptive mock/manual metadata and planner reuse; no new execution authority.
+
+[Cached read validation](cached-read-validation.md): bounded strict persisted native observations; corrupt cache fails without replay or mutation.

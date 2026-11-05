@@ -1,5 +1,7 @@
 # Saathi on OpenDuet — coding agent instructions
 
+Cached native reads: docs/saathi/cached-read-validation.md. SQL-bound text payload <=64KB, strict target/envelope/mock-draft-none/status/output coherence before returning persisted evidence. Corrupt cache yields fixed503, never replay/repair/delete/usage release. Preserve owner checks and valid cached cancellation/restart behavior. Shape coherence is not authentication, exact plan/date binding or external completion. No live/migration/permission change follows.
+
 Shared native contracts: native-tool-contracts.ts supplies strict planner arguments and catalogue structural JSON schemas (official Zod conversion, throw on unrepresentable, typed empty metadata registry). Preserve calendar refinement and separate confirmed-date check; structural schema is not contextual validation or authority. No permissive conversion fallback or live dispatch follows. Standard $schema URI is specification metadata only.
 
 Fixed native catalogue: docs/saathi/native-tool-catalog.md. Detached metadata for only existing mock/manual tools, no registration/transport/executor/grant. Planner guidance reuses fixed descriptions; Zod/context checks and explicit owned reads remain authoritative. Structural schema/risk/prerequisite/fee/idempotency labels do not grant access or prove actual external outcomes. Keep candidate3b81c85 separate from newer source builds while its rollout decision is pending.
