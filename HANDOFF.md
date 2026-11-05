@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## Native catalogue source published in draft PR57
+
+Source81f32ae9ac676a9c20243d96169a256e12aec315 pushed in codex/native-tool-catalog, draft PR57 https://github.com/anirbanhere/saathi/pull/57 on PR56/b62c712. App attachment capability unavailable, URL retained here. Secret scan0; clean audit/input guard/packed smoke pass, server bundlecd1a4aaf2519969ae193ba30e9902e48ec88559e0bc64debd91990ab42058f4c, runtimeIntegrity=null (not release runtime). Prior exact candidate3b81c85 remains separately preserved and unchanged; no reply/approval received for its deployment, no repeated prompt or implicit update. Current artifacts/public-build is the new catalogue source and must never substitute for the pending candidate.
+
+Exact-source CI is newly triggered, no conclusion claimed. Hold this final docs checkpoint locally until useful source runs finish; next heartbeat inspect full-SHA81f32ae CI/log totals and merge tree before publishing. Continue bounded independent PRD implementation while operator decision is pending. No production/profile/schema/gate/provider/paid/credit action; full goal active. Local verification and fresh review are recorded below.
+
 ## Fixed native catalogue — local verified source, publication pending
 
 Branch codex/native-tool-catalog on PR56/b62c712; deployment approval requested in prior turn remains pending, no reply inferred from heartbeats. Independent FR-019 increment adds descriptive fixed metadata for the existing mock clinic/manual draft only; detached snapshots and existing planner guidance reuse, with strict runtime validation/read dispatch unchanged. No registration, executor, route, account grant, MCP discovery, provider call or schema/gate change. See docs/saathi/native-tool-catalog.md; FR-019 remains partial.
