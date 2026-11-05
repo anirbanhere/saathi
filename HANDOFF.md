@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## Cache evidence fix published in draft PR59
+
+Source6f00000850a933958345b6df4fb1eccea65e4cbe pushed to codex/cached-read-validation, draft PR59 https://github.com/anirbanhere/saathi/pull/59 on PR58/1ea6229. Clean audit/input guard/packed smoke and configured-secret scan0 pass; server128e072b6ea556296c170daddce0e54f44b78b7ccfe7de1263b275beb0d06e2f, runtimeIntegrity=null (not release runtime). Final frozen test recheck has only the eight known Windows path-text differences; no new baseline change. PR58 description corrected to completed all-CI success. App attachment tool unavailable; URL retained here.
+
+Exact-source CI newly queued/running, no Linux/full conclusion claimed. Hold this final docs checkpoint locally while useful source checks run; next heartbeat inspect full-SHA6f00000 outcomes/log totals and tested merge tree before publishing. Pending candidate3b81c85 is still separate and unchanged; no approval response received, no implicit rollout or repeated prompt. Future scope can bind coherent cache content to the exact saved plan/date, but current shape validation must not be described as that or external authenticity. Full goal remains active; no credit reset/redemption/purchase, real transaction/outreach, schema/profile/public-data or live-gate change.
+
 ## Cached read validation — local verified source, publication pending
 
 Branch codex/cached-read-validation on published PR58/1ea6229. Fixed savedPlanRead unchecked persisted JSON cast with SQL text/64KB pre-materialization guard, strict target/envelope/tool/status/timestamp/output and aggregate coherence. Corrupt cache returns sanitized503 and remains retained; no observer retry, writes, usage release or approval/gate change. Valid cached cancellation/restart behavior is preserved. Shape checking does not authenticate coherent tampering or bind all content/date fields to the original plan. See docs/saathi/cached-read-validation.md.
