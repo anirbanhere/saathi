@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## Shared argument source published in draft PR58
+
+Source3ffa8a4d250a3e9136191f69622410e4270b96f7 pushed to codex/native-argument-contracts, stacked draft PR58 https://github.com/anirbanhere/saathi/pull/58 on PR57/17fff2c. Clean audit/input guard/packed smoke and staged-secret scan0 pass; server bundleedcab94001fa58badf950fc7d0224135536fb83df56c251d0383e206e5521cb9, runtimeIntegrity=null (not release runtime). Prior PR57 description now records completed scoped success and wider runner-capacity failure. Attachment tool unavailable; URLs retained. Candidate3b81c85 remains separate; no deployment reply received or inferred.
+
+Exact-source CI newly queued/running, no Linux/full conclusion claimed. Hold this final docs checkpoint locally until useful source runs finish; next heartbeat inspect full-SHA3ffa8a4 results and merge tree, then publish outcomes without blind retries. Shared contracts verification/fixed typed-registry detail below is final. No source/profile/schema/gate/provider/paid/credit/cloud action beyond authorized draft publication and synthetic tests. Full PRD remains active; continue independent work while the final candidate decision is pending, without repeating its approval prompt.
+
 ## Shared native argument contracts — local verification
 
 Current codex/native-argument-contracts stacked on published PR57/17fff2c. New native-tool-contracts.ts centralizes strict clinic/manual arguments and exact date refinement; planner uses these runtime contracts while catalogue structural JSON schemas use official Zod conversion with throw policy and an empty typed metadata registry. This removes schema duplication without enabling registration/dispatch/grants or weakening calendar/confirmed-date policy. Standard $schema URI is inert metadata, not an endpoint. Schema15/public7 and pending approved-scope3b81c85 candidate untouched.
