@@ -1,5 +1,9 @@
 # Saathi on OpenDuet handoff
 
+## PR58 all configured CI passed; cached-read boundary next
+
+Ordinary allowance naturally reset0% primary/43% weekly; one reset credit untouched. Source3ffa8a4 scoped42085131012/tenant42085130892/wider42085130894 all SUCCESS. Linux369/3487, types/frozen239/audit/guard/packed pass. Held e2d8164 can publish. Next independent FR-021 slice fixes savedPlanRead's unchecked persisted JSON cast: bounded strict cached read envelope, fixed mock/draft output semantics and no replay on corrupted rows. Existing valid cache/cancel/restart behavior must remain. Pending rollout remains specific to3b81c85 and public data/gates unchanged.
+
 ## Shared argument source published in draft PR58
 
 Source3ffa8a4d250a3e9136191f69622410e4270b96f7 pushed to codex/native-argument-contracts, stacked draft PR58 https://github.com/anirbanhere/saathi/pull/58 on PR57/17fff2c. Clean audit/input guard/packed smoke and staged-secret scan0 pass; server bundleedcab94001fa58badf950fc7d0224135536fb83df56c251d0383e206e5521cb9, runtimeIntegrity=null (not release runtime). Prior PR57 description now records completed scoped success and wider runner-capacity failure. Attachment tool unavailable; URLs retained. Candidate3b81c85 remains separate; no deployment reply received or inferred.
