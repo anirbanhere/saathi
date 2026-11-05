@@ -2,16 +2,12 @@ import { z } from "zod";
 import { LocalError } from "./errors";
 import { nativeToolDescription } from "./native-tool-catalog";
 
-const exactDate = z
-  .string()
-  .regex(/^\d{4}-\d{2}-\d{2}$/)
-  .refine((value) => {
-    const parsed = Date.parse(`${value}T00:00:00Z`);
-    return (
-      Number.isFinite(parsed) &&
-      new Date(parsed).toISOString().slice(0, 10) === value
-    );
-  });
+import {
+  exactDate,
+  clinicArguments,
+  manualArguments,
+} from "./native-tool-contracts";
+
 export const planInput = z
   .object({
     request_id: z.string().regex(/^[A-Za-z0-9_-]{1,80}$/),
@@ -37,7 +33,7 @@ const step = z.discriminatedUnion("tool", [
       ...stepBase,
       tool: z.literal("demo.clinic.options"),
       risk: z.literal("READ"),
-      arguments: z.object({ date: exactDate }).strict(),
+      arguments: clinicArguments,
     })
     .strict(),
   z
@@ -45,9 +41,7 @@ const step = z.discriminatedUnion("tool", [
       ...stepBase,
       tool: z.literal("handoff.manual"),
       risk: z.literal("DRAFT"),
-      arguments: z
-        .object({ instructions: z.string().min(1).max(1000) })
-        .strict(),
+      arguments: manualArguments,
     })
     .strict(),
 ]);

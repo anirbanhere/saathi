@@ -1,3 +1,5 @@
+import { nativeArgumentSchemas } from "./native-tool-contracts";
+const schemas = nativeArgumentSchemas();
 /** Fixed descriptive catalogue, not registration, permission or an executor. */
 const tools = [
   {
@@ -16,14 +18,7 @@ const tools = [
     dispatch: "existing_fixed_plan_reads",
     executionAllowed: false,
     externalSideEffects: false,
-    schema: {
-      type: "object",
-      properties: {
-        date: { type: "string", pattern: "^\\d{4}-\\d{2}-\\d{2}$" },
-      },
-      required: ["date"],
-      additionalProperties: false,
-    },
+    schema: schemas.clinic,
     runtimeChecks: ["valid_calendar_date", "exact_user_confirmed_date"],
     plannerDescription:
       'demo.clinic.options (READ; arguments {"date":"YYYY-MM-DD"}; controlled mock clinic slots, no genuine booking)',
@@ -44,14 +39,7 @@ const tools = [
     dispatch: "existing_fixed_plan_reads",
     executionAllowed: false,
     externalSideEffects: false,
-    schema: {
-      type: "object",
-      properties: {
-        instructions: { type: "string", minLength: 1, maxLength: 1000 },
-      },
-      required: ["instructions"],
-      additionalProperties: false,
-    },
+    schema: schemas.manual,
     runtimeChecks: ["strict_plan_contract", "unverified_draft_only"],
     plannerDescription:
       'handoff.manual (DRAFT; arguments {"instructions":string}; unverified manual guidance, no external action)',

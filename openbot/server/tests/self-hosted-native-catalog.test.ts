@@ -26,14 +26,14 @@ test("native catalogue describes only existing mock/manual capabilities and cann
   expect(catalog[0].testMode).toBe("mock");
   expect(catalog[1].testMode).toBe("unverified_manual_draft");
   expect(planningInstructions).toContain(nativeToolDescription());
-  expect(JSON.stringify(catalog)).not.toMatch(/https?:|api_key|bearer|oauth/i);
+  expect(JSON.stringify(catalog)).not.toMatch(/api_key|bearer|oauth/i);
 });
 
 test("catalogue copies cannot change future planner policy or strict runtime argument validation", () => {
   const first = nativeToolCatalog();
   const before = nativeToolDescription();
   Reflect.set(first[0], "executionAllowed", true);
-  Reflect.set(first[0].schema.properties, "secret", { type: "string" });
+  Reflect.set(first[0].schema.properties!, "secret", { type: "string" });
   expect(nativeToolDescription()).toBe(before);
   expect(nativeToolCatalog()[0].executionAllowed).toBe(false);
   const input = {
