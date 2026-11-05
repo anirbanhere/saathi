@@ -1,5 +1,9 @@
 # Saathi on OpenDuet handoff
 
+## 5 November — PR55 CI checkpoint complete; local candidate preparation
+
+Ordinary allowance53% primary/40% weekly available, one reset credit observed untouched. WiderCI41870191840 completed failure: macOS startup126714887899 unacquired with zero steps/capacity annotations; aggregate verify fails on abandoned. All acquired source jobs pass; scoped/tenant/security and Linux15 stdlib/366 self-hosted/3442 assertions below remain valid. No whole-platform-green claim or blind retry. Held2a33cd2/86aeefe may now be published. Next tasks/public-release-candidate.md, local artifact only; public/profile/provider/credit/deployment gates unchanged.
+
 ## Release-input guard source published in draft PR55
 
 Sourcedffc3ceaa6df28345b6cd27e7323dfd9f2b20cb4 is pushed to codex/release-input-integrity, stacked draft PR55 https://github.com/anirbanhere/saathi/pull/55 on PR54/424d68b, attached. Secret scan0; clean audit, actual normal-build guard and packed HTTP smoke pass.24 declared inputs/23 SHA256 pins, source clean, unchanged server bundle94bb01484d2ba143ea87eb7191e9cb3fa4481fad2c78749361c579af29c3b4c9; four shipped packages/zero observed shipped advisory matches,29 wider/runtimeIntegrity=null. The actual clean normal build also refused release packing before creating an archive. No official runtime artifact or real deployment/profile/key was used.
