@@ -1,5 +1,9 @@
 # Saathi on OpenDuet handoff
 
+## Candidate review published in draft PR56
+
+Candidate review sourcee0ca566 is pushed in codex/public-release-candidate, stacked draft PR56 https://github.com/anirbanhere/saathi/pull/56 on PR55/3b81c85. This documentation commit does not change archived candidate3b81c85 bytes or identity. Configured-secret scan0 and diff checks pass. App attachment tool is currently unavailable; PR URL is recorded here. Hold this final local docs checkpoint until useful source CI completes before another push. Next scheduled continuation: inspect PR56 checks, then choose a small independent genuinely absent PRD slice via current code/tests rather than rebuilding existing preference delete controls or repeatedly retrying runner capacity. Preserve candidate archive/evidence; no implicit rollout. Public/source gates and all private state untouched; full goal/automation remain active.
+
 ## Local official-runtime candidate prepared — no rollout
 
 Branch codex/public-release-candidate on published PR55/3b81c85. Prepared clean source3b81c85e194dbad0af69be4dbd7053fba7fbe28c with audited --runtime build; registry-verified pinned Bun1.4.3 cached archive,25 inputs/24 pins. Keyless local candidate archive dd3825ab7826da67252f290c503d3705fb89e8c24fdbc0015e621fae50b90e0d (42,638,721 bytes); server94bb01484d2ba143ea87eb7191e9cb3fa4481fad2c78749361c579af29c3b4c9. All23 non-runtime hashes match tested dffc3ce. Exact archive members/bytes and extracted-asset synthetic packed smoke passed on Windows Bun; Linux runtime was checksummed only. No configured keys scanned/read; actual deploy path must scan before upload. Ignored scripts/evidence/logs retained; temporary extracted/state/child process cleaned. No production source/schema/runtime code changed in this slice.
