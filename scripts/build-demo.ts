@@ -107,6 +107,25 @@ const packages = [
       .filter(Boolean),
   ),
 ];
+const releaseFiles = [
+  "app.js",
+  "manifest.json",
+  ...files.map((file) => (file.startsWith("openbot/") ? file.slice(8) : file)),
+  ...[
+    "hono-LICENSE",
+    "zod-LICENSE",
+    "yaml-LICENSE",
+    "drizzle-orm-LICENSE",
+    "bun-LICENSE.md",
+  ].map((name) => `licenses/${name}`),
+  ...(runtimeIntegrity ? ["linux-runtime.tgz"] : []),
+];
+const fileSha256: Record<string, string> = {};
+for (const name of releaseFiles)
+  if (name !== "manifest.json")
+    fileSha256[name] = createHash("sha256")
+      .update(await Bun.file(join(out, name)).bytes())
+      .digest("hex");
 const manifest = {
   source: run(["git", "rev-parse", "HEAD"]),
   dirty: !!run(["git", "status", "--porcelain"]),
@@ -116,21 +135,8 @@ const manifest = {
     .digest("hex"),
   runtimeIntegrity,
   packages,
-  files: [
-    "app.js",
-    "manifest.json",
-    ...files.map((file) =>
-      file.startsWith("openbot/") ? file.slice(8) : file,
-    ),
-    ...[
-      "hono-LICENSE",
-      "zod-LICENSE",
-      "yaml-LICENSE",
-      "drizzle-orm-LICENSE",
-      "bun-LICENSE.md",
-    ].map((name) => `licenses/${name}`),
-    ...(runtimeIntegrity ? ["linux-runtime.tgz"] : []),
-  ],
+  files: releaseFiles,
+  fileSha256,
 };
 if (process.argv.includes("--audit")) {
   const audit = Bun.spawnSync([process.execPath, "audit", "--json"], {

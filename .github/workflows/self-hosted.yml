@@ -20,8 +20,10 @@ jobs:
         with:
           bun-version: 1.4.3
       - run: bun install --frozen-lockfile --ignore-scripts
+      - run: python3 -m unittest discover -s ../deploy/public/tests -p "test_*.py" -v
       - run: bun test self-hosted
       - run: bun run --cwd server typecheck
       - run: bun run typecheck:tests
       - run: bun ../scripts/build-demo.ts --audit
+      - run: python3 ../deploy/public/release_inputs.py ../artifacts/public-build --check
       - run: bun ../deploy/public/smoke-bundle.ts

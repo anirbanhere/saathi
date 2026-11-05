@@ -29,6 +29,8 @@ The app binds to `127.0.0.1:8790`; Caddy owns public ports 80/443, redirects HTT
 
 ## Build and provision
 
+Development packaging now requires complete fileSha256 input identities and the pure release_inputs.py guard; see [release input integrity](release-input-integrity.md). Older manifests must be rebuilt. `python deploy/public/release_inputs.py artifacts/public-build --check` validates a normal clean build without downloading a runtime, reading a profile or deploying; it never substitutes for the runtime-bearing release checks below. Current fixed assets include export/help/media/upload/fixture modules, and unknown extra files are refused.
+
 Use Bun 1.4.3 and a clean committed fork checkout. From `openbot`, run the focused tests and server typecheck; the scoped GitHub workflow also checks the frozen test-type baseline on Linux. Local Windows has the earlier eight gallery path-text baseline mismatches; do not rewrite the baseline to suppress them.
 
 ```sh
