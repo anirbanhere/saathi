@@ -1,6 +1,6 @@
 # Local public-demo candidate — 5 November 2026
 
-Local preparation is complete for the tested text/runtime improvements. Nothing was deployed, no existing workspace/database or provider key was read, and no paid/model request was made. The candidate is retained only in ignored artifacts; it is not a public download or a final configured-key-scanned deployment archive.
+Local preparation is complete for the tested text/runtime improvements. Nothing was deployed and no existing workspace/database or paid/model request was used. The candidate is retained only in ignored artifacts. On final review, an offline scan used the already-configured credential values without displaying them; compressed and all uncompressed candidate inputs contain zero matches. No provider was contacted. The explicit operator path still revalidates/scans its repack before upload.
 
 ## Exact artifact
 
@@ -13,7 +13,7 @@ Local preparation is complete for the tested text/runtime improvements. Nothing 
 
 Clean audited build with --runtime and pure packing passed. Four shipped packages have zero observed advisory matches;29 wider upstream package advisories remain outside the shipped graph. The archive was read back, checked for exact member list/regular entries and byte equality with all declared inputs, then extracted only into a guarded fresh temporary directory. An ignored adapted copy of the existing packed smoke test used these extracted assets with Windows Bun1.4.3, no inherited provider/configuration environment and synthetic temporary SQLite state. Cached mock reads, failed-plan recovery, repeat-safe mock booking and ownership passed, with no outbound inference. Child process/state/extraction directory were cleaned. Linux package checksum was verified; Linux binary execution was not tested on Windows.
 
-Evidence files: ignored public-candidate-evidence.json, public-candidate-build.log, prepare-candidate-local.py and candidate-extracted-smoke.log. Packaging without keys is deliberate local preparation; the explicit operator path must revalidate and scan configured key values before any upload. Rebuilding/repacking can change archive identity; never reuse this digest for different bytes.
+Evidence files: ignored public-candidate-evidence.json, public-candidate-build.log, prepare-candidate-local.py and candidate-extracted-smoke.log. Initial packaging was keyless; subsequent offline scanning cleared these exact archive bytes against the configured provider credentials. The explicit operator path must revalidate and scan again before any upload. Rebuilding/repacking can change archive identity; never reuse this digest for different bytes.
 
 ## Checks and current resources
 
@@ -31,8 +31,10 @@ Before source15 opens the data disk, retain exact previous startup/release refer
 
 If failure precedes migration and metadata was unchanged, the helper restarts the old release. After migration,27de098 cannot open15: switching the release symlink or falsifying the version row is invalid. Prefer compatible forward repair while preserving current data. Restoring a pre-upgrade snapshot requires an explicit operator decision about later-data loss and verified recovery, not automatic deletion/replacement of the retained disk. Existing disk snapshots are not proof of a completed restore exercise.
 
-## Remaining action
+## Final rollout decision
 
-No deployment approval is requested while required platform CI remains unresolved. Finish that evidence through normal development/integration rather than repeated blind runner retries. Existing human authorization covers public hosting in this project, while the user-supplied parent AGENTS says “do not ... merge/deploy existing PRs implicitly”; candidate preparation therefore ends before an implicit rollout. Once release gates are satisfied, present the exact scanned candidate/snapshot/downtime/recovery action for any required final operator authorization. No new paid test, channel access or real transaction is included.
+Candidate review e0ca566 passed all configured CI: scoped42055529998, tenant42055530087 and wider42055530003 SUCCESS. Linux stdlib15/15, self-hosted366/3446, types/frozen239, audit/guard/packed checks pass. Tested merge3aa7585bad24807d6f187793eab134882e612998 has exact-source treea22a8f24abd7ec2b2bd050a53e976544a9825206. The prior platform acquisition failure is historical; no manual rerun/waiver was used. Candidate3b81c85 non-runtime bytes already match the tested implementation. Exact archive dd3825ab... remains unchanged after configured compressed/uncompressed secret scanning (zero matches).
 
-The broader PRD goal continues. While release evidence is pending, re-audit an independent product gap against current code/tests before selecting it; existing preferences already have owned delete controls, so do not rebuild those as a supposed missing forgetting UI. Live speech/account verification and WhatsApp access remain separate gates.
+The proposed final action is the existing same-VM --update workflow in sathi-home-agent/us-central1: preserve data disk/identity/address, revalidate/repack/scan exactly these pinned candidate inputs, upload privately, stop VM, require a new READY consistent disk snapshot, then start source15 and verify public ownership/persistence. No main merge, new services, key rotation, paid model probe, live speech/channel/action activation or old-data replacement is included. Compression metadata can change the final repack digest; record the actual digest before upload and never substitute changed inputs.
+
+Existing human authorization covers public hosting in this project, while the user-supplied parent AGENTS explicitly says not to merge/deploy existing PRs implicitly. The candidate, tests, backup/downtime and recovery consequences are now concrete. Obtain the human's explicit final rollout decision for this current PR stack before the operational update. While it is pending, continue independent PRD work and leave the public service/data unchanged. The broader goal remains incomplete.
