@@ -61,7 +61,7 @@ The separate Python repository has tested mock task/approval/audio fixtures. The
 | FR-016 side-effect serialization/idempotency | Inference duplicate IDs and one pending run per owner | SQL mock reservation/decision idempotency; real provider reconciliation pending |
 | FR-017 policy outside model | Provider/model/cost limits, read-only tool selection | Explicit server-owned mock approval, no model authorization; general tool/grant engine pending |
 | FR-018 typed tool outcomes | Inference/mock states; native read-result outcomes on read-step branch | Local completed/unavailable/requires_user_action/retryable/permanently_failed observations; requires_auth and live-provider normalization pending |
-| FR-019 native/MCP registry | No general tool registry | Fixed demo appointment capability only; remote MCP discovery/schema/auth/fees pending |
+| FR-019 native/MCP registry | Development fixed descriptive native catalogue for existing mock/manual tools, reused planner guidance and detached metadata | No dynamic registration/executor/grant; runtime validation remains authoritative. Remote MCP discovery/schema/auth/fees and generic dispatch pending |
 | FR-020 user capability grants | No authenticated account tools | Demo restricted to mock provider; per-user live grants/OAuth pending |
 | FR-021 strict schemas/untrusted outputs | Zod HTTP/provider boundaries, safe DOM text, bounded responses | Strict appointment schemas; MCP returns and speech boundaries pending |
 | FR-022 domain adapters | Public web lookup only | Controlled demo clinic; telephony/groceries/calendar/email/travel/payment adapters pending |
