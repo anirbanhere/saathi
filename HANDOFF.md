@@ -1,5 +1,21 @@
 # Saathi on OpenDuet handoff
 
+## PR58 all configured CI passed; cached-read boundary next
+
+Ordinary allowance naturally reset0% primary/43% weekly; one reset credit untouched. Source3ffa8a4 scoped42085131012/tenant42085130892/wider42085130894 all SUCCESS. Linux369/3487, types/frozen239/audit/guard/packed pass. Held e2d8164 can publish. Next independent FR-021 slice fixes savedPlanRead's unchecked persisted JSON cast: bounded strict cached read envelope, fixed mock/draft output semantics and no replay on corrupted rows. Existing valid cache/cancel/restart behavior must remain. Pending rollout remains specific to3b81c85 and public data/gates unchanged.
+
+## Shared argument source published in draft PR58
+
+Source3ffa8a4d250a3e9136191f69622410e4270b96f7 pushed to codex/native-argument-contracts, stacked draft PR58 https://github.com/anirbanhere/saathi/pull/58 on PR57/17fff2c. Clean audit/input guard/packed smoke and staged-secret scan0 pass; server bundleedcab94001fa58badf950fc7d0224135536fb83df56c251d0383e206e5521cb9, runtimeIntegrity=null (not release runtime). Prior PR57 description now records completed scoped success and wider runner-capacity failure. Attachment tool unavailable; URLs retained. Candidate3b81c85 remains separate; no deployment reply received or inferred.
+
+Exact-source CI newly queued/running, no Linux/full conclusion claimed. Hold this final docs checkpoint locally until useful source runs finish; next heartbeat inspect full-SHA3ffa8a4 results and merge tree, then publish outcomes without blind retries. Shared contracts verification/fixed typed-registry detail below is final. No source/profile/schema/gate/provider/paid/credit/cloud action beyond authorized draft publication and synthetic tests. Full PRD remains active; continue independent work while the final candidate decision is pending, without repeating its approval prompt.
+
+## Shared native argument contracts — local verification
+
+Current codex/native-argument-contracts stacked on published PR57/17fff2c. New native-tool-contracts.ts centralizes strict clinic/manual arguments and exact date refinement; planner uses these runtime contracts while catalogue structural JSON schemas use official Zod conversion with throw policy and an empty typed metadata registry. This removes schema duplication without enabling registration/dispatch/grants or weakening calendar/confirmed-date policy. Standard $schema URI is inert metadata, not an endpoint. Schema15/public7 and pending approved-scope3b81c85 candidate untouched.
+
+Missing module red then3/41 focused pass; full Windows367/3470 plus two existing skips. Format/lint pass. Initial Zod empty registry default inferred undefined metadata and failed type checks; explicitly typed Record<string, unknown> registry corrects that without casts/baseline change. Final server types pass; frozen test types retain only the eight known Windows gallery path-text differences, baseline unchanged. A root-relative Python edit initially ran under openbot and made no edits; reran with explicit fork cwd. Fresh-context adversarial review found no actionable issue, cross-model skipped non-interactive. No model/provider/private DB/browser/cloud/credit action. Clean audit/input guard/packed/source publication pending; candidate inputs remain separately pinned and must not be replaced by this new source. No deployment approval reply received; do not repeat the prompt.
+
 ## PR57 source checks complete; shared native contracts next
 
 Ordinary allowance68% primary/42% weekly available; credit untouched. Source81f32ae scoped42074992518/tenant42074992435 SUCCESS: Linux368/3476, server types/frozen239/audit/guard/packed pass; tested merge3bce0da6 exact-source tree41d7d3aea8e71571bb8effc05c7fdbd56a502256. Wider42074992559 failed on unacquired macOS startup127412717644 (zero steps/capacity annotation); all acquired source jobs pass, no whole-platform-green claim or blind rerun. Held249d409 can publish. Next independent slice removes duplicate native structural argument schemas between descriptive catalogue and strict planner validation; preserve calendar/context checks and no grant/executor. Pending candidate approval remains specific to3b81c85, not latest source; do not ask again or deploy implicitly.
