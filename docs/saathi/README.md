@@ -164,3 +164,5 @@ Next operator-preparation task: [public demo release review](../../tasks/public-
 [Release input integrity](release-input-integrity.md): exact current assets and per-input hashes, pure keyless validation/packing, operator ordering and source-only CI. A normal build check is not a deployed release.
 
 [Local public release candidate](public-release-candidate.md): exact official-runtime archive, extracted synthetic verification and concrete same-resource rollout/recovery record; no actual rollout.
+
+[Fixed native catalogue](native-tool-catalog.md): descriptive mock/manual metadata and planner reuse; no new execution authority.
