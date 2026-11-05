@@ -162,3 +162,5 @@ Next operator-preparation task: [public demo release review](../../tasks/public-
 [Historical schema7 upgrade review](historical-upgrade-review.md): independent pinned-source synthetic fixture, copied-backup migration/recovery evidence and remaining packaging/rollout blockers. No public rollout.
 
 [Release input integrity](release-input-integrity.md): exact current assets and per-input hashes, pure keyless validation/packing, operator ordering and source-only CI. A normal build check is not a deployed release.
+
+[Local public release candidate](public-release-candidate.md): exact official-runtime archive, extracted synthetic verification and concrete same-resource rollout/recovery record; no actual rollout.

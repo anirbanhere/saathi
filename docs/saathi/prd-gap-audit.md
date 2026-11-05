@@ -1,5 +1,7 @@
 # PRD implementation audit — 29 October 2026
 
+**Latest candidate preparation:** clean official-runtime local archive and extracted synthetic smoke verified (public-release-candidate.md), with exact non-runtime inputs matching scoped-tested source. Public health/resource configuration observed read-only; no rollout/data access. Required wider platform CI remains unresolved due runner acquisition; public source/schema and live gates unchanged.
+
 **Latest packaging slice:** development build/operator now use exact current assets and complete input hashes through a pure keyless validator/packer (release-input-integrity.md). Static mutations, malformed/escaping inputs and runtime absence fail before profile/cloud access; scoped CI gains stdlib/normal-build checks. Actual clean-runtime archive, backed-up public rollout and full PRD features remain pending; no public/schema/gate change.
 
 **Latest release preparation:** independent pinned27de098 historical-store synthetic fixture verifies7-to15 preservation, ownership, duplicate/usage and once-only recovery on copied state (historical-upgrade-review.md). No runtime migration code/public data changed. Actual release remains pending: current deploy asset allowlist rejects newer modules; keyless packaging/input-integrity checks and backed-up rollout are next. This is synthetic store evidence, not a public upgrade or infrastructure restore.
