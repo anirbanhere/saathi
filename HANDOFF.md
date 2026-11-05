@@ -1,5 +1,9 @@
 # Saathi on OpenDuet handoff
 
+## PR57 source checks complete; shared native contracts next
+
+Ordinary allowance68% primary/42% weekly available; credit untouched. Source81f32ae scoped42074992518/tenant42074992435 SUCCESS: Linux368/3476, server types/frozen239/audit/guard/packed pass; tested merge3bce0da6 exact-source tree41d7d3aea8e71571bb8effc05c7fdbd56a502256. Wider42074992559 failed on unacquired macOS startup127412717644 (zero steps/capacity annotation); all acquired source jobs pass, no whole-platform-green claim or blind rerun. Held249d409 can publish. Next independent slice removes duplicate native structural argument schemas between descriptive catalogue and strict planner validation; preserve calendar/context checks and no grant/executor. Pending candidate approval remains specific to3b81c85, not latest source; do not ask again or deploy implicitly.
+
 ## Native catalogue source published in draft PR57
 
 Source81f32ae9ac676a9c20243d96169a256e12aec315 pushed in codex/native-tool-catalog, draft PR57 https://github.com/anirbanhere/saathi/pull/57 on PR56/b62c712. App attachment capability unavailable, URL retained here. Secret scan0; clean audit/input guard/packed smoke pass, server bundlecd1a4aaf2519969ae193ba30e9902e48ec88559e0bc64debd91990ab42058f4c, runtimeIntegrity=null (not release runtime). Prior exact candidate3b81c85 remains separately preserved and unchanged; no reply/approval received for its deployment, no repeated prompt or implicit update. Current artifacts/public-build is the new catalogue source and must never substitute for the pending candidate.
