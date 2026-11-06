@@ -1,5 +1,7 @@
 # Saathi on OpenDuet — coding agent instructions
 
+Google SDK compatibility: docs/saathi/google-sdk-compatibility.md. Separate LangGraph AG-UI harness constrains google-genai>=2.34,<3 after upstream3 changed default API/HTTP backend and broke exact provider-wire tests. Do not weaken wire assertions or silently force a version; migrate3 explicitly with boundary coverage. This is not the Bun public inference stack or a security-patch claim. Test with isolated synthetic profile/credentials and loopback guard.
+
 Cached plan binding: savedPlanRead validates bounded payload plus saved input/plan in one LEFT JOIN, strict ready plan and exact result order/count/id/tool/manual text/date/prerequisite skip state. Missing/invalid context fails503, never absent/replay. Preserve cached history after cancellation, owner checks, retained corrupt rows and unchanged events/usage. Helper field bounds do not cap existing TaskPlans.view projections or authenticate coherent coordinated edits/external truth. No migration or execution authority.
 
 Cached native reads: docs/saathi/cached-read-validation.md. SQL-bound text payload <=64KB, strict target/envelope/mock-draft-none/status/output coherence before returning persisted evidence. Corrupt cache yields fixed503, never replay/repair/delete/usage release. Preserve owner checks and valid cached cancellation/restart behavior. Shape coherence is not authentication, exact plan/date binding or external completion. No live/migration/permission change follows.
