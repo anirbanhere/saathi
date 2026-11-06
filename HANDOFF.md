@@ -1,5 +1,9 @@
 # Saathi on OpenDuet handoff
 
+## PR59 source checks complete; exact cached-plan binding next
+
+Ordinary allowance13% primary/47% weekly available; reset credit untouched. Source6f00000 scoped42095745741/tenant42095745793 SUCCESS: Linux370/3536, types/frozen239/audit/guard/packed pass. Wider42095745743 failed on unacquired macOS startup127485187852 with zero steps/capacity annotation; all acquired source jobs passed, no whole-platform-green claim or blind retry. Heldcada627 may now publish. Next independent cache slice binds observations to exact saved plan steps/tools/manual instructions/date and prerequisite outcomes. Keep cancelled-task cached history valid and no replay/repair on failure. Pending3b81c85 rollout decision and protected public state unchanged.
+
 ## Cache evidence fix published in draft PR59
 
 Source6f00000850a933958345b6df4fb1eccea65e4cbe pushed to codex/cached-read-validation, draft PR59 https://github.com/anirbanhere/saathi/pull/59 on PR58/1ea6229. Clean audit/input guard/packed smoke and configured-secret scan0 pass; server128e072b6ea556296c170daddce0e54f44b78b7ccfe7de1263b275beb0d06e2f, runtimeIntegrity=null (not release runtime). Final frozen test recheck has only the eight known Windows path-text differences; no new baseline change. PR58 description corrected to completed all-CI success. App attachment tool unavailable; URL retained here.
