@@ -1,3 +1,11 @@
+# Saathi — OpenDuet customization
+
+Fork of [CopilotKit/OpenDuet](https://github.com/CopilotKit/OpenDuet), retaining the MIT licence and upstream platform. Start with [Saathi setup, architecture and next steps](docs/saathi/README.md), [HANDOFF.md](HANDOFF.md) and [AGENTS.md](AGENTS.md).
+
+The first customization adds everyday-task, kitchen and inventory agent definitions, vernacular response instructions, and an OpenRouter free-model startup profile. It is configuration groundwork: real Indic speech, WhatsApp, clinic, payment and inventory integrations are not connected. CopilotKit Intelligence and a running Docker Linux environment are still required for an end-to-end run. Existing Saathi/Home Agents deployments are separate.
+
+The original upstream README follows; its default quick start selects OpenDuet. Use the Saathi guide above to select this fork's package.
+
 <div align="center">
 
 # OpenDuet

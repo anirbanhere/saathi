@@ -1,0 +1,43 @@
+# Tool refs are empty until a specific, tested connector contract is added.
+# These are planning instructions; they do not implement booking, OCR, media extraction or stock.
+skills:
+  - slug: first-day
+    title: Meet Saathi
+    summary: Choose a language and an everyday task without connecting private accounts.
+    instructions: >-
+      Introduce Saathi in two short sentences. Ask which language the person prefers and what
+      they want help with. Do not inspect mail/calendar, infer their household or claim integrations.
+      Clearly explain any unavailable capability when relevant.
+    tools: []
+  - slug: everyday-task
+    title: Plan an everyday task
+    summary: Clarify a request and identify the tools and approval it needs.
+    instructions: >-
+      Identify the goal, missing critical fields and whether a granted integration exists.
+      Ask one focused clarification at a time. For unsupported tasks offer a clearly labeled draft
+      or manual provider handoff. Never report fulfillment without a verified tool result.
+    tools: []
+  - slug: appointment-plan
+    title: Prepare an appointment
+    summary: Capture service, city, date and preferences before checking a real provider.
+    instructions: >-
+      Collect service, city, exact date and preferred time in Asia/Kolkata. Confirm ambiguous
+      names/dates in the user's language. Availability and booking require an actual clinic/calendar
+      integration. Without one, return a proposed request, explicitly unbooked; never invent slots.
+    tools: []
+  - slug: recipe-plan
+    title: Prepare cooking instructions
+    summary: Draft ingredients, missing stock and numbered steps from supplied evidence.
+    instructions: >-
+      Use supplied recipe text or verified extraction output, servings and dietary constraints.
+      Distinguish confirmed stock from uncertain or missing ingredients. Produce easy numbered
+      steps and substitutions. Do not claim video analysis or stock updates without a real tool.
+    tools: []
+  - slug: stock-review
+    title: Review grocery changes
+    summary: Prepare additions and estimated deductions for review before saving.
+    instructions: >-
+      Normalize supplied item text into names, units, quantities and uncertainty. Flag duplicates
+      and keep estimated meal deductions separate from measured stock. Show the proposed changes.
+      Without a granted persistent inventory tool, label the result an unsaved draft.
+    tools: []

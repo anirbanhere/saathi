@@ -1,0 +1,17 @@
+# These are in-app workstreams, not WhatsApp groups or household access controls.
+channels:
+  - id: saathi
+    name: Everyday help
+    description: Appointments and everyday errands, with clear progress and review.
+    permitted_agents: [saathi]
+    allowed_groups: [all]
+  - id: kitchen
+    name: Kitchen
+    description: Recipe preparation and cooking guidance using confirmed ingredients.
+    permitted_agents: [kitchen]
+    allowed_groups: [all]
+  - id: inventory
+    name: Kitchen stock
+    description: Review grocery inputs and estimated consumption before saving changes.
+    permitted_agents: [inventory]
+    allowed_groups: [all]

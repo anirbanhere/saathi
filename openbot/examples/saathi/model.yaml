@@ -1,0 +1,6 @@
+# "openai" selects the API protocol, not a paid OpenAI account.
+# The Saathi startup profile points OPENAI_BASE_URL at OpenRouter.
+model:
+  provider: openai
+  credential_secret_ref: openai-api-key
+  default_model: ${BOT_MODEL:-openrouter/free}

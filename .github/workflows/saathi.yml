@@ -1,0 +1,28 @@
+name: Saathi tenant
+on:
+  pull_request:
+  push:
+    branches: ["codex/saathi-kickoff"]
+permissions:
+  contents: read
+jobs:
+  tenant:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.3
+      - run: bun install --cwd openbot --frozen-lockfile --ignore-scripts
+      - run: bun run saathi:test
+      - run: bun test server/tests/model-providers.test.ts server/tests/routing-model-url.test.ts
+        working-directory: openbot
+      - run: bun run --cwd openbot generate:app-config
+        env:
+          TENANT_PACKAGE_DIR: ../examples/saathi
+      - run: bun run --cwd openbot/app build
+        env:
+          TENANT_PACKAGE_DIR: ../examples/saathi
