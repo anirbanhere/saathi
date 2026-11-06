@@ -1,5 +1,9 @@
 # Saathi on OpenDuet handoff
 
+## PR60 scoped success; new wider Python dependency regression under investigation
+
+Ordinary allowance46% primary/52% weekly available, one credit untouched. Source0135680 scoped42234304185/tenant42234304077 SUCCESS: Linux370/3556, types/frozen239/audit/guard/packed. Wider42234304277 failed BOTH unacquired macOS and genuine Python harness regressions127947849697: nine LangGraph Google boundary cases expected v1beta but resolver newly installed google-genai3.0.0 whose documented default is v1. Do not mislabel this as capacity-only. Existing isolated environment uses2.34.0; upstream unbounded transitive dependency admitted an unreviewed major. Next bounded repair constrains that separate harness to reviewed2.x contract without loosening wire assertions, then fresh isolated resolver/tests. Saathi source/public/candidate inputs unchanged; do not retry blindly or deploy. Product reminder scope deferred while required checks have a genuine failure.
+
 ## Exact plan-binding source published in draft PR60
 
 Source0135680a580b3e1417e0523a093e72d4bc2e310c pushed to codex/cached-read-plan-binding, stacked draft PR60 https://github.com/anirbanhere/saathi/pull/60 on PR59/d287a75. Secret scan0; clean audit/input guard/packed smoke pass; server6b1d2e7e296e50bcc9ce8d0223109882e2ad0a40ac83b12101a8c28fa7eb6c41, runtimeIntegrity=null (not release runtime). Prior PR59 description now records scoped success/wider runner capacity failure. Attachment capability unavailable; URL recorded.
