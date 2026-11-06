@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## Exact plan-binding source published in draft PR60
+
+Source0135680a580b3e1417e0523a093e72d4bc2e310c pushed to codex/cached-read-plan-binding, stacked draft PR60 https://github.com/anirbanhere/saathi/pull/60 on PR59/d287a75. Secret scan0; clean audit/input guard/packed smoke pass; server6b1d2e7e296e50bcc9ce8d0223109882e2ad0a40ac83b12101a8c28fa7eb6c41, runtimeIntegrity=null (not release runtime). Prior PR59 description now records scoped success/wider runner capacity failure. Attachment capability unavailable; URL recorded.
+
+Exact-source CI newly queued/running, no Linux/full conclusion claimed. Hold this docs checkpoint locally until useful source checks finish; next heartbeat inspect full-SHA0135680 outcomes/log totals and tested merge tree before publishing. After this boundary slice, prioritize a genuinely missing user-visible local capability from the PRD (scope/test before code), rather than endlessly extending catalogue metadata. In-app reminder scheduling/status with explicit no-background/external-delivery claims is one candidate to audit, since public channel/account access remains gated. No user reply on3b81c85 rollout approval, no implicit deployment or repeated prompt. Pinned candidate/public data/schema/live gates unchanged; full goal active and no credit reset/redemption/purchase.
+
 ## Exact cached-plan binding — local verified source, publication pending
 
 Current codex/cached-read-plan-binding on published PR59/d287a75. Saved read helper now LEFT JOINs bounded cache/input/plan, validates strict saved input/ready plan, exact result count/order/ID/tool, prerequisite skip state, planned manual text and confirmed mock date. No task-current-state gate; valid cached history after cancellation/restart remains. Missing/corrupt context is503, never absent/cache replay or repair. No new schema/account/permission or runtime gate. See cached-read-validation.md; helper bounds are not a whole TaskPlans.view projection cap or cryptographic/remote truth.
