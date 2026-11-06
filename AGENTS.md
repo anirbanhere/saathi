@@ -1,5 +1,7 @@
 # Saathi on OpenDuet — coding agent instructions
 
+Cached plan binding: savedPlanRead validates bounded payload plus saved input/plan in one LEFT JOIN, strict ready plan and exact result order/count/id/tool/manual text/date/prerequisite skip state. Missing/invalid context fails503, never absent/replay. Preserve cached history after cancellation, owner checks, retained corrupt rows and unchanged events/usage. Helper field bounds do not cap existing TaskPlans.view projections or authenticate coherent coordinated edits/external truth. No migration or execution authority.
+
 Cached native reads: docs/saathi/cached-read-validation.md. SQL-bound text payload <=64KB, strict target/envelope/mock-draft-none/status/output coherence before returning persisted evidence. Corrupt cache yields fixed503, never replay/repair/delete/usage release. Preserve owner checks and valid cached cancellation/restart behavior. Shape coherence is not authentication, exact plan/date binding or external completion. No live/migration/permission change follows.
 
 Shared native contracts: native-tool-contracts.ts supplies strict planner arguments and catalogue structural JSON schemas (official Zod conversion, throw on unrepresentable, typed empty metadata registry). Preserve calendar refinement and separate confirmed-date check; structural schema is not contextual validation or authority. No permissive conversion fallback or live dispatch follows. Standard $schema URI is specification metadata only.

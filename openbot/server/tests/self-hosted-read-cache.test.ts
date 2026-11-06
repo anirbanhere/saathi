@@ -73,6 +73,21 @@ test("corrupted cached observations fail closed without replay, usage release or
         Reflect.set(r, "grant", true);
       },
       (r: typeof original) => {
+        Reflect.set(
+          r.results[0].output,
+          "instructions",
+          "Different coherent guidance",
+        );
+      },
+      (r: typeof original) => {
+        r.results[0].step = "s2";
+      },
+      (r: typeof original) => {
+        r.results[0].skipped = true;
+        r.results[0].evidence_mode = "none";
+        r.results[0].output = { reason: "Forged prerequisite failure" };
+      },
+      (r: typeof original) => {
         r.status = "retryable";
         r.results[0].status = "retryable";
         r.results[0].evidence_mode = "none";
@@ -176,6 +191,55 @@ test("corrupted cached observations fail closed without replay, usage release or
     const mock = reads.run(owner, dated.id);
     expect(lookups).toBe(1);
     const retained = snapshot();
+    for (const change of [
+      (r: typeof mock) => {
+        Reflect.set(r.results[0].output, "date", "2026-11-08");
+      },
+      (r: typeof mock) => {
+        r.results.push({ ...r.results[0], step: "s2" });
+      },
+      (r: typeof mock) => {
+        r.status = "requires_user_action";
+        r.results[0] = {
+          ...r.results[0],
+          tool: "handoff.manual",
+          status: "requires_user_action",
+          evidence_mode: "draft",
+          output: { instructions: "Different tool", verified: false },
+        };
+      },
+    ]) {
+      const changed = structuredClone(mock);
+      change(changed);
+      const payload = JSON.stringify(changed);
+      db.query("UPDATE plan_read_runs SET payload=? WHERE task=?").run(
+        payload,
+        dated.id,
+      );
+      expect(() => reads.run(owner, dated.id)).toThrow(
+        "Saved read evidence is unavailable",
+      );
+      expect(lookups).toBe(1);
+      expect(snapshot()).toBe(retained);
+    }
+    db.query("UPDATE plan_read_runs SET payload=? WHERE task=?").run(
+      JSON.stringify(mock),
+      dated.id,
+    );
+    const savedInput = JSON.stringify(dated.input);
+    db.query("UPDATE task_plans SET input=? WHERE id=?").run(
+      JSON.stringify({ ...dated.input, goal: "x".repeat(64001) }),
+      dated.id,
+    );
+    expect(() => reads.run(owner, dated.id)).toThrow(
+      "Saved read evidence is unavailable",
+    );
+    expect(lookups).toBe(1);
+    db.query("UPDATE task_plans SET input=? WHERE id=?").run(
+      savedInput,
+      dated.id,
+    );
+    expect(reads.run(owner, dated.id)).toEqual(mock);
     db.query("UPDATE plan_read_runs SET payload=? WHERE task=?").run(
       JSON.stringify({
         ...mock,

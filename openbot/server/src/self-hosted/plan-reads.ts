@@ -2,7 +2,7 @@ import type { Database } from "bun:sqlite";
 import { z } from "zod";
 import { LocalError } from "./errors";
 import type { TaskPlan } from "./plan-contract";
-import { validatePlan } from "./plan-contract";
+import { planInput, validatePlan } from "./plan-contract";
 import type { TaskPlans } from "./plans";
 
 const slots = z
@@ -137,16 +137,59 @@ export function migratePlanReads(db: Database) {
 /** Internal helper. HTTP callers must establish ownership through TaskPlans.get first. */
 export function savedPlanRead(db: Database, id: string): ReadResult | null {
   const row = db
-    .query<{ payload: string | null }, [string]>(
-      "SELECT CASE WHEN typeof(payload)='text' AND length(CAST(payload AS BLOB))<=64000 THEN payload ELSE NULL END payload FROM plan_read_runs WHERE task=?",
+    .query<
+      { payload: string | null; input: string | null; plan: string | null },
+      [string]
+    >(
+      `SELECT
+       CASE WHEN typeof(r.payload)='text' AND length(CAST(r.payload AS BLOB))<=64000 THEN r.payload ELSE NULL END payload,
+       CASE WHEN typeof(p.input)='text' AND length(CAST(p.input AS BLOB))<=64000 THEN p.input ELSE NULL END input,
+       CASE WHEN typeof(p.plan)='text' AND length(CAST(p.plan AS BLOB))<=64000 THEN p.plan ELSE NULL END plan
+       FROM plan_read_runs r LEFT JOIN task_plans p ON p.id=r.task WHERE r.task=?`,
     )
     .get(id);
   if (!row) return null;
   try {
-    if (row.payload === null) throw new Error("Invalid cached payload");
+    if (row.payload === null || row.input === null || row.plan === null)
+      throw new Error("Invalid cached context");
     const parsed = cachedRead.safeParse(JSON.parse(row.payload));
     if (!parsed.success || parsed.data.task !== id)
       throw new Error("Invalid cached evidence");
+    const input = planInput.parse(JSON.parse(row.input));
+    const plan = validatePlan(input, JSON.parse(row.plan));
+    if (
+      plan.status !== "ready" ||
+      plan.steps.length !== parsed.data.results.length
+    )
+      throw new Error("Invalid cached step count");
+    for (const [index, step] of plan.steps.entries()) {
+      const observation = parsed.data.results[index];
+      const blocked = step.prerequisites.some(
+        (prerequisite) =>
+          parsed.data.results.find((row) => row.step === prerequisite)
+            ?.status !== "completed",
+      );
+      if (
+        observation.step !== step.id ||
+        observation.tool !== step.tool ||
+        observation.skipped !== blocked
+      )
+        throw new Error("Cached step mismatch");
+      if (
+        !blocked &&
+        step.tool === "handoff.manual" &&
+        (!("instructions" in observation.output) ||
+          observation.output.instructions !== step.arguments.instructions)
+      )
+        throw new Error("Cached manual text mismatch");
+      if (
+        step.tool === "demo.clinic.options" &&
+        observation.evidence_mode === "mock" &&
+        (!("date" in observation.output) ||
+          observation.output.date !== step.arguments.date)
+      )
+        throw new Error("Cached confirmed date mismatch");
+    }
     return parsed.data;
   } catch {
     throw new LocalError(
