@@ -4,6 +4,8 @@ langchain
 langchain-openai
 langchain-anthropic
 langchain-google-genai
+# SDK 3 changes default API version and HTTP backend; upgrade after explicit wire-contract review.
+google-genai>=2.34,<3
 fastapi
 python-multipart
 uvicorn[standard]
