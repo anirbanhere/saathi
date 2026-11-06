@@ -51,6 +51,84 @@ export type ReadResult = {
   results: Observation[];
 };
 export type ClinicLookup = { options(date: string): unknown };
+const statuses = z.enum([
+  "completed",
+  "unavailable",
+  "requires_user_action",
+  "retryable",
+  "permanently_failed",
+]);
+const timestamp = z.number().int().min(0).max(Number.MAX_SAFE_INTEGER);
+const cachedObservation = z
+  .object({
+    step: z.string().regex(/^s[1-3]$/),
+    tool: z.enum(["demo.clinic.options", "handoff.manual"]),
+    status: statuses,
+    evidence_mode: z.enum(["mock", "draft", "none"]),
+    skipped: z.boolean(),
+    at: timestamp,
+    output: z.union([
+      slots,
+      z
+        .object({
+          instructions: z.string().min(1).max(1000),
+          verified: z.literal(false),
+        })
+        .strict(),
+      z.object({ reason: z.string().min(1).max(1000) }).strict(),
+    ]),
+  })
+  .strict()
+  .refine((row) => {
+    if (row.evidence_mode === "mock")
+      return (
+        row.tool === "demo.clinic.options" &&
+        !row.skipped &&
+        "slots" in row.output &&
+        row.status === (row.output.slots.length ? "completed" : "unavailable")
+      );
+    if (row.evidence_mode === "draft")
+      return (
+        row.tool === "handoff.manual" &&
+        !row.skipped &&
+        row.status === "requires_user_action" &&
+        "verified" in row.output
+      );
+    return (
+      "reason" in row.output &&
+      (row.skipped
+        ? row.status === "requires_user_action"
+        : row.tool === "demo.clinic.options" &&
+          ["unavailable", "retryable", "permanently_failed"].includes(
+            row.status,
+          ))
+    );
+  });
+const cachedRead = z
+  .object({
+    task: z.string(),
+    mode: z.literal("read_only"),
+    status: statuses,
+    at: timestamp,
+    results: z.array(cachedObservation).min(1).max(3),
+  })
+  .strict()
+  .refine((read) => {
+    const priority = [
+      "permanently_failed",
+      "retryable",
+      "unavailable",
+      "requires_user_action",
+    ] as const;
+    return (
+      new Set(read.results.map((row) => row.step)).size ===
+        read.results.length &&
+      read.status ===
+        (priority.find((status) =>
+          read.results.some((row) => row.status === status),
+        ) ?? "completed")
+    );
+  });
 export function migratePlanReads(db: Database) {
   db.exec(
     "CREATE TABLE IF NOT EXISTS plan_read_runs(task TEXT PRIMARY KEY REFERENCES task_plans(id) ON DELETE CASCADE,payload TEXT NOT NULL)",
@@ -59,11 +137,23 @@ export function migratePlanReads(db: Database) {
 /** Internal helper. HTTP callers must establish ownership through TaskPlans.get first. */
 export function savedPlanRead(db: Database, id: string): ReadResult | null {
   const row = db
-    .query<{ payload: string }, [string]>(
-      "SELECT payload FROM plan_read_runs WHERE task=?",
+    .query<{ payload: string | null }, [string]>(
+      "SELECT CASE WHEN typeof(payload)='text' AND length(CAST(payload AS BLOB))<=64000 THEN payload ELSE NULL END payload FROM plan_read_runs WHERE task=?",
     )
     .get(id);
-  return row ? (JSON.parse(row.payload) as ReadResult) : null;
+  if (!row) return null;
+  try {
+    if (row.payload === null) throw new Error("Invalid cached payload");
+    const parsed = cachedRead.safeParse(JSON.parse(row.payload));
+    if (!parsed.success || parsed.data.task !== id)
+      throw new Error("Invalid cached evidence");
+    return parsed.data;
+  } catch {
+    throw new LocalError(
+      "Saved read evidence is unavailable. No step was replayed.",
+      503,
+    );
+  }
 }
 
 /** Fixed synchronous local tools only. This transaction is not suitable for remote side effects. */

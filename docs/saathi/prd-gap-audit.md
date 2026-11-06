@@ -1,5 +1,7 @@
 # PRD implementation audit — 29 October 2026
 
+**Latest cached evidence slice:** strict bounded persisted native read validation replaces unchecked JSON casting (cached-read-validation.md); foreign/live/verified/malformed/incoherent observations fail without replay or mutation. Coherent content authenticity/exact plan binding and remote tool returns remain separate. No public rollout/schema/gate change.
+
 **Latest candidate preparation:** clean official-runtime local archive and extracted synthetic smoke verified (public-release-candidate.md), with exact non-runtime inputs matching scoped-tested source. Public health/resource configuration observed read-only; no rollout/data access. Required wider platform CI remains unresolved due runner acquisition; public source/schema and live gates unchanged.
 
 **Latest packaging slice:** development build/operator now use exact current assets and complete input hashes through a pure keyless validator/packer (release-input-integrity.md). Static mutations, malformed/escaping inputs and runtime absence fail before profile/cloud access; scoped CI gains stdlib/normal-build checks. Actual clean-runtime archive, backed-up public rollout and full PRD features remain pending; no public/schema/gate change.
