@@ -1,5 +1,11 @@
 # Saathi on OpenDuet handoff
 
+## Exact cached-plan binding — local verified source, publication pending
+
+Current codex/cached-read-plan-binding on published PR59/d287a75. Saved read helper now LEFT JOINs bounded cache/input/plan, validates strict saved input/ready plan, exact result count/order/ID/tool, prerequisite skip state, planned manual text and confirmed mock date. No task-current-state gate; valid cached history after cancellation/restart remains. Missing/corrupt context is503, never absent/cache replay or repair. No new schema/account/permission or runtime gate. See cached-read-validation.md; helper bounds are not a whole TaskPlans.view projection cap or cryptographic/remote truth.
+
+Red reproduced coherent manual text/step changes accepted. Final focused7/107 and full Windows368/3543 plus two existing skips pass. Server types/format/lint pass; frozen test gate only eight known Windows path-text differences, baseline unchanged. Context/date/tool/count/skip changes fail with preserved events/usage and native lookup count1, oversized input denied; restored valid cache reused. Fresh-context review found no actionable issue; cross-model skipped non-interactive. No browser/provider/live/profile/credit/cloud change. Clean audit/input guard/packed/source publication pending. Candidate3b81c85 is still separate, approval unanswered; do not deploy latest source or repeat the question.
+
 ## PR59 source checks complete; exact cached-plan binding next
 
 Ordinary allowance13% primary/47% weekly available; reset credit untouched. Source6f00000 scoped42095745741/tenant42095745793 SUCCESS: Linux370/3536, types/frozen239/audit/guard/packed pass. Wider42095745743 failed on unacquired macOS startup127485187852 with zero steps/capacity annotation; all acquired source jobs passed, no whole-platform-green claim or blind retry. Heldcada627 may now publish. Next independent cache slice binds observations to exact saved plan steps/tools/manual instructions/date and prerequisite outcomes. Keep cancelled-task cached history valid and no replay/repair on failure. Pending3b81c85 rollout decision and protected public state unchanged.
